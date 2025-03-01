@@ -13,8 +13,12 @@ struct HabitsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            NavigationSplitView {
+                ContentView(persistanceController: .preview)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            } detail: {
+                HabitView()
+            }
         }
     }
 }
