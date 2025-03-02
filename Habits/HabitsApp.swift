@@ -9,7 +9,9 @@ import SwiftUI
 
 @main
 struct HabitsApp: App {
-    let persistenceController = PersistenceController.shared
+    @Environment(\.scenePhase) var scenePhase
+    
+    @StateObject var persistenceController = PersistenceController()
 
     var body: some Scene {
         WindowGroup {
@@ -18,6 +20,13 @@ struct HabitsApp: App {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             } detail: {
                 HabitView()
+            }
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            .environmentObject(persistenceController)
+            .onChange(of: scenePhase, initial: false) { phase, _  in
+                if phase != .active {
+                    persistenceController.save()
+                }
             }
         }
     }

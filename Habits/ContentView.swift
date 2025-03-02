@@ -9,11 +9,11 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+//    @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(
-            keyPath: \Habit.timestamp,
+            keyPath: \Habit.title,
             ascending: true
         )],
         animation: .default)
@@ -27,9 +27,9 @@ struct ContentView: View {
             List {
                 ForEach(habits) { habit in
                     NavigationLink {
-                        Text("Item at \(habit.timestamp!, formatter: itemFormatter)")
+                        Text("\(habit.habitTitle)")
                     } label: {
-                        Text(habit.timestamp!, formatter: itemFormatter)
+                        Text(habit.habitTitle)
                     }
                 }
                 .onDelete(perform: delete)
@@ -41,21 +41,28 @@ struct ContentView: View {
                 }
 #endif
                 ToolbarItem {
-                    Button(action: addItem) {
+                    Button(action: persistanceController.addHabit) {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
+#if DEBUG
+                ToolbarItem {
+                    Button {
+                        persistanceController.createSampleData()
+                    } label: {
+                        Label("ADD SAMPLES", systemImage: "flame")
+                    }
+                }
+                ToolbarItem {
+                    Button {
+                        persistanceController.deleteAll()
+                    } label: {
+                        Label("DELETE SAMPLES", systemImage: "pencil")
+                    }
+                }
+#endif
             }
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Habit(context: viewContext)
-            newItem.timestamp = Date()
-            
-            try? viewContext.save()
+            Text("Select a habit")
         }
     }
 
@@ -64,8 +71,6 @@ struct ContentView: View {
             let item = habits[offset]
             persistanceController.delete(item)
         }
-        
-        try? viewContext.save()
     }
 }
 
