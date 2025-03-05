@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-struct FontSizes {
-    static let tasksCompleted: CGFloat = 100
-}
-
 struct HabitView: View {
     @EnvironmentObject var persistenceController: PersistenceController
     @ObservedObject var habit: Habit
@@ -25,14 +21,17 @@ struct HabitView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Spacer()
-                HabitCounterView(habit: habit, persistenceController: persistenceController)
-                Spacer()
-                Text("\(habit.streak) Day Streak")
-                .font(.largeTitle)
+            ZStack {
+                Color.green
+                    .ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    HabitCounterView(habit: habit, persistenceController: persistenceController)
+                    Spacer()
+                    Text("\(habit.streak) Day Streak")
+                        .font(.largeTitle)
+                }
             }
-            
         }
         .navigationTitle(habit.habitTitle)
         .navigationBarTitleDisplayMode(.inline)
@@ -57,9 +56,14 @@ struct HabitView: View {
         } message: {
             Text("Are you sure?")
         }
+        .tint(.white)
+        .preferredColorScheme(.dark)
     }
 }
 
 #Preview {
+    let persistenceController = PersistenceController()
+    
     HabitView(habit: .example, persistenceController: .preview)
+        .environmentObject(persistenceController)
 }

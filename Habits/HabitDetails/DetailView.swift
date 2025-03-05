@@ -25,5 +25,8 @@ struct DetailView: View {
 }
 
 #Preview {
-    DetailView(habit: nil)
+    let persistenceController = PersistenceController()
+    
+    DetailView(habit: .example)
+        .environmentObject(persistenceController)
 }

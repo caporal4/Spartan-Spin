@@ -16,8 +16,6 @@ extension NewHabitView {
         @Published var tasksNeeded: Int?
         @Published var unit = "Count"
         
-        let units = Units()
-        
         var disabledForm: Bool {
             guard let unwrapped = tasksNeeded else {
                 return true

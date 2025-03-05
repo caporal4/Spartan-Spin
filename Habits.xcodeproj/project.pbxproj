@@ -29,9 +29,30 @@
 		58C4FEA92D73BFFA000C775A /* HabitsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		58C4FFE42D7816B1000C775A /* Exceptions for "Habits" folder in "HabitsTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				HabitsTests.xctestplan,
+			);
+			target = 58C4FE9E2D73BFFA000C775A /* HabitsTests */;
+		};
+		58C4FFE52D7816B1000C775A /* Exceptions for "Habits" folder in "HabitsUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				HabitsTests.xctestplan,
+			);
+			target = 58C4FEA82D73BFFA000C775A /* HabitsUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		58C4FE8B2D73BFF8000C775A /* Habits */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				58C4FFE42D7816B1000C775A /* Exceptions for "Habits" folder in "HabitsTests" target */,
+				58C4FFE52D7816B1000C775A /* Exceptions for "Habits" folder in "HabitsUITests" target */,
+			);
 			path = Habits;
 			sourceTree = "<group>";
 		};
@@ -193,6 +214,7 @@
 			knownRegions = (
 				en,
 				Base,
+				it,
 			);
 			mainGroup = 58C4FE802D73BFF8000C775A;
 			minimizedProjectReferenceProxies = 1;
@@ -297,6 +319,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -358,6 +381,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";

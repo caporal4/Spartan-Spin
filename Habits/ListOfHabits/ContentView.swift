@@ -23,8 +23,12 @@ struct ContentView: View {
                 Section {
                     ForEach(viewModel.habits) { habit in
                         NavigationLink(value: habit) {
-                            Text(habit.habitTitle)
+                            ZStack(alignment: .leading) {
+                                ContentViewRectangle()
+                                ContentViewRow(habit: habit)
+                            }
                         }
+                        .listRowBackground(Colors.gradientB)
                         .onReceive(habit.objectWillChange) { _ in
                             viewModel.reloadData()
                         }
@@ -32,6 +36,8 @@ struct ContentView: View {
                     .onDelete(perform: viewModel.delete)
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Colors.gradientC)
             .navigationTitle("Habits")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Habit.self) { item in
@@ -63,14 +69,19 @@ struct ContentView: View {
                 }
 #endif
             }
+            .toolbarBackground(Color.green, for: .navigationBar, .tabBar)
             .onAppear {
                 viewModel.launchApp()
             }
+            .tint(.white)
+            .preferredColorScheme(.dark)
         }
     }
 }
 
 #Preview {
+    let persistenceController = PersistenceController()
+    
     ContentView(persistenceController: .preview)
-        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(persistenceController)
 }

@@ -23,6 +23,12 @@ class PersistenceController: ObservableObject {
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
+#if DEBUG
+            if CommandLine.arguments.contains("enable-testing") {
+                self.deleteAll()
+                UIView.setAnimationsEnabled(false)
+            }
+#endif
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
@@ -86,4 +92,8 @@ class PersistenceController: ObservableObject {
 
         return managedObjectModel
     }()
+    
+    func count<T>(for fetchRequest: NSFetchRequest<T>) -> Int {
+        (try? container.viewContext.count(for: fetchRequest)) ?? 0
+    }
 }

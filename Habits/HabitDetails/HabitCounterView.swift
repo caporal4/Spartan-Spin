@@ -21,28 +21,27 @@ struct HabitCounterView: View {
     
     var body: some View {
         HStack {
-            Button("", systemImage: "minus") {
-                viewModel.undoTask()
-            }
-            .foregroundStyle(.black)
+            Button("Undo task", systemImage: "minus", action: viewModel.undoTask)
+            .labelStyle(.iconOnly)
             .padding()
             VStack {
                 Text("\(habit.tasksCompleted)")
-                    .font(.system(size: FontSizes.tasksCompleted))
+                    .font(.system(size: Numbers.tasksCompletedFontSize))
                 Text("/\(habit.tasksNeeded)")
                     .font(.title)
-                Text(habit.habitUnit)
+                Text(LocalizedStringKey(habit.habitUnit))
                     .font(.title)
             }
-            Button("", systemImage: "plus") {
-                viewModel.doTask()
-            }
-            .foregroundStyle(.black)
+            Button("Complete task", systemImage: "plus", action: viewModel.doTask)
+                .labelStyle(.iconOnly)
             .padding()
         }
     }
 }
 
 #Preview {
+    let persistenceController = PersistenceController()
+    
     HabitCounterView(habit: .example, persistenceController: .preview)
+        .environmentObject(persistenceController)
 }

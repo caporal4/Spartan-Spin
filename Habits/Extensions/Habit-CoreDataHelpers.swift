@@ -31,6 +31,8 @@ extension Habit {
         habit.id = UUID()
         habit.tasksNeeded = 2
         habit.unit = "Count"
+        habit.streak = 2
+        habit.tasksCompleted = 0
         return habit
     }
 }

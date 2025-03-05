@@ -12,52 +12,65 @@ struct EditHabitView: View {
     @Environment(\.managedObjectContext) var persistenceController
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject var habit: Habit
-    
     let units = Units()
+    
+    @ObservedObject var habit: Habit
     
     var body: some View {
         NavigationStack {
-            Form {
-                HStack {
-                    Text("Title")
-                    TextField(
-                        "Title",
-                        text: $habit.habitTitle,
-                        prompt: Text("Enter the habit title here")
-                    )
-                    .multilineTextAlignment(.trailing)
-                }
-                HStack {
-                    Text("Amount")
-                    TextField(
-                        "Amount",
-                        value: $habit.tasksNeeded,
-                        format: .number
-                    )
-                    .multilineTextAlignment(.trailing)
-                    .keyboardType(.decimalPad)
-                }
-                Picker("Unit", selection: $habit.unit) {
-                    ForEach(units.units, id: \.self) {
-                        Text($0)
+            ZStack {
+                Colors.gradientA
+                    .ignoresSafeArea()
+                Form {
+                    HStack {
+                        Text("Title")
+                        TextField(
+                            "Title",
+                            text: $habit.habitTitle,
+                            prompt: Text("Enter the habit title here")
+                        )
+                        .multilineTextAlignment(.trailing)
+                        .tint(.blue)
+                    }
+                    HStack {
+                        Text("Amount")
+                        TextField(
+                            "Amount",
+                            value: $habit.tasksNeeded,
+                            format: .number
+                        )
+                        .multilineTextAlignment(.trailing)
+                        .keyboardType(.decimalPad)
+                        .tint(.blue)
+                    }
+                    Picker("Unit", selection: $habit.unit) {
+                        ForEach(units.list, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .tint(.secondary)
+                    .toolbar {
+                        Button("Save") {
+                            habit.objectWillChange.send()
+                            try? persistenceController.save()
+                            dismiss()
+                        }
+                        .foregroundStyle(.blue)
                     }
                 }
-                .toolbar {
-                    Button("Save") {
-                        habit.objectWillChange.send()
-                        try? persistenceController.save()
-                        dismiss()
-                    }
-                }
-                .onReceive(habit.objectWillChange) { _ in
-                    try? persistenceController.save()
-                }
+                .navigationTitle("Edit Habit")
+                .navigationBarTitleDisplayMode(.inline)
+                .scrollContentBackground(.hidden)
+                .toolbarBackground(.hidden)
+                .preferredColorScheme(.light)
             }
         }
     }
 }
 
 #Preview {
-    EditHabitView(habit: Habit.example)
+    let persistenceController = PersistenceController()
+    
+    EditHabitView(habit: .example)
+        .environmentObject(persistenceController)
 }

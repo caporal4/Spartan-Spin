@@ -12,6 +12,8 @@ struct NewHabitView: View {
     
     @StateObject private var viewModel: ViewModel
     
+    let units = Units()
+    
     init(persistenceController: PersistenceController) {
         let viewModel = ViewModel(persistenceController: persistenceController)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -19,43 +21,59 @@ struct NewHabitView: View {
     
     var body: some View {
         NavigationStack {
-            Form {
-                HStack {
-                    Text("Title")
-                    TextField(
-                        "Title",
-                        text: $viewModel.title,
-                        prompt: Text("Enter the habit title here")
-                    )
-                    .multilineTextAlignment(.trailing)
-                }
-                HStack {
-                    Text("Amount")
-                    TextField(
-                        "Amount",
-                        value: $viewModel.tasksNeeded,
-                        format: .number
-                    )
-                    .multilineTextAlignment(.trailing)
-                    .keyboardType(.decimalPad)
-                }
-                Picker("Unit", selection: $viewModel.unit) {
-                    ForEach(viewModel.units.units, id: \.self) {
-                        Text($0)
+            ZStack {
+                Colors.gradientA
+                    .ignoresSafeArea()
+                Form {
+                    HStack {
+                        Text("Title")
+                        TextField(
+                            "Title",
+                            text: $viewModel.title,
+                            prompt: Text("Enter the habit title here")
+                        )
+                        .multilineTextAlignment(.trailing)
+                        .tint(.blue)
                     }
+                    HStack {
+                        Text("Amount")
+                        TextField(
+                            "Amount",
+                            value: $viewModel.tasksNeeded,
+                            format: .number
+                        )
+                        .multilineTextAlignment(.trailing)
+                        .keyboardType(.decimalPad)
+                        .tint(.blue)
+                    }
+                    Picker("Unit", selection: $viewModel.unit) {
+                        ForEach(units.list, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .tint(.secondary)
                 }
-            }
-            .toolbar {
-                Button("Save") {
-                    viewModel.addHabit()
-                    dismiss()
+                .navigationTitle("New Habit")
+                .navigationBarTitleDisplayMode(.inline)
+                .scrollContentBackground(.hidden)
+                .toolbarBackground(.hidden)
+                .preferredColorScheme(.light)
+                .toolbar {
+                    Button("Save") {
+                        viewModel.addHabit()
+                        dismiss()
+                    }
+                    .tint(.blue)
+                    .disabled(viewModel.disabledForm)
                 }
-                .disabled(viewModel.disabledForm)
             }
         }
     }
 }
 
 #Preview {
+    let persistenceController = PersistenceController()
+    
     NewHabitView(persistenceController: .preview)
+        .environmentObject(persistenceController)
 }

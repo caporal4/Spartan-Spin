@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "D186A88C-DE20-4180-A669-3354D0E44599",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Habits.xcodeproj",
+        "identifier" : "58C4FE9E2D73BFFA000C775A",
+        "name" : "HabitsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

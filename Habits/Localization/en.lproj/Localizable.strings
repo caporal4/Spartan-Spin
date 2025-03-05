@@ -1,0 +1,56 @@
+/* 
+  Localizable.strings
+  Habits
+
+  Created by Brendan Caporale on 3/4/25.
+  
+*/
+
+/* ContentView */
+"Habits" = "Habits";
+"Add Item" = "Add Item";
+
+/* ContentViewRow */
+"Progress:" = "Progress";
+
+/* DetailView */
+"Details" = "Details";
+
+/* HabitCounterView */
+"Undo task" = "Undo task";
+"Complete task" = "Complete task";
+
+/* HabitView */
+"Edit" = "Edit";
+"Delete this habit" = "Delete this habit";
+"Delete habit: %@" = "Delete habit: %@";
+"Delete" = "Delete";
+"Cancel" = "Cancel";
+"Are you sure?" = "Are you sure?";
+"%d Day Streak" = "%d Day Streak";
+"%@" = "%@";
+
+/* NoHabitView */
+"No Habit Selected" = "No Habit Selected";
+
+/* EditHabitView */
+"Title" = "Title";
+"Enter the habit title here" = "Enter the habit title here";
+"Amount" = "Amount";
+"Unit" = "Unit";
+"Save" = "Save";
+"Edit Habit" = "Edit Habit";
+
+/* NewHabitView */
+"New Habit" = "New Habit";
+
+/* Units */
+"Count" = "Count";
+"mL" = "mL";
+"Ounce" = "Ounce";
+"Gallon" = "Gallon";
+"Mile" = "Mile";
+"Kilometer" = "Kilometer";
+"Second" = "Second";
+"Minute" = "Minute";
+"Hour" = "Hour";

@@ -9,9 +9,13 @@ import SwiftUI
 
 struct NoHabitView: View {
     var body: some View {
-        Text("No Habit Selected")
-            .font(.title)
-            .foregroundStyle(.secondary)
+        ZStack {
+            Color.green
+                .ignoresSafeArea()
+            Text("No Habit Selected")
+                .font(.title)
+                .foregroundStyle(.secondary)
+        }
     }
 }
 
