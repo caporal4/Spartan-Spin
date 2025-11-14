@@ -24,46 +24,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		58C4FE892D73BFF8000C775A /* Habits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habits.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		58C4FE9F2D73BFFA000C775A /* HabitsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		58C4FEA92D73BFFA000C775A /* HabitsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		58C4FE892D73BFF8000C775A /* SpartanSpin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpartanSpin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		58C4FE9F2D73BFFA000C775A /* SpartanSpinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpartanSpinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		58C4FEA92D73BFFA000C775A /* SpartanSpinUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpartanSpinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		58C4FFE42D7816B1000C775A /* Exceptions for "Habits" folder in "HabitsTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Habits.xctestplan,
-			);
-			target = 58C4FE9E2D73BFFA000C775A /* HabitsTests */;
-		};
-		58C4FFE52D7816B1000C775A /* Exceptions for "Habits" folder in "HabitsUITests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Habits.xctestplan,
-			);
-			target = 58C4FEA82D73BFFA000C775A /* HabitsUITests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		58C4FE8B2D73BFF8000C775A /* Habits */ = {
+		58C4FE8B2D73BFF8000C775A /* SpartanSpin */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				58C4FFE42D7816B1000C775A /* Exceptions for "Habits" folder in "HabitsTests" target */,
-				58C4FFE52D7816B1000C775A /* Exceptions for "Habits" folder in "HabitsUITests" target */,
-			);
-			path = Habits;
+			path = SpartanSpin;
 			sourceTree = "<group>";
 		};
-		58C4FEA22D73BFFA000C775A /* HabitsTests */ = {
+		58C4FEA22D73BFFA000C775A /* SpartanSpinTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = HabitsTests;
+			path = SpartanSpinTests;
 			sourceTree = "<group>";
 		};
-		58C4FEAC2D73BFFA000C775A /* HabitsUITests */ = {
+		58C4FEAC2D73BFFA000C775A /* SpartanSpinUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = HabitsUITests;
+			path = SpartanSpinUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -96,9 +75,9 @@
 		58C4FE802D73BFF8000C775A = {
 			isa = PBXGroup;
 			children = (
-				58C4FE8B2D73BFF8000C775A /* Habits */,
-				58C4FEA22D73BFFA000C775A /* HabitsTests */,
-				58C4FEAC2D73BFFA000C775A /* HabitsUITests */,
+				58C4FE8B2D73BFF8000C775A /* SpartanSpin */,
+				58C4FEA22D73BFFA000C775A /* SpartanSpinTests */,
+				58C4FEAC2D73BFFA000C775A /* SpartanSpinUITests */,
 				58C4FE8A2D73BFF8000C775A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,9 +85,9 @@
 		58C4FE8A2D73BFF8000C775A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				58C4FE892D73BFF8000C775A /* Habits.app */,
-				58C4FE9F2D73BFFA000C775A /* HabitsTests.xctest */,
-				58C4FEA92D73BFFA000C775A /* HabitsUITests.xctest */,
+				58C4FE892D73BFF8000C775A /* SpartanSpin.app */,
+				58C4FE9F2D73BFFA000C775A /* SpartanSpinTests.xctest */,
+				58C4FEA92D73BFFA000C775A /* SpartanSpinUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		58C4FE882D73BFF8000C775A /* Habits */ = {
+		58C4FE882D73BFF8000C775A /* SpartanSpin */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 58C4FEB32D73BFFA000C775A /* Build configuration list for PBXNativeTarget "Habits" */;
+			buildConfigurationList = 58C4FEB32D73BFFA000C775A /* Build configuration list for PBXNativeTarget "SpartanSpin" */;
 			buildPhases = (
 				58C4FE852D73BFF8000C775A /* Sources */,
 				58C4FE862D73BFF8000C775A /* Frameworks */,
@@ -130,18 +109,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				58C4FE8B2D73BFF8000C775A /* Habits */,
+				58C4FE8B2D73BFF8000C775A /* SpartanSpin */,
 			);
-			name = Habits;
+			name = SpartanSpin;
 			packageProductDependencies = (
 			);
 			productName = Habits;
-			productReference = 58C4FE892D73BFF8000C775A /* Habits.app */;
+			productReference = 58C4FE892D73BFF8000C775A /* SpartanSpin.app */;
 			productType = "com.apple.product-type.application";
 		};
-		58C4FE9E2D73BFFA000C775A /* HabitsTests */ = {
+		58C4FE9E2D73BFFA000C775A /* SpartanSpinTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 58C4FEB62D73BFFA000C775A /* Build configuration list for PBXNativeTarget "HabitsTests" */;
+			buildConfigurationList = 58C4FEB62D73BFFA000C775A /* Build configuration list for PBXNativeTarget "SpartanSpinTests" */;
 			buildPhases = (
 				58C4FE9B2D73BFFA000C775A /* Sources */,
 				58C4FE9C2D73BFFA000C775A /* Frameworks */,
@@ -153,18 +132,18 @@
 				58C4FEA12D73BFFA000C775A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				58C4FEA22D73BFFA000C775A /* HabitsTests */,
+				58C4FEA22D73BFFA000C775A /* SpartanSpinTests */,
 			);
-			name = HabitsTests;
+			name = SpartanSpinTests;
 			packageProductDependencies = (
 			);
 			productName = HabitsTests;
-			productReference = 58C4FE9F2D73BFFA000C775A /* HabitsTests.xctest */;
+			productReference = 58C4FE9F2D73BFFA000C775A /* SpartanSpinTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		58C4FEA82D73BFFA000C775A /* HabitsUITests */ = {
+		58C4FEA82D73BFFA000C775A /* SpartanSpinUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 58C4FEB92D73BFFA000C775A /* Build configuration list for PBXNativeTarget "HabitsUITests" */;
+			buildConfigurationList = 58C4FEB92D73BFFA000C775A /* Build configuration list for PBXNativeTarget "SpartanSpinUITests" */;
 			buildPhases = (
 				58C4FEA52D73BFFA000C775A /* Sources */,
 				58C4FEA62D73BFFA000C775A /* Frameworks */,
@@ -176,13 +155,13 @@
 				58C4FEAB2D73BFFA000C775A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				58C4FEAC2D73BFFA000C775A /* HabitsUITests */,
+				58C4FEAC2D73BFFA000C775A /* SpartanSpinUITests */,
 			);
-			name = HabitsUITests;
+			name = SpartanSpinUITests;
 			packageProductDependencies = (
 			);
 			productName = HabitsUITests;
-			productReference = 58C4FEA92D73BFFA000C775A /* HabitsUITests.xctest */;
+			productReference = 58C4FEA92D73BFFA000C775A /* SpartanSpinUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -193,7 +172,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 2610;
 				TargetAttributes = {
 					58C4FE882D73BFF8000C775A = {
 						CreatedOnToolsVersion = 16.2;
@@ -208,7 +187,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 58C4FE842D73BFF8000C775A /* Build configuration list for PBXProject "Habits" */;
+			buildConfigurationList = 58C4FE842D73BFF8000C775A /* Build configuration list for PBXProject "SpartanSpin" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -223,9 +202,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				58C4FE882D73BFF8000C775A /* Habits */,
-				58C4FE9E2D73BFFA000C775A /* HabitsTests */,
-				58C4FEA82D73BFFA000C775A /* HabitsUITests */,
+				58C4FE882D73BFF8000C775A /* SpartanSpin */,
+				58C4FE9E2D73BFFA000C775A /* SpartanSpinTests */,
+				58C4FEA82D73BFFA000C775A /* SpartanSpinUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -303,12 +282,12 @@
 /* Begin PBXTargetDependency section */
 		58C4FEA12D73BFFA000C775A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 58C4FE882D73BFF8000C775A /* Habits */;
+			target = 58C4FE882D73BFF8000C775A /* SpartanSpin */;
 			targetProxy = 58C4FEA02D73BFFA000C775A /* PBXContainerItemProxy */;
 		};
 		58C4FEAB2D73BFFA000C775A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 58C4FE882D73BFF8000C775A /* Habits */;
+			target = 58C4FE882D73BFF8000C775A /* SpartanSpin */;
 			targetProxy = 58C4FEAA2D73BFFA000C775A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -317,6 +296,7 @@
 		58C4FEB12D73BFFA000C775A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -349,7 +329,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YAPJA2XJX2;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -371,6 +353,9 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -379,6 +364,7 @@
 		58C4FEB22D73BFFA000C775A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -411,7 +397,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YAPJA2XJX2;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -426,6 +414,9 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -439,8 +430,8 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Habits/Preview Content\"";
-				DEVELOPMENT_TEAM = YAPJA2XJX2;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"SpartanSpin/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -459,7 +450,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.Habits;
+				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.SpartanSpin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -479,8 +470,8 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Habits/Preview Content\"";
-				DEVELOPMENT_TEAM = YAPJA2XJX2;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"SpartanSpin/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -499,7 +490,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.Habits;
+				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.SpartanSpin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -514,14 +505,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YAPJA2XJX2;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.HabitsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.SpartanSpinTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -537,14 +529,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YAPJA2XJX2;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.HabitsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.SpartanSpinTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -561,12 +554,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YAPJA2XJX2;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.HabitsUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.SpartanSpinUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -583,12 +576,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YAPJA2XJX2;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.HabitsUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = me.Caporale.Brendan.SpartanSpinUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -603,7 +596,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		58C4FE842D73BFF8000C775A /* Build configuration list for PBXProject "Habits" */ = {
+		58C4FE842D73BFF8000C775A /* Build configuration list for PBXProject "SpartanSpin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58C4FEB12D73BFFA000C775A /* Debug */,
@@ -612,7 +605,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58C4FEB32D73BFFA000C775A /* Build configuration list for PBXNativeTarget "Habits" */ = {
+		58C4FEB32D73BFFA000C775A /* Build configuration list for PBXNativeTarget "SpartanSpin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58C4FEB42D73BFFA000C775A /* Debug */,
@@ -621,7 +614,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58C4FEB62D73BFFA000C775A /* Build configuration list for PBXNativeTarget "HabitsTests" */ = {
+		58C4FEB62D73BFFA000C775A /* Build configuration list for PBXNativeTarget "SpartanSpinTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58C4FEB72D73BFFA000C775A /* Debug */,
@@ -630,7 +623,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58C4FEB92D73BFFA000C775A /* Build configuration list for PBXNativeTarget "HabitsUITests" */ = {
+		58C4FEB92D73BFFA000C775A /* Build configuration list for PBXNativeTarget "SpartanSpinUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58C4FEBA2D73BFFA000C775A /* Debug */,

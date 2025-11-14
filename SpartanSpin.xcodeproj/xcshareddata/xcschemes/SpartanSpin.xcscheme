@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1620"
+   LastUpgradeVersion = "2610"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -76,11 +76,20 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "58C4FE882D73BFF8000C775A"
+            BuildableName = "SpartanSpin.app"
+            BlueprintName = "SpartanSpin"
+            ReferencedContainer = "container:SpartanSpin.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "58C4FE882D73BFF8000C775A"
             BuildableName = "Habits.app"
             BlueprintName = "Habits"
             ReferencedContainer = "container:Habits.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -98,6 +107,15 @@
             ReferencedContainer = "container:Habits.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "58C4FE882D73BFF8000C775A"
+            BuildableName = "Habits.app"
+            BlueprintName = "Habits"
+            ReferencedContainer = "container:Habits.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

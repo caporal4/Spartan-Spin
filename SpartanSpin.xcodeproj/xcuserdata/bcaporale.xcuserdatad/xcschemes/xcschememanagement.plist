@@ -4,17 +4,17 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Habits.xcscheme_^#shared#^_</key>
+		<key>SpartanSpin.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>HabitsTests.xcscheme_^#shared#^_</key>
+		<key>SpartanSpinTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>HabitsUITests.xcscheme_^#shared#^_</key>
+		<key>SpartanSpinUITests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>

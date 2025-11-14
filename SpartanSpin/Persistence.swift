@@ -17,7 +17,7 @@ class PersistenceController: ObservableObject {
     @Published var selectedHabit: Habit?
     
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Habits", managedObjectModel: Self.model)
+        container = NSPersistentContainer(name: "Habit", managedObjectModel: Self.model)
         
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
@@ -27,12 +27,12 @@ class PersistenceController: ObservableObject {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
             
-#if DEBUG
-            if CommandLine.arguments.contains("enable-testing") {
-                self.deleteAll()
-                UIView.setAnimationsEnabled(false)
-            }
-#endif
+// #if DEBUG
+//            if CommandLine.arguments.contains("enable-testing") {
+//                self.deleteAll()
+//                UIView.setAnimationsEnabled(false)
+//            }
+// #endif
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
@@ -86,7 +86,7 @@ class PersistenceController: ObservableObject {
     }
     
     static let model: NSManagedObjectModel = {
-        guard let url = Bundle.main.url(forResource: "Habits", withExtension: "momd") else {
+        guard let url = Bundle.main.url(forResource: "SpartanSpin", withExtension: "momd") else {
             fatalError("Failed to locate model file.")
         }
 

@@ -49,25 +49,26 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem {
                     Button(action: viewModel.showNewHabitView) {
-                        Label("Add Habit", systemImage: "plus")
+                        Label("Add Habit", systemImage: "plus.app")
                     }
                 }
-#if DEBUG
-                ToolbarItem {
-                    Button {
-                        viewModel.persistenceController.createSampleData()
-                    } label: {
-                        Label("ADD SAMPLES", systemImage: "flame")
-                    }
-                }
-                ToolbarItem {
-                    Button {
-                        viewModel.persistenceController.deleteAll()
-                    } label: {
-                        Label("DELETE SAMPLES", systemImage: "pencil")
-                    }
-                }
-#endif
+// #if DEBUG
+//                ToolbarItem {
+//                    Button {
+//                        viewModel.persistenceController.createSampleData()
+//                    } label: {
+//                        Label("ADD SAMPLES", systemImage: "list.bullet")
+//                    }
+//                }
+//                ToolbarItem {
+//                    Button {
+//                        viewModel.persistenceController.deleteAll()
+//                        viewModel.removeAllNotifications()
+//                    } label: {
+//                        Label("DELETE SAMPLES", systemImage: "trash")
+//                    }
+//                }
+// #endif
             }
             .toolbarBackground(Color.green, for: .navigationBar, .tabBar)
             .onAppear {

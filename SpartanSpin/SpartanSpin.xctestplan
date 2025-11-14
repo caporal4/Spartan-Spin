@@ -14,17 +14,16 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:Habits.xcodeproj",
+        "containerPath" : "container:SpartanSpin.xcodeproj",
         "identifier" : "58C4FEA82D73BFFA000C775A",
-        "name" : "HabitsUITests"
+        "name" : "SpartanSpinUITests"
       }
     },
     {
-      "parallelizable" : true,
       "target" : {
-        "containerPath" : "container:Habits.xcodeproj",
+        "containerPath" : "container:SpartanSpin.xcodeproj",
         "identifier" : "58C4FE9E2D73BFFA000C775A",
-        "name" : "HabitsTests"
+        "name" : "SpartanSpinTests"
       }
     }
   ],

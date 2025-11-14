@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class HabitsUITests: XCTestCase {
+final class SpartanSpinUITests: XCTestCase {
     var app: XCUIApplication!
 
     override func setUpWithError() throws {

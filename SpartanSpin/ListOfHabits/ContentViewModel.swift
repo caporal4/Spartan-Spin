@@ -76,10 +76,18 @@ extension ContentView {
         func delete(_ offsets: IndexSet) {
             for offset in offsets {
                 let item = habits[offset]
+                persistenceController.removeReminders(for: item)
                 persistenceController.delete(item)
                 persistenceController.save()
             }
         }
+        
+        func removeAllNotifications() {
+            for habit in habits {
+                persistenceController.removeReminders(for: habit)
+            }
+        }
+        
         func launchApp() {
             let loginTime = Date.now
             

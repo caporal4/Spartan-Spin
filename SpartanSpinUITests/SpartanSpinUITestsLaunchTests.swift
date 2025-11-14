@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class HabitsUITestsLaunchTests: XCTestCase {
+final class SpartanSpinUITestsLaunchTests: XCTestCase {
 
     override static var runsForEachTargetApplicationUIConfiguration: Bool {
         true

@@ -16,6 +16,7 @@ extension HabitView {
         @Published var showingDeleteAlert = false
         
         func delete(_ habit: Habit) {
+            persistenceController.removeReminders(for: habit)
             persistenceController.delete(habit)
             persistenceController.selectedHabit = nil
         }
