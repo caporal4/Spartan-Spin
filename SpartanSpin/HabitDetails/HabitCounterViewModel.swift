@@ -1,8 +1,8 @@
 //
 //  HabitCounterViewModel.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/3/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import Foundation
@@ -13,6 +13,13 @@ extension HabitCounterView {
         var habit: Habit
         
         let units = Units()
+        
+        @Published var showPopup = false
+        @Published var numberInput = ""
+        @Published var showError = false
+        @Published var errorMessage = "Enter a valid number."
+        
+        var convertedNumber = 0
         
         func convertToPlural(_ habit: Habit) -> String {
             if habit.tasksNeeded == 1 {
@@ -29,8 +36,37 @@ extension HabitCounterView {
             }
         }
         
+        func enterAmount() {
+            showPopup = true
+        }
+        
+        func updateTasks() {
+            guard let convertedNumber = Int16(numberInput) else {
+                showError = true
+                return
+            }
+            guard convertedNumber >= 0 else {
+                showError = true
+                return
+            }
+            
+            habit.tasksCompleted = convertedNumber
+            
+            if habit.tasksCompleted < habit.tasksNeeded {
+                habit.streak -= 1
+            } else if habit.tasksCompleted >= habit.tasksNeeded {
+                habit.streak += 1
+            }
+            
+            numberInput = ""
+        }
+        
+        func invalidNumber() {
+            showPopup = true
+            numberInput = ""
+        }
+        
         func doTask() {
-            guard habit.tasksCompleted < habit.tasksNeeded else { return }
             habit.tasksCompleted += 1
             if habit.tasksCompleted == habit.tasksNeeded {
                 habit.streak += 1

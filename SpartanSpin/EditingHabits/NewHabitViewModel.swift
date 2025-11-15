@@ -1,8 +1,8 @@
 //
 //  NewHabitViewModel.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/2/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import CoreData
@@ -14,10 +14,12 @@ extension NewHabitView {
         var persistenceController: PersistenceController
         
         let units = Units()
+        let timelines = Timelines()
         
         @Published var title = ""
         @Published var tasksNeeded: Int?
-        @Published var unit = "Count"
+        @Published var unit = "No Unit"
+        @Published var timeline = "Daily"
         @Published var reminderEnabled = false
         @Published var reminderTime = Date.now
         @Published var showingNotificationsError = false
@@ -52,6 +54,7 @@ extension NewHabitView {
             let newHabit = Habit(context: viewContext)
             newHabit.id = UUID()
             newHabit.title = title
+            newHabit.timeline = timeline
             newHabit.tasksCompleted = 0
             newHabit.streak = 0
             newHabit.reminderEnabled = reminderEnabled

@@ -1,8 +1,8 @@
 //
 //  NewHabitView.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/2/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import SwiftUI
@@ -53,6 +53,13 @@ struct NewHabitView: View {
                         }
                         .tint(.secondary)
                         .accessibilityIdentifier("Unit")
+                        Picker("Timeline", selection: $viewModel.timeline) {
+                            ForEach(viewModel.timelines.list, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .tint(.secondary)
+                        .accessibilityIdentifier("Timeline")
                     }
 
                     Section("Reminders") {

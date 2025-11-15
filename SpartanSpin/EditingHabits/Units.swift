@@ -1,37 +1,37 @@
 //
 //  Units.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/3/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import Foundation
-import SwiftUI
 
 struct Units {
-    let count = NSLocalizedString("Count", comment: "Unit")
-    let millileter = NSLocalizedString("mL", comment: "Unit")
-    let ounce = NSLocalizedString("Ounce", comment: "Unit")
-    let gallon = NSLocalizedString("Gallon", comment: "Unit")
-    let mile = NSLocalizedString("Mile", comment: "Unit")
-    let kilometer = NSLocalizedString("Kilometer", comment: "Unit")
-    let second = NSLocalizedString("Second", comment: "Unit")
-    let minute = NSLocalizedString("Hour", comment: "Unit")
-    let hour = NSLocalizedString("Minute", comment: "Unit")
+    let repitition = "Repititon"
+    let millileter = "mL"
+    let ounce = "Ounce"
+    let gallon = "Gallon"
+    let mile = "Mile"
+    let kilometer = "Kilometer"
+    let second = "Second"
+    let minute = "Hour"
+    let hour = "Minute"
+    let noUnit = "No Unit"
     var list: [String] {
-        return [count, millileter, ounce, gallon, mile, kilometer, second, minute, hour]
+        return [repitition, millileter, ounce, gallon, mile, kilometer, second, minute, hour, noUnit]
     }
 
-    let counts = NSLocalizedString("Counts", comment: "Unit")
-    let millileters = NSLocalizedString("mLs", comment: "Unit")
-    let ounces = NSLocalizedString("Ounces", comment: "Unit")
-    let gallons = NSLocalizedString("Gallons", comment: "Unit")
-    let miles = NSLocalizedString("Miles", comment: "Unit")
-    let kilometers = NSLocalizedString("Kilometers", comment: "Unit")
-    let seconds = NSLocalizedString("Seconds", comment: "Unit")
-    let minutes = NSLocalizedString("Hours", comment: "Unit")
-    let hours = NSLocalizedString("Minutes", comment: "Unit")
+    let repititions = "Repititions"
+    let millileters = "mL"
+    let ounces = "Ounces"
+    let gallons = "Gallons"
+    let miles = "Miles"
+    let kilometers = "Kilometers"
+    let seconds = "Seconds"
+    let minutes = "Hours"
+    let hours = "Minutes"
     var pluralList: [String] {
-        return [counts, millileters, ounces, gallons, miles, kilometers, seconds, minutes, hours]
+        return [repititions, millileters, ounces, gallons, miles, kilometers, seconds, minutes, hours, noUnit]
     }
 }

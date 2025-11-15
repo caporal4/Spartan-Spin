@@ -1,8 +1,8 @@
 //
 //  HabitView.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/1/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import SwiftUI
@@ -21,7 +21,7 @@ struct HabitView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.green
+                Colors.spartanSpinGreen
                     .ignoresSafeArea()
                 VStack {
                     Spacer()

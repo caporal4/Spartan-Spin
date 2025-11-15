@@ -1,8 +1,8 @@
 //
-//  HabitsUITests.swift
-//  HabitsUITests
+//  SpartanSpinUITests.swift
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/1/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import XCTest
@@ -36,7 +36,6 @@ final class SpartanSpinUITests: XCTestCase {
         XCTAssertEqual(app.cells.count, 1, "There should be 1 row after habit is saved.")
         
         app.buttons["New Habit"].tap()
-        XCTAssertTrue(app.navigationBars.buttons["Habits"].exists, "There should be a Habits button.")
         XCTAssertTrue(app.navigationBars.buttons["Edit Habit"].exists, "There should be a Edit Habit button.")
         XCTAssertTrue(app.navigationBars.buttons["Delete Habit"].exists, "There should be a Delete Habit button.")
         XCTAssertTrue(app.buttons["Complete Task"].exists, "There should be a Complete Task button.")
@@ -61,8 +60,8 @@ final class SpartanSpinUITests: XCTestCase {
     }
     
     func testTextIsVisible() {
-        let myLabel = app.staticTexts["Habits"]
-        XCTAssertEqual("Habits", myLabel.label)
+        let navigationBar = app.navigationBars["Spartan Spin"]
+        XCTAssertTrue(navigationBar.exists, "Navigation bar with title 'Spartan Spin' should exist")
     }
     
     func testEditingHabits() {
@@ -79,8 +78,7 @@ final class SpartanSpinUITests: XCTestCase {
         app.typeText("Edited ")
         app.buttons["Save"].tap()
         
-        app.buttons["Habits"].tap()
-        let myLabel = app.staticTexts["Edited New Habit"]
-        XCTAssertEqual("Edited New Habit", myLabel.label)
+        let myLabel = app.navigationBars["Edited New Habit"]
+        XCTAssertTrue(myLabel.exists, "Button with new edited title 'Edited New Habit' Exists.")
     }
 }

@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/1/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import SwiftUI
@@ -27,7 +27,7 @@ struct ContentView: View {
                                 ContentViewRow(habit: habit)
                             }
                         }
-                        .listRowBackground(Colors.gradientB)
+                        .listRowBackground(Colors.spartanSpinGreen)
                         .onReceive(habit.objectWillChange) { _ in
                             viewModel.reloadData()
                         }
@@ -38,7 +38,7 @@ struct ContentView: View {
             }
             .scrollContentBackground(.hidden)
             .background(Colors.gradientC)
-            .navigationTitle("Habits")
+            .navigationTitle("Spartan Spin")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Habit.self) { item in
                 DetailView(habit: item)
@@ -70,7 +70,6 @@ struct ContentView: View {
 //                }
 // #endif
             }
-            .toolbarBackground(Color.green, for: .navigationBar, .tabBar)
             .onAppear {
                 viewModel.launchApp()
             }

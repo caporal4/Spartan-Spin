@@ -1,8 +1,8 @@
 //
-//  HabitsUITestsLaunchTests.swift
-//  HabitsUITests
+//  SpartanSpinUITestsLaunchTests.swift
+//  SpartanSpinUITests
 //
-//  Created by Brendan Caporale on 3/1/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import XCTest

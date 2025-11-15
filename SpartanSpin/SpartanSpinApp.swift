@@ -1,14 +1,14 @@
 //
-//  HabitsApp.swift
-//  Habits
+//  SpartanSpinApp.swift
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/1/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import SwiftUI
 
 @main
-struct HabitsApp: App {
+struct SpartanSpinApp: App {
     @Environment(\.scenePhase) var scenePhase
     @StateObject var persistenceController = PersistenceController()
 

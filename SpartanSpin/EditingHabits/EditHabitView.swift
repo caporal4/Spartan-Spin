@@ -1,8 +1,8 @@
 //
 //  EditHabitView.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/1/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import SwiftUI
@@ -51,6 +51,12 @@ struct EditHabitView: View {
                         }
                         Picker("Unit", selection: $viewModel.habit.habitUnit) {
                             ForEach(viewModel.units.list, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .tint(.secondary)
+                        Picker("Timeline", selection: $viewModel.habit.habitTimeline) {
+                            ForEach(viewModel.timelines.list, id: \.self) {
                                 Text($0)
                             }
                         }

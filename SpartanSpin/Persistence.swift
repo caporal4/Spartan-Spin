@@ -1,8 +1,8 @@
 //
 //  Persistence.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/1/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import CoreData
@@ -52,7 +52,7 @@ class PersistenceController: ObservableObject {
             let newHabit = Habit(context: viewContext)
             newHabit.id = UUID()
             newHabit.title = availableHabits[int]
-            newHabit.unit = "Count"
+            newHabit.unit = "No Unit"
             newHabit.tasksNeeded = 2
         }
         

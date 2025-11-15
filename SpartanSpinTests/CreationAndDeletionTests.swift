@@ -1,13 +1,13 @@
 //
 //  CreationAndDeletionTests.swift
-//  HabitsTests
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/4/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import CoreData
 import XCTest
-@testable import Habits
+@testable import SpartanSpin
 
 final class CreationAndDeletionTests: BaseTestCase {
     func testHabitCreation() {

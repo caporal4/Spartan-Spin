@@ -1,13 +1,13 @@
 //
 //  ExtensionTests.swift
-//  HabitsTests
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/4/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import CoreData
 import XCTest
-@testable import Habits
+@testable import SpartanSpin
 
 final class ExtensionTests: BaseTestCase {
     let persistenceContainer = PersistenceController()
@@ -25,8 +25,8 @@ final class ExtensionTests: BaseTestCase {
     func testHabitUnitUnwrap() {
         let habit = Habit(context: managedObjectContext)
 
-        habit.unit = "Count"
-        XCTAssertEqual(habit.habitUnit, "Count", "Changing unit should also change habitUnit.")
+        habit.unit = "No Unit"
+        XCTAssertEqual(habit.habitUnit, "No Unit", "Changing unit should also change habitUnit.")
 
         habit.habitUnit = "Mile"
         XCTAssertEqual(habit.unit, "Mile", "Changing habitUnit should also change unit.")
@@ -42,7 +42,7 @@ final class ExtensionTests: BaseTestCase {
     func testExampleData() {
         let habit = Habit.example(controller: persistenceContainer)
         XCTAssertEqual(habit.habitTitle, "Example Habit", "Example Habit title should be Example Habit.")
-        XCTAssertEqual(habit.habitUnit, "Count", "Example Habit unit should be Count.")
+        XCTAssertEqual(habit.habitUnit, "No Unit", "Example Habit unit should be No Unit.")
         XCTAssertEqual(habit.tasksNeeded, 2, "Example Habit tasks needed should be 2.")
         XCTAssertEqual(habit.tasksCompleted, 0, "Example Habit tasks completed should be 0.")
         XCTAssertEqual(habit.streak, 0, "Example Habit streak should be 0.")

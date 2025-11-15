@@ -1,13 +1,13 @@
 //
 //  HabitsTests.swift
-//  HabitsTests
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/1/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import CoreData
 import XCTest
-@testable import Habits
+@testable import SpartanSpin
 
 class BaseTestCase: XCTestCase {
     var persistenceController: PersistenceController!

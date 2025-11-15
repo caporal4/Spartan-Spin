@@ -1,8 +1,8 @@
 //
 //  ContentViewModel.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/2/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import CoreData

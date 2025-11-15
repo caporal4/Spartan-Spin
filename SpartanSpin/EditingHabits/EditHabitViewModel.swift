@@ -1,8 +1,8 @@
 //
 //  EditHabitViewModel.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/7/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import Foundation
@@ -14,6 +14,7 @@ extension EditHabitView {
         var habit: Habit
         
         let units = Units()
+        let timelines = Timelines()
         
         @Published var showingNotificationsError = false
         

@@ -1,8 +1,8 @@
 //
-//  Habit-CoreDataHelpers.swift
-//  Habits
+//  SpartanSpin-CoreDataHelpers.swift
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/1/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import Foundation
@@ -16,6 +16,11 @@ extension Habit {
     var habitUnit: String {
         get { unit ?? "" }
         set { unit = newValue }
+    }
+    
+    var habitTimeline: String {
+        get { timeline ?? "" }
+        set { timeline = newValue }
     }
     
     var habitID: UUID {
@@ -35,7 +40,7 @@ extension Habit {
         habit.title = "Example Habit"
         habit.id = UUID()
         habit.tasksNeeded = 2
-        habit.unit = "Count"
+        habit.unit = "No Unit"
         habit.streak = 0
         habit.tasksCompleted = 0
         return habit

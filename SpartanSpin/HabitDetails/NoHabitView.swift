@@ -1,8 +1,8 @@
 //
 //  NoHabitView.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/2/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import SwiftUI
@@ -10,7 +10,7 @@ import SwiftUI
 struct NoHabitView: View {
     var body: some View {
         ZStack {
-            Color.green
+            Colors.spartanSpinGreen
                 .ignoresSafeArea()
             Text("No Habit Selected")
                 .font(.title)

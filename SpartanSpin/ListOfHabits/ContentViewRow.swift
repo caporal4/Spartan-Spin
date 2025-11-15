@@ -1,8 +1,8 @@
 //
 //  ContentViewRow.swift
-//  Habits
+//  SpartanSpin
 //
-//  Created by Brendan Caporale on 3/4/25.
+//  Created by Brendan Caporale on 11/13/25.
 //
 
 import SwiftUI
@@ -36,8 +36,6 @@ struct ContentViewRow: View {
                     .font(.headline)
                     .foregroundStyle(.white)
                 HStack {
-                    Text("\(habit.tasksCompleted)/\(habit.tasksNeeded)")
-                        .foregroundStyle(.white)
                     Text(LocalizedStringKey(viewModel.convertToPlural(habit: habit)))
                         .foregroundStyle(.white)
                 }
@@ -50,6 +48,6 @@ struct ContentViewRow: View {
     let persistenceController = PersistenceController()
     
     ContentViewRow(habit: Habit.example(controller: persistenceController))
-        .background(.green)
+        .background(Colors.spartanSpinGreen)
         .environmentObject(persistenceController)
 }
