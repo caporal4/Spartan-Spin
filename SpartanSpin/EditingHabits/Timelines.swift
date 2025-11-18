@@ -11,8 +11,7 @@ struct Timelines {
     let daily = "Daily"
     let weekly = "Weekly"
     let monthly = "Monthly"
-    let yearly = "Yearly"
     var list: [String] {
-        return [daily, weekly, monthly, yearly]
+        return [daily, weekly, monthly]
     }
 }

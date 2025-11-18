@@ -57,6 +57,7 @@ extension NewHabitView {
             newHabit.timeline = timeline
             newHabit.tasksCompleted = 0
             newHabit.streak = 0
+            newHabit.lastStreakReset = Date.now
             newHabit.reminderEnabled = reminderEnabled
             newHabit.reminderTime = reminderTime
             if let tasksNeeded {

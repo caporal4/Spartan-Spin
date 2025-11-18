@@ -27,8 +27,12 @@ struct HabitView: View {
                     Spacer()
                     HabitCounterView(habit: habit, persistenceController: viewModel.persistenceController)
                     Spacer()
-                    Text("\(habit.streak) Day Streak")
+                    Text(viewModel.streakSentence(habit))
                         .font(.largeTitle)
+                        .frame(height: 40)
+                        .scaleEffect(habit.streak > 0 ? 1 : 0.3)
+                        .opacity(habit.streak > 0 ? 1 : 0)
+                        .animation(.spring(response: 0.6, dampingFraction: 0.5), value: habit.streak)
                 }
             }
         }

@@ -22,6 +22,8 @@ extension HabitCounterView {
         var convertedNumber = 0
         
         func convertToPlural(_ habit: Habit) -> String {
+            guard habit.unit != "No Unit" else { return "" }
+            
             if habit.tasksNeeded == 1 {
                 return habit.habitUnit
             } else {
@@ -41,6 +43,8 @@ extension HabitCounterView {
         }
         
         func updateTasks() {
+            let oldValue = habit.tasksCompleted
+            
             guard let convertedNumber = Int16(numberInput) else {
                 showError = true
                 return
@@ -52,10 +56,12 @@ extension HabitCounterView {
             
             habit.tasksCompleted = convertedNumber
             
-            if habit.tasksCompleted < habit.tasksNeeded {
+            if habit.tasksCompleted < habit.tasksNeeded && oldValue >= habit.tasksNeeded {
                 habit.streak -= 1
-            } else if habit.tasksCompleted >= habit.tasksNeeded {
+                persistenceController.save()
+            } else if habit.tasksCompleted >= habit.tasksNeeded && oldValue < habit.tasksNeeded {
                 habit.streak += 1
+                persistenceController.save()
             }
             
             numberInput = ""

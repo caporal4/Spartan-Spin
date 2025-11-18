@@ -52,23 +52,23 @@ struct ContentView: View {
                         Label("Add Habit", systemImage: "plus.app")
                     }
                 }
-// #if DEBUG
-//                ToolbarItem {
-//                    Button {
-//                        viewModel.persistenceController.createSampleData()
-//                    } label: {
-//                        Label("ADD SAMPLES", systemImage: "list.bullet")
-//                    }
-//                }
-//                ToolbarItem {
-//                    Button {
-//                        viewModel.persistenceController.deleteAll()
-//                        viewModel.removeAllNotifications()
-//                    } label: {
-//                        Label("DELETE SAMPLES", systemImage: "trash")
-//                    }
-//                }
-// #endif
+ #if DEBUG
+                ToolbarItem {
+                    Button {
+                        viewModel.persistenceController.createSampleData()
+                    } label: {
+                        Label("ADD SAMPLES", systemImage: "list.bullet")
+                    }
+                }
+                ToolbarItem {
+                    Button {
+                        viewModel.persistenceController.deleteAll()
+                        viewModel.removeAllNotifications()
+                    } label: {
+                        Label("DELETE SAMPLES", systemImage: "trash")
+                    }
+                }
+ #endif
             }
             .onAppear {
                 viewModel.launchApp()

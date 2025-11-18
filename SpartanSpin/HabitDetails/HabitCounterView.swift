@@ -31,8 +31,6 @@ struct HabitCounterView: View {
                     }
                 }
             VStack {
-//                Text("\(habit.tasksCompleted)")
-//                    .font(.system(size: Numbers.tasksCompletedFontSize))
                 Button("\(habit.tasksCompleted)", action: viewModel.enterAmount)
                     .font(.system(size: Numbers.tasksCompletedFontSize))
                     .alert("Enter Amount", isPresented: $viewModel.showPopup) {

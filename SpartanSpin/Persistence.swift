@@ -27,12 +27,12 @@ class PersistenceController: ObservableObject {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
             
-// #if DEBUG
-//            if CommandLine.arguments.contains("enable-testing") {
-//                self.deleteAll()
-//                UIView.setAnimationsEnabled(false)
-//            }
-// #endif
+ #if DEBUG
+            if CommandLine.arguments.contains("enable-testing") {
+                self.deleteAll()
+                UIView.setAnimationsEnabled(false)
+            }
+ #endif
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
@@ -53,6 +53,8 @@ class PersistenceController: ObservableObject {
             newHabit.id = UUID()
             newHabit.title = availableHabits[int]
             newHabit.unit = "No Unit"
+            newHabit.timeline = "Daily"
+            newHabit.lastStreakReset = Date.now
             newHabit.tasksNeeded = 2
         }
         

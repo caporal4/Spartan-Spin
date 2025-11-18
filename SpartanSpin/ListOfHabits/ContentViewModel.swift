@@ -12,7 +12,6 @@ import SwiftUI
 extension ContentView {
     class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
         var persistenceController: PersistenceController
-        var loginTracker = LoginTracker()
         
         private let habitsController: NSFetchedResultsController<Habit>
         
@@ -88,23 +87,44 @@ extension ContentView {
             }
         }
         
+        private func shouldResetHabit(_ habit: Habit, currentDate: Date) -> Bool {
+            guard let lastReset = habit.lastStreakReset else { return false }
+            
+            var calendar = Calendar.current
+            calendar.firstWeekday = 2
+            
+            switch habit.habitTimeline {
+            case "Daily":
+                return !calendar.isDate(currentDate, inSameDayAs: lastReset)
+            case "Weekly":
+                let currentWeek = calendar.component(.weekOfYear, from: currentDate)
+                let lastWeek = calendar.component(.weekOfYear, from: lastReset)
+                let currentYear = calendar.component(.year, from: currentDate)
+                let lastYear = calendar.component(.year, from: lastReset)
+                return currentWeek != lastWeek || currentYear != lastYear
+            case "Monthly":
+                let currentMonth = calendar.component(.month, from: currentDate)
+                let lastMonth = calendar.component(.month, from: lastReset)
+                let currentYear = calendar.component(.year, from: currentDate)
+                let lastYear = calendar.component(.year, from: lastReset)
+                return currentMonth != lastMonth || currentYear != lastYear
+            case "Yearly":
+                let currentYear = calendar.component(.year, from: currentDate)
+                let lastYear = calendar.component(.year, from: lastReset)
+                return currentYear != lastYear
+            default:
+                return false
+            }
+        }
+
         func launchApp() {
-            let loginTime = Date.now
-            
-            loginTracker.loginList.insert(loginTime, at: 0)
-            
-            let dateOne = Calendar.current.dateComponents([.day, .year, .month], from: loginTracker.loginList[0])
-            
-            if loginTracker.loginList.count > 1 {
-                let dateTwo = Calendar.current.dateComponents([.day, .year, .month], from: loginTracker.loginList[1])
-                if dateOne != dateTwo {
-                    for habit in habits {
-                        if habit.tasksCompleted < habit.tasksNeeded {
-                            habit.streak = 0
-                        }
-                        habit.tasksCompleted = 0
-                    }
+            let currentDate = Date.now + (86400 * 2)            
+            for habit in habits where shouldResetHabit(habit, currentDate: currentDate) {
+                if habit.tasksCompleted < habit.tasksNeeded {
+                    habit.streak = 0
                 }
+                habit.tasksCompleted = 0
+                habit.lastStreakReset = currentDate
             }
         }
     }
