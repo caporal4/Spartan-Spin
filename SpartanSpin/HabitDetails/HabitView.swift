@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct HabitView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) private var dismiss
+
     @StateObject private var viewModel: ViewModel
     
     @ObservedObject var habit: Habit
@@ -19,26 +22,31 @@ struct HabitView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Colors.spartanSpinGreen
-                    .ignoresSafeArea()
-                VStack {
-                    Spacer()
-                    HabitCounterView(habit: habit, persistenceController: viewModel.persistenceController)
-                    Spacer()
-                    Text(viewModel.streakSentence(habit))
-                        .font(.largeTitle)
-                        .frame(height: 40)
-                        .scaleEffect(habit.streak > 0 ? 1 : 0.3)
-                        .opacity(habit.streak > 0 ? 1 : 0)
-                        .animation(.spring(response: 0.6, dampingFraction: 0.5), value: habit.streak)
-                }
+        ZStack {
+            Colors.gradientC
+                .ignoresSafeArea()
+            VStack {
+                Spacer()
+                HabitCounterView(habit: habit, persistenceController: viewModel.persistenceController)
+                Spacer()
+                Spacer()
+                Text(viewModel.streakSentence(habit))
+                    .padding()
+                    .font(.largeTitle)
+                    .foregroundStyle(.white)
+                    .frame(height: 40)
+                    .scaleEffect(habit.streak > 0 ? 1 : 0.3)
+                    .opacity(habit.streak > 0 ? 1 : 0)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.5), value: habit.streak)
+                Spacer()
             }
         }
-        .navigationTitle(habit.habitTitle)
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(habit.habitTitle)
+                    .font(.headline)
+                    .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
+            }
             ToolbarItemGroup {
                 Button("Edit Habit", systemImage: "ellipsis") {
                     viewModel.showEditHabitView = true
@@ -54,13 +62,12 @@ struct HabitView: View {
         .alert("Delete habit: \(habit.habitTitle)", isPresented: $viewModel.showingDeleteAlert) {
             Button("Delete", role: .destructive) {
                 viewModel.delete(habit)
+                dismiss()
             }
             Button("Cancel", role: .cancel) { }
         } message: {
             Text("Are you sure?")
         }
-        .tint(.white)
-        .preferredColorScheme(.dark)
     }
 }
 

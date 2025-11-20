@@ -83,20 +83,48 @@ struct NewHabitView: View {
                 .toolbar {
                     Button("Save") {
                         viewModel.addHabit()
-                        dismiss()
+                        if viewModel.dismiss {
+                            dismiss()
+                        }
                     }
                     .tint(.blue)
-                    .disabled(viewModel.disabledForm)
                 }
-                .alert("Oops!", isPresented: $viewModel.showingNotificationsError) {
+                
+                .alert("Error", isPresented: $viewModel.showingNotificationsError) {
                     Button("Check Settings") {
                         guard let settingsURL = viewModel.createAppSettingsURL() else { return }
                         openURL(settingsURL)
                     }
                     Button("Cancel", role: .cancel) { }
                 } message: {
-                    Text("There was a problem setting your notification. Please check you have notifications enabled.")
+                    Text(viewModel.notificationErrorMessage)
+                        .multilineTextAlignment(.center)
                 }
+                .alert(
+                    "Error",
+                    isPresented: $viewModel.showTitleError
+                ) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.titleErrorMessage)
+                }
+                .alert(
+                    "Error",
+                    isPresented: $viewModel.showEnterNumberError
+                ) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.enterNumberErrorMessage)
+                }
+                .alert(
+                    "Error",
+                    isPresented: $viewModel.showWholeNumberError
+                ) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.wholeNumberErrorMessage)
+                }
+                
                 .onChange(of: viewModel.reminderEnabled, initial: false) { _, _  in
                     viewModel.checkSettings()
                 }

@@ -18,8 +18,13 @@ struct Colors {
     
     static let gradientC = LinearGradient(
         stops: [
-            Gradient.Stop(color: Colors.spartanSpinGreen, location: Numbers.gradientCStopOne),
-            Gradient.Stop(color: .white, location: Numbers.gradientCStopTwo)
+//            Gradient.Stop(color: .white, location: Numbers.gradientCStopOne),
+            Gradient.Stop(
+                color: Colors.spartanSpinGreen.opacity(Numbers.gradientCOpacity),
+                location: Numbers.gradientCStopTwo
+            ),
+            Gradient.Stop(color: Colors.spartanSpinGreen, location: Numbers.gradientCStopThree)
+
         ],
         startPoint: .top,
         endPoint: .bottom

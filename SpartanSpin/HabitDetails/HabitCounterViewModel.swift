@@ -45,7 +45,7 @@ extension HabitCounterView {
         func updateTasks() {
             let oldValue = habit.tasksCompleted
             
-            guard let convertedNumber = Int16(numberInput) else {
+            guard let convertedNumber = Double(numberInput) else {
                 showError = true
                 return
             }
@@ -58,9 +58,11 @@ extension HabitCounterView {
             
             if habit.tasksCompleted < habit.tasksNeeded && oldValue >= habit.tasksNeeded {
                 habit.streak -= 1
+                habit.lastStreakIncrease = nil
                 persistenceController.save()
             } else if habit.tasksCompleted >= habit.tasksNeeded && oldValue < habit.tasksNeeded {
                 habit.streak += 1
+                habit.lastStreakIncrease = Date.now
                 persistenceController.save()
             }
             
@@ -74,9 +76,14 @@ extension HabitCounterView {
         
         func doTask() {
             habit.tasksCompleted += 1
+
+            guard allowStreakUpdate() else { return }
+
             if habit.tasksCompleted == habit.tasksNeeded {
                 habit.streak += 1
+                habit.lastStreakIncrease = Date.now
             }
+            
             persistenceController.save()
         }
         
@@ -84,9 +91,42 @@ extension HabitCounterView {
             guard habit.tasksCompleted > 0 else { return }
             if habit.tasksCompleted == habit.tasksNeeded {
                 habit.streak -= 1
+                habit.lastStreakIncrease = nil
             }
             habit.tasksCompleted -= 1
             persistenceController.save()
+        }
+        
+        private func allowStreakUpdate() -> Bool {
+            var calendar = Calendar.current
+            calendar.firstWeekday = 2
+            
+            let today = Date.now + (86400 * 0)
+            
+            // If streak has never increased, return true to allow it to update
+            guard let lastIncrease = habit.lastStreakIncrease else { return true }
+            
+            switch habit.habitTimeline {
+            case "Daily":
+                // If streak has already increased once today (streakIncreasedToday = true),
+                // don't let it happen again (allowStreakUpdate() = false)
+                let streakIncreasedToday = calendar.isDate(lastIncrease, inSameDayAs: today)
+                if streakIncreasedToday {
+                    return false
+                } else {
+                    return true
+                }
+            case "Weekly":
+                // If streak has already increased once this week, don't let it happen again
+                let streakIncreasedThisWeek = calendar.isDate(lastIncrease, equalTo: today, toGranularity: .weekOfYear)
+                return !streakIncreasedThisWeek
+            case "Monthly":
+                // If streak has already increased once this month, don't let it happen again
+                let streakIncreasedThisMonth = calendar.isDate(lastIncrease, equalTo: today, toGranularity: .month)
+                return !streakIncreasedThisMonth
+            default:
+                return false
+            }
         }
         
         init(persistenceController: PersistenceController, habit: Habit) {

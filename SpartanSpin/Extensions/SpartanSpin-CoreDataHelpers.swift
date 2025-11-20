@@ -41,6 +41,8 @@ extension Habit {
         habit.id = UUID()
         habit.tasksNeeded = 2
         habit.unit = "No Unit"
+        habit.lastStreakReset = Date.now
+        habit.lastTaskReset = Date.now
         habit.streak = 0
         habit.tasksCompleted = 0
         return habit

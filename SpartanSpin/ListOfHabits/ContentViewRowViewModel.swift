@@ -16,15 +16,15 @@ extension ContentViewRow {
         func convertToPlural(habit: Habit) -> String {
             if habit.habitUnit != "No Unit" {
                 if habit.tasksNeeded == 1 {
-                    return "\(habit.tasksCompleted)/\(habit.tasksNeeded) \(habit.habitUnit)"
+                    return "\(Int(habit.tasksCompleted))/\(Int(habit.tasksNeeded)) \(habit.habitUnit)"
                 } else {
                     if let index = units.list.firstIndex(of: habit.habitUnit) {
-                        return "\(habit.tasksCompleted)/\(habit.tasksNeeded) \(units.pluralList[index])"
+                        return "\(Int(habit.tasksCompleted))/\(Int(habit.tasksNeeded)) \(units.pluralList[index])"
                     }
-                    return "\(habit.tasksCompleted)/\(habit.tasksNeeded) \(habit.habitUnit)"
+                    return "\(Int(habit.tasksCompleted))/\(Int(habit.tasksNeeded)) \(habit.habitUnit)"
                 }
             }
-            return "\(habit.tasksCompleted)/\(habit.tasksNeeded)"
+            return "\(Int(habit.tasksCompleted))/\(Int(habit.tasksNeeded))"
         }
         
         init(habit: Habit) {

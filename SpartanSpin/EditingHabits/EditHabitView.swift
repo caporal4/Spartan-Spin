@@ -42,7 +42,7 @@ struct EditHabitView: View {
                             Text("Amount")
                             TextField(
                                 "Amount",
-                                value: $viewModel.habit.tasksNeeded,
+                                value: $viewModel.habitTasksInput,
                                 format: .number
                             )
                             .multilineTextAlignment(.trailing)
@@ -55,7 +55,7 @@ struct EditHabitView: View {
                             }
                         }
                         .tint(.secondary)
-                        Picker("Timeline", selection: $viewModel.habit.habitTimeline) {
+                        Picker("Timeline", selection: $viewModel.habitTimelineInput) {
                             ForEach(viewModel.timelines.list, id: \.self) {
                                 Text($0)
                             }
@@ -81,9 +81,12 @@ struct EditHabitView: View {
                 .scrollContentBackground(.hidden)
                 .toolbar {
                     Button("Save") {
-                        habit.objectWillChange.send()
-                        viewModel.persistenceController.save()
-                        dismiss()
+                        viewModel.validateChanges(title: viewModel.habit.habitTitle)
+                        if viewModel.dismiss {
+                            habit.objectWillChange.send()
+                            viewModel.persistenceController.save()
+                            dismiss()
+                        }
                     }
                     .foregroundStyle(.blue)
                 }
@@ -96,13 +99,49 @@ struct EditHabitView: View {
                     }
                     Button("Cancel", role: .cancel) { }
                 } message: {
-                    Text("There was a problem setting your notification. Please check you have notifications enabled.")
+                    Text(viewModel.notificationErrorMessage)
                 }
+                .alert(
+                    "Error",
+                    isPresented: $viewModel.showTitleError
+                ) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.titleErrorMessage)
+                }
+                .alert(
+                    "Error",
+                    isPresented: $viewModel.showEnterNumberError
+                ) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.enterNumberErrorMessage)
+                }
+                .alert(
+                    "Error",
+                    isPresented: $viewModel.showWholeNumberError
+                ) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.wholeNumberErrorMessage)
+                }
+                .alert(
+                    "Warning",
+                    isPresented: $viewModel.streakAlert
+                ) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.streakAlertMessage)
+                }
+                
                 .onChange(of: habit.reminderEnabled, initial: false) { _, _  in
                     viewModel.updateReminder()
                 }
                 .onChange(of: habit.reminderTime, initial: false) { _, _  in
                     viewModel.updateReminder()
+                }
+                .onChange(of: viewModel.habitTimelineInput) { _, _ in
+                    viewModel.streakAlert = true
                 }
             }
         }

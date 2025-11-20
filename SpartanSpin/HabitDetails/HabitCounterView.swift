@@ -22,6 +22,7 @@ struct HabitCounterView: View {
         HStack {
             Button("Undo Task", systemImage: "minus", action: viewModel.undoTask)
                 .labelStyle(.iconOnly)
+                .foregroundStyle(.white)
                 .padding()
                 .sensoryFeedback(trigger: habit.tasksCompleted) { oldValue, newValue in
                     if oldValue > newValue {
@@ -31,8 +32,9 @@ struct HabitCounterView: View {
                     }
                 }
             VStack {
-                Button("\(habit.tasksCompleted)", action: viewModel.enterAmount)
+                Button("\(Int(habit.tasksCompleted))", action: viewModel.enterAmount)
                     .font(.system(size: Numbers.tasksCompletedFontSize))
+                    .foregroundStyle(.white)
                     .alert("Enter Amount", isPresented: $viewModel.showPopup) {
                         TextField("Enter Amount", text: $viewModel.numberInput)
                             .keyboardType(.decimalPad)
@@ -45,13 +47,16 @@ struct HabitCounterView: View {
                     ) {
                         Button("OK", action: viewModel.invalidNumber)
                     }
-                Text("/\(habit.tasksNeeded)")
+                Text("/\(Int(habit.tasksNeeded))")
                     .font(.title)
+                    .foregroundStyle(.white)
                 Text(LocalizedStringKey(viewModel.convertToPlural(habit)))
                     .font(.title)
+                    .foregroundStyle(.white)
             }
             Button("Complete Task", systemImage: "plus", action: viewModel.doTask)
                 .labelStyle(.iconOnly)
+                .foregroundStyle(.white)
                 .padding()
                 .sensoryFeedback(trigger: habit.tasksCompleted) { oldValue, newValue in
                     if newValue > oldValue {
