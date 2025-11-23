@@ -67,6 +67,68 @@ struct NewHabitView: View {
                             .tint(.green)
                         
                         if viewModel.reminderEnabled {
+                            Picker("Frequency", selection: $viewModel.reminderFrequency) {
+                                ForEach(viewModel.frequencies, id: \.self) {
+                                    Text($0)
+                                }
+                            }
+                            .tint(.secondary)
+                            .accessibilityIdentifier("Frequency")
+                            if viewModel.reminderFrequency == "Weekly" {
+                                HStack {
+                                    Spacer()
+                                    ForEach(0...6, id: \.self) { day in
+                                        Button {
+                                            if viewModel.selectedDays.contains(day) {
+                                                viewModel.selectedDays.remove(day)
+                                            } else {
+                                                viewModel.selectedDays.insert(day)
+                                            }
+                                            print(viewModel.selectedDays)
+                                        } label: {
+                                            DayButtonRectangle(
+                                                day: viewModel.dayAbbreviations[day],
+                                                daySelected: viewModel.selectedDays.contains(day) ? true : false
+                                            )
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
+                                    Spacer()
+                                }
+                                .accessibilityIdentifier("Day or days of Reminder")
+                            } else if viewModel.reminderFrequency == "Monthly" {
+                                VStack(alignment: .leading, spacing: Numbers.VStackSpacing) {
+                                    Text("Days of Month")
+                                    
+                                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
+                                        ForEach(1...31, id: \.self) { day in
+                                            Button {
+                                                if viewModel.selectedDaysOfMonth.contains(day) {
+                                                    viewModel.selectedDaysOfMonth.remove(day)
+                                                } else {
+                                                    viewModel.selectedDaysOfMonth.insert(day)
+                                                }
+                                            } label: {
+                                                Text(viewModel.dayOptions[day - 1])
+                                                    .font(.caption)
+                                                    .frame(width: Numbers.numbersFrame, height: Numbers.numbersFrame)
+                                                    .background(
+                                                        viewModel.selectedDaysOfMonth.contains(day)
+                                                        ?
+                                                        Color.blue : Color.gray.opacity(
+                                                            Numbers.dayButtonForegroundOpacity
+                                                        )
+                                                    )
+                                                    .foregroundColor(
+                                                        viewModel.selectedDaysOfMonth.contains(day) ? .white : .primary
+                                                    )
+                                                    .cornerRadius(Numbers.dayButtonCornerRadius)
+                                            }
+                                            .buttonStyle(.plain)
+                                        }
+                                    }
+                                }
+                            }
                             DatePicker(
                                 "Reminder time",
                                 selection: $viewModel.reminderTime,

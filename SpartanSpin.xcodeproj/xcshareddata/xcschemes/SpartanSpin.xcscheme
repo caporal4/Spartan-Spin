@@ -14,7 +14,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:SpartanSpin/SpartanSpin.xctestplan"
+            reference = "container:SpartanSpin/Configuration/SpartanSpin.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>

@@ -34,10 +34,14 @@ struct HabitView: View {
                     .padding()
                     .font(.largeTitle)
                     .foregroundStyle(.white)
-                    .frame(height: 40)
-                    .scaleEffect(habit.streak > 0 ? 1 : 0.3)
-                    .opacity(habit.streak > 0 ? 1 : 0)
-                    .animation(.spring(response: 0.6, dampingFraction: 0.5), value: habit.streak)
+                    .frame(height: Numbers.streakFrame)
+                    .scaleEffect(habit.streak > 0 ? Numbers.streakScaleOne : Numbers.streakScaleTwo)
+                    .opacity(habit.streak > 0 ? Numbers.streakOpacityOne : Numbers.streakOpacityTwo)
+                    .animation(.spring(
+                        response: Numbers.streakResponse,
+                        dampingFraction: Numbers.streakDamping),
+                               value: habit.streak
+                    )
                 Spacer()
             }
         }
@@ -51,9 +55,11 @@ struct HabitView: View {
                 Button("Edit Habit", systemImage: "ellipsis") {
                     viewModel.showEditHabitView = true
                 }
+                .tint(colorScheme == .dark ? .white : .black)
                 Button("Delete Habit", systemImage: "trash") {
                     viewModel.showingDeleteAlert = true
                 }
+                .tint(colorScheme == .dark ? .white : .black)
             }
         }
         .sheet(isPresented: $viewModel.showEditHabitView) {

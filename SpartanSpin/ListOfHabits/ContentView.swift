@@ -37,17 +37,19 @@ struct ContentView: View {
                                 Label("Add Habit", systemImage: "plus.app")
                                     .font(.headline)
                                     .padding()
-                                    .background(Colors.spartanSpinGreen.opacity(0.2))
-                                    .cornerRadius(10)
+                                    .background(Colors.spartanSpinGreen.opacity(Numbers.newHabitOpacity))
+                                    .cornerRadius(Numbers.newHabitCornerRadius)
                             }
+                            .tint(colorScheme == .dark ? .white : .black)
 #if DEBUG
                             Button(action: viewModel.persistenceController.createSampleData) {
                                 Label("Add Sample Habits", systemImage: "plus.app")
                                     .font(.headline)
                                     .padding()
-                                    .background(Colors.spartanSpinGreen.opacity(0.2))
-                                    .cornerRadius(10)
+                                    .background(Colors.spartanSpinGreen.opacity(Numbers.newHabitOpacity))
+                                    .cornerRadius(Numbers.newHabitCornerRadius)
                             }
+                            .tint(colorScheme == .dark ? .white : .black)
 #endif
                         }
                     }
@@ -84,6 +86,7 @@ struct ContentView: View {
                     .background(Colors.gradientC)
                     .navigationDestination(for: Habit.self) { habit in
                         HabitView(habit: habit, persistenceController: viewModel.persistenceController)
+                            .toolbar(.hidden, for: .tabBar)
                     }
                     .sheet(isPresented: $viewModel.newHabit) {
                         NewHabitView(persistenceController: viewModel.persistenceController)
@@ -94,11 +97,12 @@ struct ContentView: View {
                                 .font(.headline)
                                 .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
                         }
-                        
                         ToolbarItem {
                             Button(action: viewModel.showNewHabitView) {
                                 Label("Add Habit", systemImage: "plus.app")
                             }
+                            .tint(colorScheme == .dark ? .white : .black)
+
                         }
 #if DEBUG
                         ToolbarItem {
@@ -107,6 +111,8 @@ struct ContentView: View {
                             } label: {
                                 Label("ADD SAMPLES", systemImage: "list.bullet")
                             }
+                            .tint(colorScheme == .dark ? .white : .black)
+
                         }
                         ToolbarItem {
                             Button {
@@ -115,9 +121,12 @@ struct ContentView: View {
                             } label: {
                                 Label("DELETE SAMPLES", systemImage: "trash")
                             }
+                            .tint(colorScheme == .dark ? .white : .black)
+
                         }
 #endif
                     }
+
                     .onAppear {
                         viewModel.checkAndResetStreaks()
                     }

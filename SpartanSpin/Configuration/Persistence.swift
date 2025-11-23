@@ -55,6 +55,7 @@ class PersistenceController: ObservableObject {
             newHabit.unit = "No Unit"
             newHabit.timeline = "Daily"
             newHabit.lastStreakReset = Date.now
+            newHabit.lastTaskReset = Date.now
             newHabit.tasksNeeded = 2
         }
         

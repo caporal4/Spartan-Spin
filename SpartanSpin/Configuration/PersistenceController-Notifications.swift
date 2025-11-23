@@ -77,12 +77,11 @@ extension PersistenceController {
         content.sound = .default
         content.title = habit.habitTitle
         
-        let components = Calendar.current.dateComponents([.hour, .minute], from: habit.habitReminderTime)
+        let components = Calendar.current.dateComponents([.day, .hour, .minute], from: habit.habitReminderTime)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
         
         let id = habit.objectID.uriRepresentation().absoluteString
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-        
         return try await UNUserNotificationCenter.current().add(request)
     }
 }

@@ -9,13 +9,15 @@ import SwiftUI
 
 @main
 struct SpartanSpinApp: App {
+    @Environment(\.colorScheme) var colorScheme
     @Environment(\.scenePhase) var scenePhase
+    
     @StateObject var persistenceController = PersistenceController()
 
     var body: some Scene {
         WindowGroup {
             TabView {
-                Tab("List", systemImage: "list.bullet") {
+                NavigationStack {
                     ContentView(persistenceController: persistenceController)
                         .environment(\.managedObjectContext, persistenceController.container.viewContext)
                         .environmentObject(persistenceController)
@@ -25,11 +27,18 @@ struct SpartanSpinApp: App {
                             }
                         }
                 }
-                Tab("Calendar", systemImage: "calendar") {
+                .tabItem {
+                    Label("List", systemImage: "list.bullet")
+                }
+                NavigationStack {
                     CalendarView()
                 }
+                .tabItem {
+                    Label("Calendar", systemImage: "calendar")
+                }
             }
-            .tint(.black)
+            .tabViewStyle(.tabBarOnly)
+            .tint(colorScheme == .dark ? .white : .black)
         }
     }
 }

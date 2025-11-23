@@ -90,8 +90,11 @@ extension HabitCounterView {
         func undoTask() {
             guard habit.tasksCompleted > 0 else { return }
             if habit.tasksCompleted == habit.tasksNeeded {
-                habit.streak -= 1
+                if habit.streak > 0 {
+                    habit.streak -= 1
+                }
                 habit.lastStreakIncrease = nil
+                print(habit.streak)
             }
             habit.tasksCompleted -= 1
             persistenceController.save()

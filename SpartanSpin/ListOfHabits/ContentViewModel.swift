@@ -183,8 +183,6 @@ extension ContentView {
                     print("\(habit.habitTitle) everything reset")
                 
                 } else if shouldResetTasksForNewPeriod(habit, date) {
-                    // If true, the streak was met today so we don't want to reset the streak value
-                    // THIS IS BROKEN, it will check the same day. So it thinks it needs to reset values
                     habit.tasksCompleted = 0
                     print("\(habit.habitTitle) tasks reset")
                 }

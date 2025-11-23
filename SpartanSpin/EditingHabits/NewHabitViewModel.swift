@@ -15,7 +15,8 @@ extension NewHabitView {
         
         let units = Units()
         let timelines = Timelines()
-        
+        var calendar = Calendar.current
+
         @Published var title = ""
         @Published var tasksNeeded: Double?
         @Published var unit = "No Unit"
@@ -36,7 +37,20 @@ extension NewHabitView {
         @Published var enterNumberErrorMessage = "Enter a number of tasks required."
         @Published var titleErrorMessage = "Enter a valid habit title."
         
+        let frequencies = ["Daily", "Weekly", "Monthly"]
+        let dayAbbreviations = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        
+        @Published var reminderFrequency = "Daily"
+        @Published var selectedDays = Set<Int>()
+        @Published var selectedDaysOfMonth = Set<Int>()
+        
         @Published var dismiss = false
+        
+        let dayOptions = (1...31).map { day in
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .ordinal
+            return formatter.string(from: NSNumber(value: day)) ?? "\(day)"
+        }
         
         func checkSettings() {
             Task { @MainActor in

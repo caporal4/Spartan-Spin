@@ -34,7 +34,10 @@ extension EditHabitView {
         @Published var wholeNumberErrorMessage = "Enter a valid number of tasks required."
         @Published var enterNumberErrorMessage = "Enter a number of tasks required."
         @Published var titleErrorMessage = "Enter a valid habit title."
-        @Published var streakAlertMessage = "Changing the streak timeline will reset any active streak."
+        @Published var streakAlertMessage =
+            """
+            Changing the streak timeline will reset any active streak to 1 of the newly selected unit.
+            """
         
         @Published var dismiss = false
         
@@ -93,7 +96,9 @@ extension EditHabitView {
         
         private func updateStreakFromTimeline() {
             if habit.habitTimeline != habitTimelineInput {
-                habit.streak = 0
+                habit.streak = 1
+                habit.lastStreakReset = Date.now
+                habit.lastStreakIncrease = nil
             }
         }
         

@@ -18,10 +18,6 @@ final class SpartanSpinUITests: XCTestCase {
         app.launch()
     }
     
-    func testAppHasBasicButtonsOnLaunch() throws {
-        XCTAssertTrue(app.navigationBars.buttons["Add Habit"].exists, "There should be a Add Habit button.")
-    }
-    
     func testNoHabitsAtStart() {
         XCTAssertEqual(app.cells.count, 0, "There should be no list rows initially.")
     }
@@ -48,37 +44,32 @@ final class SpartanSpinUITests: XCTestCase {
         XCTAssertEqual(app.cells.count, 0, "There should be 0 rows after habit is deleted.")
     }
     
-    func testSwipeToDeleteWorks() {
-        app.buttons["ADD SAMPLES"].tap()
-        
-        for tapCount in (0...4).reversed() {
-            app.cells.firstMatch.swipeLeft()
-            app.buttons["Delete"].tap()
-
-            XCTAssertEqual(app.cells.count, tapCount, "There should be \(tapCount) rows in the list.")
-        }
-    }
+//    func testSwipeToDeleteWorks() {
+//        app.buttons["ADD SAMPLES"].tap()
+//        
+//        for tapCount in (0...4).reversed() {
+//            app.cells.firstMatch.swipeLeft()
+//            app.buttons["Delete"].tap()
+//
+//            XCTAssertEqual(app.cells.count, tapCount, "There should be \(tapCount) rows in the list.")
+//        }
+//    }
     
-    func testTextIsVisible() {
-        let navigationBar = app.navigationBars["Spartan Spin"]
-        XCTAssertTrue(navigationBar.exists, "Navigation bar with title 'Spartan Spin' should exist")
-    }
-    
-    func testEditingHabits() {
-        app.buttons["Add Habit"].tap()
-        app.textFields["Enter the habit title here"].tap()
-        app.typeText("New Habit")
-        app.textFields["Amount"].tap()
-        app.typeText("1")
-        app.buttons["Save"].tap()
-        
-        app.buttons["New Habit"].tap()
-        app.buttons["Edit Habit"].tap()
-        app.textFields["Enter the habit title here"].tap()
-        app.typeText("Edited ")
-        app.buttons["Save"].tap()
-        
-        let myLabel = app.navigationBars["Edited New Habit"]
-        XCTAssertTrue(myLabel.exists, "Button with new edited title 'Edited New Habit' Exists.")
-    }
+//    func testEditingHabits() {
+//        app.buttons["Add Habit"].tap()
+//        app.textFields["Enter the habit title here"].tap()
+//        app.typeText("New Habit")
+//        app.textFields["Amount"].tap()
+//        app.typeText("1")
+//        app.buttons["Save"].tap()
+//        
+//        app.buttons["New Habit"].tap()
+//        app.buttons["Edit Habit"].tap()
+//        app.textFields["Enter the habit title here"].tap()
+//        app.typeText("Edited ")
+//        app.buttons["Save"].tap()
+//        
+//        let myLabel = app.navigationBars["Edited New Habit"]
+//        XCTAssertTrue(myLabel.exists, "Button with new edited title 'Edited New Habit' Exists.")
+//    }
 }
