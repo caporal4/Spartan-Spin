@@ -1,5 +1,5 @@
 //
-//  HabitCounterView.swift
+//  GoalCounterView.swift
 //  SpartanSpin
 //
 //  Created by Brendan Caporale on 11/13/25.
@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct HabitCounterView: View {
+struct GoalCounterView: View {
     @StateObject private var viewModel: ViewModel
     
-    @ObservedObject var habit: Habit
+    @ObservedObject var goal: Goal
     
-    init(habit: Habit, persistenceController: PersistenceController) {
-        self.habit = habit
-        let viewModel = ViewModel(persistenceController: persistenceController, habit: habit)
+    init(goal: Goal, persistenceController: PersistenceController) {
+        self.goal = goal
+        let viewModel = ViewModel(persistenceController: persistenceController, goal: goal)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -24,7 +24,7 @@ struct HabitCounterView: View {
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()
-                .sensoryFeedback(trigger: habit.tasksCompleted) { oldValue, newValue in
+                .sensoryFeedback(trigger: goal.tasksCompleted) { oldValue, newValue in
                     if oldValue > newValue {
                         .decrease
                     } else {
@@ -32,7 +32,7 @@ struct HabitCounterView: View {
                     }
                 }
             VStack {
-                Button("\(Int(habit.tasksCompleted))", action: viewModel.enterAmount)
+                Button("\(Int(goal.tasksCompleted))", action: viewModel.enterAmount)
                     .font(.system(size: Numbers.tasksCompletedFontSize))
                     .foregroundStyle(.white)
                     .alert("Enter Amount", isPresented: $viewModel.showPopup) {
@@ -47,10 +47,10 @@ struct HabitCounterView: View {
                     ) {
                         Button("OK", action: viewModel.invalidNumber)
                     }
-                Text("/\(Int(habit.tasksNeeded))")
+                Text("/\(Int(goal.tasksNeeded))")
                     .font(.title)
                     .foregroundStyle(.white)
-                Text(LocalizedStringKey(viewModel.convertToPlural(habit)))
+                Text(LocalizedStringKey(viewModel.convertToPlural(goal)))
                     .font(.title)
                     .foregroundStyle(.white)
             }
@@ -58,7 +58,7 @@ struct HabitCounterView: View {
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()
-                .sensoryFeedback(trigger: habit.tasksCompleted) { oldValue, newValue in
+                .sensoryFeedback(trigger: goal.tasksCompleted) { oldValue, newValue in
                     if newValue > oldValue {
                         .increase
                     } else {
@@ -73,6 +73,6 @@ struct HabitCounterView: View {
 #Preview {
     let persistenceController = PersistenceController()
     
-    HabitCounterView(habit: Habit.example(controller: persistenceController), persistenceController: .preview)
+    GoalCounterView(goal: Goal.example(controller: persistenceController), persistenceController: .preview)
         .environmentObject(persistenceController)
 }

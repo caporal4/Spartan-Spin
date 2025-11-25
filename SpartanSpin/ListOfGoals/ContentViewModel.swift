@@ -13,18 +13,18 @@ extension ContentView {
     class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
         var persistenceController: PersistenceController
         
-        private let habitsController: NSFetchedResultsController<Habit>
+        private let goalsController: NSFetchedResultsController<Goal>
         
-        @Published var habits = [Habit]()
-        @Published var newHabit = false
+        @Published var goals = [Goal]()
+        @Published var newGoal = false
         
         init(persistenceController: PersistenceController) {
             self.persistenceController = persistenceController
             
-            let request = Habit.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(keyPath: \Habit.title, ascending: true)]
+            let request = Goal.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(keyPath: \Goal.title, ascending: true)]
             
-            habitsController = NSFetchedResultsController(
+            goalsController = NSFetchedResultsController(
                 fetchRequest: request,
                 managedObjectContext: persistenceController.container.viewContext,
                 sectionNameKeyPath: nil,
@@ -33,21 +33,21 @@ extension ContentView {
             
             super.init()
             
-            habitsController.delegate = self
+            goalsController.delegate = self
             
             do {
-                try habitsController.performFetch()
-                habits = habitsController.fetchedObjects ?? []
+                try goalsController.performFetch()
+                goals = goalsController.fetchedObjects ?? []
             } catch {
-                print("Failed to fetch habits")
+                print("Failed to fetch goals")
             }
         }
         
         func reloadData() {
-            let request = Habit.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(keyPath: \Habit.title, ascending: true)]
+            let request = Goal.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(keyPath: \Goal.title, ascending: true)]
             
-            let newController: NSFetchedResultsController<Habit>
+            let newController: NSFetchedResultsController<Goal>
             newController = NSFetchedResultsController(
                 fetchRequest: request,
                 managedObjectContext: persistenceController.container.viewContext,
@@ -56,25 +56,46 @@ extension ContentView {
             )
             do {
                 try newController.performFetch()
-                habits = newController.fetchedObjects ?? []
+                goals = newController.fetchedObjects ?? []
             } catch {
-                print("Failed to fetch habits")
+                print("Failed to fetch goals")
             }
         }
         
         func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-            if let newHabits = controller.fetchedObjects as? [Habit] {
-                habits = newHabits
+            if let newGoals = controller.fetchedObjects as? [Goal] {
+                goals = newGoals
             }
         }
         
-        func showNewHabitView() {
-            newHabit = true
+        func showNewGoalView() {
+            newGoal = true
         }
         
-        func delete(_ offsets: IndexSet) {
+        func dailyDelete(_ offsets: IndexSet) {
+            let dailyGoals = dailyGoals(goals)
             for offset in offsets {
-                let item = habits[offset]
+                let item = dailyGoals[offset]
+                persistenceController.removeReminders(for: item)
+                persistenceController.delete(item)
+                persistenceController.save()
+            }
+        }
+        
+        func weeklyDelete(_ offsets: IndexSet) {
+            let weeklyGoals = weeklyGoals(goals)
+            for offset in offsets {
+                let item = weeklyGoals[offset]
+                persistenceController.removeReminders(for: item)
+                persistenceController.delete(item)
+                persistenceController.save()
+            }
+        }
+        
+        func monthlyDelete(_ offsets: IndexSet) {
+            let monthlyGoals = monthlyGoals(goals)
+            for offset in offsets {
+                let item = monthlyGoals[offset]
                 persistenceController.removeReminders(for: item)
                 persistenceController.delete(item)
                 persistenceController.save()
@@ -82,23 +103,47 @@ extension ContentView {
         }
         
         func removeAllNotifications() {
-            for habit in habits {
-                persistenceController.removeReminders(for: habit)
+            for goal in goals {
+                persistenceController.removeReminders(for: goal)
             }
         }
         
-        private func shouldResetStreak(_ habit: Habit, _ today: Date) -> Bool {
+        func dailyGoals(_ goals: [Goal]) -> [Goal] {
+            var dailyGoals = [Goal]()
+            for goal in goals where goal.timeline == "Daily" {
+                dailyGoals.append(goal)
+            }
+            return dailyGoals
+        }
+        
+        func weeklyGoals(_ goals: [Goal]) -> [Goal] {
+            var weeklyGoals = [Goal]()
+            for goal in goals where goal.timeline == "Weekly" {
+                weeklyGoals.append(goal)
+            }
+            return weeklyGoals
+        }
+        
+        func monthlyGoals(_ goals: [Goal]) -> [Goal] {
+            var monthlyGoals = [Goal]()
+            for goal in goals where goal.timeline == "Monthly" {
+                monthlyGoals.append(goal)
+            }
+            return monthlyGoals
+        }
+        
+        private func shouldResetStreak(_ goal: Goal, _ today: Date) -> Bool {
             var calendar = Calendar.current
             calendar.firstWeekday = 2
             
             // If the streak has never increased, bail out so as to not reset everything
-            guard let lastIncrease = habit.lastStreakIncrease else { return false }
+            guard let lastIncrease = goal.lastStreakIncrease else { return false }
             
             guard let lastWeek = calendar.date(byAdding: .weekOfYear, value: -1, to: today) else { return false }
             
             guard let lastMonth = calendar.date(byAdding: .month, value: -1, to: today) else { return false }
 
-            switch habit.habitTimeline {
+            switch goal.goalTimeline {
             case "Daily":
                 // If last increase wasn't today or yesterday, reset the streak
                 let streakIncreasedToday = calendar.isDate(lastIncrease, inSameDayAs: today)
@@ -135,13 +180,13 @@ extension ContentView {
             }
         }
         
-        private func shouldResetTasksForNewPeriod(_ habit: Habit, _ today: Date) -> Bool {
+        private func shouldResetTasksForNewPeriod(_ goal: Goal, _ today: Date) -> Bool {
             var calendar = Calendar.current
             calendar.firstWeekday = 2
             
-            guard let lastReset = habit.lastTaskReset else { return false }
+            guard let lastReset = goal.lastTaskReset else { return false }
             
-            switch habit.habitTimeline {
+            switch goal.goalTimeline {
             case "Daily":
                 // Reset tasks if it's a new day
                 if calendar.isDate(lastReset, inSameDayAs: today) {
@@ -174,17 +219,15 @@ extension ContentView {
         func checkAndResetStreaks() {
             let date = Date.now + (86400 * 0)
             
-            for habit in habits {
-                if shouldResetStreak(habit, date) {
+            for goal in goals {
+                if shouldResetStreak(goal, date) {
                 // If true, this means the streak wasn't met today or in the last period, so it resets
-                    habit.streak = 0
-                    habit.tasksCompleted = 0
-                    habit.lastStreakReset = Date.now
-                    print("\(habit.habitTitle) everything reset")
+                    goal.streak = 0
+                    goal.tasksCompleted = 0
+                    goal.lastStreakReset = Date.now
                 
-                } else if shouldResetTasksForNewPeriod(habit, date) {
-                    habit.tasksCompleted = 0
-                    print("\(habit.habitTitle) tasks reset")
+                } else if shouldResetTasksForNewPeriod(goal, date) {
+                    goal.tasksCompleted = 0
                 }
             }
         }

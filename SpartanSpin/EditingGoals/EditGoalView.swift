@@ -1,5 +1,5 @@
 //
-//  NewHabitView.swift
+//  EditGoalView.swift
 //  SpartanSpin
 //
 //  Created by Brendan Caporale on 11/13/25.
@@ -7,14 +7,17 @@
 
 import SwiftUI
 
-struct NewHabitView: View {
+struct EditGoalView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.openURL) var openURL
     
     @StateObject private var viewModel: ViewModel
     
-    init(persistenceController: PersistenceController) {
-        let viewModel = ViewModel(persistenceController: persistenceController)
+    @ObservedObject var goal: Goal
+    
+    init(goal: Goal, persistenceController: PersistenceController) {
+        self.goal = goal
+        let viewModel = ViewModel(persistenceController: persistenceController, goal: goal)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -24,13 +27,13 @@ struct NewHabitView: View {
                 Colors.gradientA
                     .ignoresSafeArea()
                 Form {
-                    Section("Habit Information") {
+                    Section("Goal Information") {
                         HStack {
                             Text("Title")
                             TextField(
                                 "Title",
-                                text: $viewModel.title,
-                                prompt: Text("Enter the habit title here")
+                                text: $viewModel.goal.goalTitle,
+                                prompt: Text("Enter the goal title here")
                             )
                             .multilineTextAlignment(.trailing)
                             .tint(.blue)
@@ -39,55 +42,55 @@ struct NewHabitView: View {
                             Text("Amount")
                             TextField(
                                 "Amount",
-                                value: $viewModel.tasksNeeded,
+                                value: $viewModel.goalTasksInput,
                                 format: .number
                             )
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.decimalPad)
                             .tint(.blue)
                         }
-                        Picker("Unit", selection: $viewModel.unit) {
+                        Picker("Unit", selection: $viewModel.goal.goalUnit) {
                             ForEach(viewModel.units.list, id: \.self) {
                                 Text($0)
                             }
                         }
                         .tint(.secondary)
-                        .accessibilityIdentifier("Unit")
-                        Picker("Timeline", selection: $viewModel.timeline) {
+                        .accessibilityIdentifier("Unit Picker")
+                        Picker("Timeline", selection: $viewModel.goalTimelineInput) {
                             ForEach(viewModel.timelines.list, id: \.self) {
                                 Text($0)
                             }
                         }
+                        .accessibilityIdentifier("Timeline Picker")
                         .tint(.secondary)
-                        .accessibilityIdentifier("Timeline")
-                    }
 
+                    }
+                    
                     Section("Reminders") {
-                        Toggle("Enable reminders", isOn: $viewModel.reminderEnabled.animation())
+                        Toggle("Enable reminders", isOn: $goal.reminderEnabled.animation())
                             .tint(.green)
                         
-                        if viewModel.reminderEnabled {
+                        if goal.reminderEnabled {
                             Picker("Frequency", selection: $viewModel.reminderFrequency) {
                                 ForEach(viewModel.frequencies, id: \.self) {
                                     Text($0)
                                 }
                             }
                             .tint(.secondary)
-                            .accessibilityIdentifier("Frequency")
+                            .accessibilityIdentifier("Frequency Picker")
                             if viewModel.reminderFrequency == "Weekly" {
                                 HStack {
                                     Spacer()
-                                    ForEach(0...6, id: \.self) { day in
+                                    ForEach(1...7, id: \.self) { day in
                                         Button {
                                             if viewModel.selectedDays.contains(day) {
                                                 viewModel.selectedDays.remove(day)
                                             } else {
                                                 viewModel.selectedDays.insert(day)
                                             }
-                                            print(viewModel.selectedDays)
                                         } label: {
                                             DayButtonRectangle(
-                                                day: viewModel.dayAbbreviations[day],
+                                                day: viewModel.dayAbbreviations[day - 1],
                                                 daySelected: viewModel.selectedDays.contains(day) ? true : false
                                             )
                                         }
@@ -100,7 +103,11 @@ struct NewHabitView: View {
                                 VStack(alignment: .leading, spacing: Numbers.VStackSpacing) {
                                     Text("Days of Month")
                                     
-                                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
+                                    LazyVGrid(
+                                        columns: Array(repeating: GridItem(.flexible()),
+                                        count: Numbers.numbersCount),
+                                        spacing: Numbers.numbersSpacing
+                                    ) {
                                         ForEach(1...31, id: \.self) { day in
                                             Button {
                                                 if viewModel.selectedDaysOfMonth.contains(day) {
@@ -131,28 +138,30 @@ struct NewHabitView: View {
                             }
                             DatePicker(
                                 "Reminder time",
-                                selection: $viewModel.reminderTime,
+                                selection: $viewModel.goal.goalReminderTime,
                                 displayedComponents: .hourAndMinute
                             )
+                            .accessibilityIdentifier("Reminder Time Picker")
                         }
                     }
                 }
-                .navigationTitle("New Habit")
+                .navigationTitle("Edit Goal")
                 .navigationBarTitleDisplayMode(.inline)
                 .scrollContentBackground(.hidden)
-                .toolbarBackground(.hidden)
-                .preferredColorScheme(.light)
                 .toolbar {
                     Button("Save") {
-                        viewModel.addHabit()
+                        viewModel.validateChanges(title: viewModel.goal.goalTitle)
                         if viewModel.dismiss {
+                            goal.objectWillChange.send()
+                            viewModel.persistenceController.save()
                             dismiss()
                         }
                     }
-                    .tint(.blue)
+                    .foregroundStyle(.blue)
                 }
-                
-                .alert("Error", isPresented: $viewModel.showingNotificationsError) {
+                .toolbarBackground(.hidden)
+                .preferredColorScheme(.light)
+                .alert("Oops!", isPresented: $viewModel.showingNotificationsError) {
                     Button("Check Settings") {
                         guard let settingsURL = viewModel.createAppSettingsURL() else { return }
                         openURL(settingsURL)
@@ -160,7 +169,6 @@ struct NewHabitView: View {
                     Button("Cancel", role: .cancel) { }
                 } message: {
                     Text(viewModel.notificationErrorMessage)
-                        .multilineTextAlignment(.center)
                 }
                 .alert(
                     "Error",
@@ -186,12 +194,25 @@ struct NewHabitView: View {
                 } message: {
                     Text(viewModel.wholeNumberErrorMessage)
                 }
-                
-                .onChange(of: viewModel.reminderEnabled, initial: false) { _, _  in
-                    viewModel.checkSettings()
+                .alert(
+                    "Warning",
+                    isPresented: $viewModel.streakAlert
+                ) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.streakAlertMessage)
                 }
-                .onChange(of: viewModel.reminderTime, initial: false) { _, _  in
-                    viewModel.checkSettings()
+                
+                .onChange(of: goal.reminderEnabled, initial: false) { _, _  in
+                    viewModel.updateReminder()
+                }
+                .onChange(of: goal.reminderTime, initial: false) { _, _  in
+                    viewModel.updateReminder()
+                }
+                .onChange(of: viewModel.goalTimelineInput) { _, _ in
+                    if goal.streak > 0 {
+                        viewModel.streakAlert = true
+                    }
                 }
             }
         }
@@ -201,6 +222,6 @@ struct NewHabitView: View {
 #Preview {
     let persistenceController = PersistenceController()
     
-    NewHabitView(persistenceController: .preview)
+    EditGoalView(goal: Goal.example(controller: persistenceController), persistenceController: persistenceController)
         .environmentObject(persistenceController)
 }

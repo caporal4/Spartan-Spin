@@ -1,5 +1,5 @@
 //
-//  HabitCounterViewModel.swift
+//  GoalCounterViewModel.swift
 //  SpartanSpin
 //
 //  Created by Brendan Caporale on 11/13/25.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-extension HabitCounterView {
+extension GoalCounterView {
     class ViewModel: ObservableObject {
         var persistenceController: PersistenceController
-        var habit: Habit
+        var goal: Goal
         
         let units = Units()
         
@@ -21,20 +21,20 @@ extension HabitCounterView {
         
         var convertedNumber = 0
         
-        func convertToPlural(_ habit: Habit) -> String {
-            guard habit.unit != "No Unit" else { return "" }
+        func convertToPlural(_ goal: Goal) -> String {
+            guard goal.unit != "No Unit" else { return "" }
             
-            if habit.tasksNeeded == 1 {
-                return habit.habitUnit
+            if goal.tasksNeeded == 1 {
+                return goal.goalUnit
             } else {
-                if let index = units.list.firstIndex(of: habit.habitUnit) {
-                    if habit.tasksNeeded == 1 {
+                if let index = units.list.firstIndex(of: goal.goalUnit) {
+                    if goal.tasksNeeded == 1 {
                         return units.list[index]
                     } else {
                         return units.pluralList[index]
                     }
                 }
-                return habit.habitUnit
+                return goal.goalUnit
             }
         }
         
@@ -43,7 +43,7 @@ extension HabitCounterView {
         }
         
         func updateTasks() {
-            let oldValue = habit.tasksCompleted
+            let oldValue = goal.tasksCompleted
             
             guard let convertedNumber = Double(numberInput) else {
                 showError = true
@@ -54,15 +54,15 @@ extension HabitCounterView {
                 return
             }
             
-            habit.tasksCompleted = convertedNumber
+            goal.tasksCompleted = convertedNumber
             
-            if habit.tasksCompleted < habit.tasksNeeded && oldValue >= habit.tasksNeeded {
-                habit.streak -= 1
-                habit.lastStreakIncrease = nil
+            if goal.tasksCompleted < goal.tasksNeeded && oldValue >= goal.tasksNeeded {
+                goal.streak -= 1
+                goal.lastStreakIncrease = nil
                 persistenceController.save()
-            } else if habit.tasksCompleted >= habit.tasksNeeded && oldValue < habit.tasksNeeded {
-                habit.streak += 1
-                habit.lastStreakIncrease = Date.now
+            } else if goal.tasksCompleted >= goal.tasksNeeded && oldValue < goal.tasksNeeded {
+                goal.streak += 1
+                goal.lastStreakIncrease = Date.now
                 persistenceController.save()
             }
             
@@ -75,28 +75,27 @@ extension HabitCounterView {
         }
         
         func doTask() {
-            habit.tasksCompleted += 1
+            goal.tasksCompleted += 1
 
             guard allowStreakUpdate() else { return }
 
-            if habit.tasksCompleted == habit.tasksNeeded {
-                habit.streak += 1
-                habit.lastStreakIncrease = Date.now
+            if goal.tasksCompleted == goal.tasksNeeded {
+                goal.streak += 1
+                goal.lastStreakIncrease = Date.now
             }
             
             persistenceController.save()
         }
         
         func undoTask() {
-            guard habit.tasksCompleted > 0 else { return }
-            if habit.tasksCompleted == habit.tasksNeeded {
-                if habit.streak > 0 {
-                    habit.streak -= 1
+            guard goal.tasksCompleted > 0 else { return }
+            if goal.tasksCompleted == goal.tasksNeeded {
+                if goal.streak > 0 {
+                    goal.streak -= 1
                 }
-                habit.lastStreakIncrease = nil
-                print(habit.streak)
+                goal.lastStreakIncrease = nil
             }
-            habit.tasksCompleted -= 1
+            goal.tasksCompleted -= 1
             persistenceController.save()
         }
         
@@ -107,9 +106,9 @@ extension HabitCounterView {
             let today = Date.now + (86400 * 0)
             
             // If streak has never increased, return true to allow it to update
-            guard let lastIncrease = habit.lastStreakIncrease else { return true }
+            guard let lastIncrease = goal.lastStreakIncrease else { return true }
             
-            switch habit.habitTimeline {
+            switch goal.goalTimeline {
             case "Daily":
                 // If streak has already increased once today (streakIncreasedToday = true),
                 // don't let it happen again (allowStreakUpdate() = false)
@@ -132,9 +131,9 @@ extension HabitCounterView {
             }
         }
         
-        init(persistenceController: PersistenceController, habit: Habit) {
+        init(persistenceController: PersistenceController, goal: Goal) {
             self.persistenceController = persistenceController
-            self.habit = habit
+            self.goal = goal
         }
     }
 }

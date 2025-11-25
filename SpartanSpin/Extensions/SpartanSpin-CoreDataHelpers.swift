@@ -7,44 +7,60 @@
 
 import Foundation
 
-extension Habit {
-    var habitTitle: String {
+extension Goal {
+    var goalTitle: String {
         get { title ?? "" }
         set { title = newValue }
     }
     
-    var habitUnit: String {
+    var goalUnit: String {
         get { unit ?? "" }
         set { unit = newValue }
     }
     
-    var habitTimeline: String {
+    var goalTimeline: String {
         get { timeline ?? "" }
         set { timeline = newValue }
     }
     
-    var habitID: UUID {
+    var goalID: UUID {
         id ?? UUID()
     }
     
-    var habitReminderTime: Date {
+    var goalReminderFrequency: String {
+        get { reminderFrequency ?? "" }
+        set { reminderFrequency = newValue }
+    }
+    
+    var goalReminderTime: Date {
         get { reminderTime ?? .now }
         set { reminderTime = newValue }
     }
     
-    static func example(controller: PersistenceController) -> Habit {
+    var goalWeeklyReminders: Set<Int> {
+        get { weeklyReminderTimes ?? [] }
+        set { weeklyReminderTimes = newValue }
+    }
+    
+    var goalMonthlyReminders: Set<Int> {
+        get { monthlyReminderTimes ?? [] }
+        set { monthlyReminderTimes = newValue }
+    }
+    
+    static func example(controller: PersistenceController) -> Goal {
         let controller = controller
         let viewContext = controller.container.viewContext
 
-        let habit = Habit(context: viewContext)
-        habit.title = "Example Habit"
-        habit.id = UUID()
-        habit.tasksNeeded = 2
-        habit.unit = "No Unit"
-        habit.lastStreakReset = Date.now
-        habit.lastTaskReset = Date.now
-        habit.streak = 0
-        habit.tasksCompleted = 0
-        return habit
+        let goal = Goal(context: viewContext)
+        goal.title = "Example Goal"
+        goal.id = UUID()
+        goal.tasksNeeded = 2
+        goal.unit = "No Unit"
+        goal.timeline = "Daily"
+        goal.lastStreakReset = Date.now
+        goal.lastTaskReset = Date.now
+        goal.streak = 0
+        goal.tasksCompleted = 0
+        return goal
     }
 }

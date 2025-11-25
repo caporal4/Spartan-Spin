@@ -9,7 +9,7 @@ import Foundation
 import UserNotifications
 
 extension PersistenceController {
-    func addReminder(for habit: Habit) async -> Bool {
+    func addReminder(for goal: Goal) async -> Bool {
         do {
             let center = UNUserNotificationCenter.current()
             let settings = await center.notificationSettings()
@@ -19,12 +19,12 @@ extension PersistenceController {
                 let success = try await requestNotifications()
 
                 if success {
-                    try await placeReminders(for: habit)
+                    try await placeReminders(for: goal)
                 } else {
                     return false
                 }
             case .authorized:
-                try await placeReminders(for: habit)
+                try await placeReminders(for: goal)
 
             default:
                 return false
@@ -36,7 +36,7 @@ extension PersistenceController {
         }
     }
     
-    func addReminderNewHabit() async -> Bool {
+    func addReminderNewGoal() async -> Bool {
         do {
             let center = UNUserNotificationCenter.current()
             let settings = await center.notificationSettings()
@@ -61,10 +61,24 @@ extension PersistenceController {
         }
     }
 
-    func removeReminders(for habit: Habit) {
+    // Make sure this works
+    func removeReminders(for goal: Goal) {
         let center = UNUserNotificationCenter.current()
-        let id = habit.objectID.uriRepresentation().absoluteString
-        center.removePendingNotificationRequests(withIdentifiers: [id])
+        let baseId = goal.objectID.uriRepresentation().absoluteString
+        
+        var identifiers = [baseId] // For daily
+        
+        // Add all possible weekly IDs
+        for weekday in 1...7 {
+            identifiers.append("\(baseId)-weekday\(weekday)")
+        }
+        
+        // Add all possible monthly IDs
+        for day in 1...31 {
+            identifiers.append("\(baseId)-day\(day)")
+        }
+        
+        center.removePendingNotificationRequests(withIdentifiers: identifiers)
     }
 
     private func requestNotifications() async throws -> Bool {
@@ -72,16 +86,39 @@ extension PersistenceController {
         return try await center.requestAuthorization(options: [.alert, .sound])
     }
 
-    private func placeReminders(for habit: Habit) async throws {
+    private func placeReminders(for goal: Goal) async throws {
         let content = UNMutableNotificationContent()
         content.sound = .default
-        content.title = habit.habitTitle
+        content.title = goal.goalTitle
         
-        let components = Calendar.current.dateComponents([.day, .hour, .minute], from: habit.habitReminderTime)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
-        
-        let id = habit.objectID.uriRepresentation().absoluteString
-        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-        return try await UNUserNotificationCenter.current().add(request)
+        let timeComponents = Calendar.current.dateComponents([.day, .hour, .minute], from: goal.goalReminderTime)
+        let baseId = goal.objectID.uriRepresentation().absoluteString
+
+        switch goal.reminderFrequency {
+        case "Daily":
+            let trigger = UNCalendarNotificationTrigger(dateMatching: timeComponents, repeats: true)
+            let request = UNNotificationRequest(identifier: baseId, content: content, trigger: trigger)
+            return try await UNUserNotificationCenter.current().add(request)
+        case "Weekly":
+            for weekday in goal.goalWeeklyReminders {
+                var components = timeComponents
+                let calendarWeekday = weekday == 7 ? 1 : weekday + 1
+                components.weekday = calendarWeekday
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                let id = "\(baseId)-weekday\(weekday)"
+                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+                return try await UNUserNotificationCenter.current().add(request)
+            }
+        case "Monthly":
+            for day in goal.goalMonthlyReminders {
+                var components = timeComponents
+                components.day = day // 1-31
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                let id = "\(baseId)-day\(day)"
+                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+                try await UNUserNotificationCenter.current().add(request)
+            }
+        default: return
+        }
     }
 }

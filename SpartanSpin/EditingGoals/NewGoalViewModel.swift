@@ -1,5 +1,5 @@
 //
-//  NewHabitViewModel.swift
+//  NewGoalViewModel.swift
 //  SpartanSpin
 //
 //  Created by Brendan Caporale on 11/13/25.
@@ -9,7 +9,7 @@ import CoreData
 import Foundation
 import SwiftUI
 
-extension NewHabitView {
+extension NewGoalView {
     class ViewModel: ObservableObject {
         var persistenceController: PersistenceController
         
@@ -35,7 +35,7 @@ extension NewHabitView {
             """
         @Published var wholeNumberErrorMessage = "Enter a valid number of tasks required."
         @Published var enterNumberErrorMessage = "Enter a number of tasks required."
-        @Published var titleErrorMessage = "Enter a valid habit title."
+        @Published var titleErrorMessage = "Enter a valid goal title."
         
         let frequencies = ["Daily", "Weekly", "Monthly"]
         let dayAbbreviations = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -45,32 +45,14 @@ extension NewHabitView {
         @Published var selectedDaysOfMonth = Set<Int>()
         
         @Published var dismiss = false
-        
+    
         let dayOptions = (1...31).map { day in
             let formatter = NumberFormatter()
             formatter.numberStyle = .ordinal
             return formatter.string(from: NSNumber(value: day)) ?? "\(day)"
         }
         
-        func checkSettings() {
-            Task { @MainActor in
-                if reminderEnabled {
-                    let success = await persistenceController.addReminderNewHabit()
-    
-                    if success == false {
-                        reminderEnabled = false
-                        showingNotificationsError = true
-                    }
-                }
-            }
-        }
-        
-        func createAppSettingsURL() -> URL? {
-            let settingsURL = URL(string: UIApplication.openNotificationSettingsURLString)
-            return settingsURL
-        }
-        
-        func addHabit() {
+        func addGoal() {
             guard title.count > 0 else {
                 showTitleError = true
                 return
@@ -92,34 +74,55 @@ extension NewHabitView {
             }
                         
             let viewContext = persistenceController.container.viewContext
-            let newHabit = Habit(context: viewContext)
-            newHabit.id = UUID()
-            newHabit.title = title
-            newHabit.timeline = timeline
-            newHabit.tasksCompleted = 0
-            newHabit.streak = 0
-            newHabit.lastStreakReset = Date.now
-            newHabit.lastTaskReset = Date.now
-            newHabit.reminderEnabled = reminderEnabled
-            newHabit.reminderTime = reminderTime
-            newHabit.tasksNeeded = tasksNeeded
-            newHabit.unit = unit
+            let newGoal = Goal(context: viewContext)
+            newGoal.id = UUID()
+            newGoal.title = title
+            newGoal.timeline = timeline
+            newGoal.tasksCompleted = 0
+            newGoal.streak = 0
+            newGoal.lastStreakReset = Date.now
+            newGoal.lastTaskReset = Date.now
+            newGoal.reminderEnabled = reminderEnabled
+            newGoal.reminderFrequency = reminderFrequency
+            newGoal.reminderTime = reminderTime
+            newGoal.weeklyReminderTimes = selectedDays
+            newGoal.monthlyReminderTimes = selectedDaysOfMonth
+            newGoal.tasksNeeded = tasksNeeded
+            newGoal.unit = unit
             
-            updateReminder(newHabit)
+            updateReminder(newGoal)
             
             try? viewContext.save()
             dismiss = true
         }
         
-        private func updateReminder(_ habit: Habit) {
-            persistenceController.removeReminders(for: habit)
-    
+        func checkSettings() {
             Task { @MainActor in
-                if habit.reminderEnabled {
-                    let success = await persistenceController.addReminder(for: habit)
+                if reminderEnabled {
+                    let success = await persistenceController.addReminderNewGoal()
     
                     if success == false {
-                        habit.reminderEnabled = false
+                        reminderEnabled = false
+                        showingNotificationsError = true
+                    }
+                }
+            }
+        }
+        
+        func createAppSettingsURL() -> URL? {
+            let settingsURL = URL(string: UIApplication.openNotificationSettingsURLString)
+            return settingsURL
+        }
+        
+        private func updateReminder(_ goal: Goal) {
+            persistenceController.removeReminders(for: goal)
+    
+            Task { @MainActor in
+                if goal.reminderEnabled {
+                    let success = await persistenceController.addReminder(for: goal)
+    
+                    if success == false {
+                        goal.reminderEnabled = false
                         showingNotificationsError = true
                     }
                 }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct Units {
-    let repitition = "Repititon"
+    let repitition = "Repitition"
     let millileter = "mL"
     let ounce = "Ounce"
     let gallon = "Gallon"

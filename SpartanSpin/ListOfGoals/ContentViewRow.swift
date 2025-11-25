@@ -10,20 +10,20 @@ import SwiftUI
 struct ContentViewRow: View {
     @StateObject private var viewModel: ViewModel
     
-    @ObservedObject var habit: Habit
+    @ObservedObject var goal: Goal
     
-    init(habit: Habit) {
-        self.habit = habit
-        let viewModel = ViewModel(habit: habit)
+    init(goal: Goal) {
+        self.goal = goal
+        let viewModel = ViewModel(goal: goal)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
         HStack {
             VStack {
-                Text(habit.habitTitle)
+                Text(goal.goalTitle)
                     .font(.system(
-                        size: Numbers.habitTitleFontSize,
+                        size: Numbers.goalTitleFontSize,
                         weight: .bold,
                         design: .default)
                     )
@@ -36,7 +36,7 @@ struct ContentViewRow: View {
                     .font(.headline)
                     .foregroundStyle(.white)
                 HStack {
-                    Text(LocalizedStringKey(viewModel.convertToPlural(habit: habit)))
+                    Text(LocalizedStringKey(viewModel.convertToPlural(goal: goal)))
                         .foregroundStyle(.white)
                 }
             }
@@ -47,7 +47,7 @@ struct ContentViewRow: View {
 #Preview {
     let persistenceController = PersistenceController()
     
-    ContentViewRow(habit: Habit.example(controller: persistenceController))
+    ContentViewRow(goal: Goal.example(controller: persistenceController))
         .background(Colors.spartanSpinGreen)
         .environmentObject(persistenceController)
 }

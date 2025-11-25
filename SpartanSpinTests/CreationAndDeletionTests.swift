@@ -10,13 +10,13 @@ import XCTest
 @testable import SpartanSpin
 
 final class CreationAndDeletionTests: BaseTestCase {
-    func testHabitCreation() {
-        let habit = Habit(context: managedObjectContext)
+    func testGoalCreation() {
+        let goal = Goal(context: managedObjectContext)
         
-        XCTAssertEqual(persistenceController.count(for: Habit.fetchRequest()), 1, "There should be 1 habit")
+        XCTAssertEqual(persistenceController.count(for: Goal.fetchRequest()), 1, "There should be 1 goal")
         
-        persistenceController.delete(habit)
+        persistenceController.delete(goal)
         
-        XCTAssertEqual(persistenceController.count(for: Habit.fetchRequest()), 0, "There should be 0 habits")
+        XCTAssertEqual(persistenceController.count(for: Goal.fetchRequest()), 0, "There should be 0 goals")
     }
 }

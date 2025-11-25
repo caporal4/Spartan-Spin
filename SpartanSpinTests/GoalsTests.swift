@@ -1,5 +1,5 @@
 //
-//  HabitsTests.swift
+//  GoalsTests.swift
 //  SpartanSpin
 //
 //  Created by Brendan Caporale on 11/13/25.

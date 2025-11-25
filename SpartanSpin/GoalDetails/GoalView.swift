@@ -1,5 +1,5 @@
 //
-//  HabitView.swift
+//  GoalView.swift
 //  SpartanSpin
 //
 //  Created by Brendan Caporale on 11/13/25.
@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-struct HabitView: View {
+struct GoalView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
 
     @StateObject private var viewModel: ViewModel
     
-    @ObservedObject var habit: Habit
+    @ObservedObject var goal: Goal
     
-    init(habit: Habit, persistenceController: PersistenceController) {
-        self.habit = habit
-        let viewModel = ViewModel(persistenceController: persistenceController, habit: habit)
+    init(goal: Goal, persistenceController: PersistenceController) {
+        self.goal = goal
+        let viewModel = ViewModel(persistenceController: persistenceController, goal: goal)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -27,47 +27,48 @@ struct HabitView: View {
                 .ignoresSafeArea()
             VStack {
                 Spacer()
-                HabitCounterView(habit: habit, persistenceController: viewModel.persistenceController)
+                GoalCounterView(goal: goal, persistenceController: viewModel.persistenceController)
                 Spacer()
                 Spacer()
-                Text(viewModel.streakSentence(habit))
+                Text(viewModel.streakSentence(goal))
                     .padding()
                     .font(.largeTitle)
                     .foregroundStyle(.white)
                     .frame(height: Numbers.streakFrame)
-                    .scaleEffect(habit.streak > 0 ? Numbers.streakScaleOne : Numbers.streakScaleTwo)
-                    .opacity(habit.streak > 0 ? Numbers.streakOpacityOne : Numbers.streakOpacityTwo)
+                    .scaleEffect(goal.streak > 0 ? Numbers.streakScaleOne : Numbers.streakScaleTwo)
+                    .opacity(goal.streak > 0 ? Numbers.streakOpacityOne : Numbers.streakOpacityTwo)
                     .animation(.spring(
                         response: Numbers.streakResponse,
                         dampingFraction: Numbers.streakDamping),
-                               value: habit.streak
+                               value: goal.streak
                     )
                 Spacer()
             }
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text(habit.habitTitle)
+                Text(goal.goalTitle)
                     .font(.headline)
                     .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
+                    .accessibilityIdentifier("Goal Title Toolbar")
             }
             ToolbarItemGroup {
-                Button("Edit Habit", systemImage: "ellipsis") {
-                    viewModel.showEditHabitView = true
+                Button("Edit Goal", systemImage: "ellipsis") {
+                    viewModel.showEditGoalView = true
                 }
                 .tint(colorScheme == .dark ? .white : .black)
-                Button("Delete Habit", systemImage: "trash") {
+                Button("Delete Goal", systemImage: "trash") {
                     viewModel.showingDeleteAlert = true
                 }
                 .tint(colorScheme == .dark ? .white : .black)
             }
         }
-        .sheet(isPresented: $viewModel.showEditHabitView) {
-            EditHabitView(habit: habit, persistenceController: viewModel.persistenceController)
+        .sheet(isPresented: $viewModel.showEditGoalView) {
+            EditGoalView(goal: goal, persistenceController: viewModel.persistenceController)
         }
-        .alert("Delete habit: \(habit.habitTitle)", isPresented: $viewModel.showingDeleteAlert) {
+        .alert("Delete goal: \(goal.goalTitle)", isPresented: $viewModel.showingDeleteAlert) {
             Button("Delete", role: .destructive) {
-                viewModel.delete(habit)
+                viewModel.delete(goal)
                 dismiss()
             }
             Button("Cancel", role: .cancel) { }
@@ -80,6 +81,6 @@ struct HabitView: View {
 #Preview {
     let persistenceController = PersistenceController()
     
-    HabitView(habit: Habit.example(controller: persistenceController), persistenceController: .preview)
+    GoalView(goal: Goal.example(controller: persistenceController), persistenceController: .preview)
         .environmentObject(persistenceController)
 }

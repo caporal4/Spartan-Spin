@@ -14,10 +14,10 @@ class PersistenceController: ObservableObject {
     
     var spotlightDelegate: NSCoreDataCoreSpotlightDelegate?
     
-    @Published var selectedHabit: Habit?
+    @Published var selectedGoal: Goal?
     
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Habit", managedObjectModel: Self.model)
+        container = NSPersistentContainer(name: "Goal", managedObjectModel: Self.model)
         
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
@@ -46,17 +46,17 @@ class PersistenceController: ObservableObject {
     func createSampleData() {
         let viewContext = container.viewContext
         
-        let availableHabits = ["Brush Teeth", "Floss", "Feed Dog", "Walk Dog", "Take Medicine", "Make Bed"]
-        
+        let availableGoal = ["Brush Teeth", "Floss", "Feed Dog", "Walk Dog", "Take Medicine", "Make Bed"]
+        let timelines = ["Daily", "Weekly", "Monthly", "Daily", "Weekly"]
         for int in 0...4 {
-            let newHabit = Habit(context: viewContext)
-            newHabit.id = UUID()
-            newHabit.title = availableHabits[int]
-            newHabit.unit = "No Unit"
-            newHabit.timeline = "Daily"
-            newHabit.lastStreakReset = Date.now
-            newHabit.lastTaskReset = Date.now
-            newHabit.tasksNeeded = 2
+            let newGoal = Goal(context: viewContext)
+            newGoal.id = UUID()
+            newGoal.title = availableGoal[int]
+            newGoal.unit = "No Unit"
+            newGoal.timeline = timelines[int]
+            newGoal.lastStreakReset = Date.now
+            newGoal.lastTaskReset = Date.now
+            newGoal.tasksNeeded = 2
         }
         
         try? viewContext.save()
@@ -82,7 +82,7 @@ class PersistenceController: ObservableObject {
     }
     
     func deleteAll() {
-        let request1: NSFetchRequest<NSFetchRequestResult> = Habit.fetchRequest()
+        let request1: NSFetchRequest<NSFetchRequestResult> = Goal.fetchRequest()
         delete(request1)
 
         save()

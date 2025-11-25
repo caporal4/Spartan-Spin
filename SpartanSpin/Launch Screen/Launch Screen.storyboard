@@ -25,6 +25,7 @@
                             <constraint firstItem="Dz3-hO-5F0" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="Bch-WS-UZ9"/>
                             <constraint firstItem="Dz3-hO-5F0" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="Gp3-B9-O9W"/>
                             <constraint firstItem="Dz3-hO-5F0" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.651399" id="c3e-1e-nTR"/>
+                            <constraint firstItem="Dz3-hO-5F0" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="1.20188" id="ohE-mL-Jqf"/>
                         </constraints>
                     </view>
                 </viewController>

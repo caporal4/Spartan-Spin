@@ -1,5 +1,5 @@
 //
-//  EditHabitViewModel.swift
+//  EditGoalViewModel.swift
 //  SpartanSpin
 //
 //  Created by Brendan Caporale on 11/13/25.
@@ -8,18 +8,18 @@
 import Foundation
 import SwiftUI
 
-extension EditHabitView {
+extension EditGoalView {
     class ViewModel: ObservableObject {
         var persistenceController: PersistenceController
-        var habit: Habit
+        var goal: Goal
         
         let units = Units()
         let timelines = Timelines()
         
         let originalTasksNeeded: Double
         
-        @Published var habitTasksInput: Double?
-        @Published var habitTimelineInput: String
+        @Published var goalTasksInput: Double?
+        @Published var goalTimelineInput: String
             
         @Published var showingNotificationsError = false
         @Published var showWholeNumberError = false
@@ -33,13 +33,26 @@ extension EditHabitView {
             """
         @Published var wholeNumberErrorMessage = "Enter a valid number of tasks required."
         @Published var enterNumberErrorMessage = "Enter a number of tasks required."
-        @Published var titleErrorMessage = "Enter a valid habit title."
+        @Published var titleErrorMessage = "Enter a valid goal title."
         @Published var streakAlertMessage =
             """
-            Changing the streak timeline will reset any active streak to 1 of the newly selected unit.
+            Changing the streak timeline will reset any active streak to 1 of the newly selected timeline.
             """
         
+        let frequencies = ["Daily", "Weekly", "Monthly"]
+        let dayAbbreviations = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        
+        @Published var reminderFrequency: String
+        @Published var selectedDays: Set<Int>
+        @Published var selectedDaysOfMonth: Set<Int>
+        
         @Published var dismiss = false
+        
+        let dayOptions = (1...31).map { day in
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .ordinal
+            return formatter.string(from: NSNumber(value: day)) ?? "\(day)"
+        }
         
         func validateChanges(title: String?) {
             guard let validatedTitle = title else { return }
@@ -48,7 +61,7 @@ extension EditHabitView {
                 showTitleError = true
                 return
             }
-            guard let validatedTasksInput = habitTasksInput else {
+            guard let validatedTasksInput = goalTasksInput else {
                 showEnterNumberError = true
                 return
             }
@@ -65,12 +78,13 @@ extension EditHabitView {
             
             updateStreakFromTimeline()
             
-            habit.habitTimeline = habitTimelineInput
-            habit.habitTitle = validatedTitle
-            habit.tasksNeeded = validatedTasksInput
-            
-            updateStreakFromTasksAdded()
-                                
+            goal.goalTimeline = goalTimelineInput
+            goal.goalTitle = validatedTitle
+            goal.tasksNeeded = validatedTasksInput
+            goal.goalReminderFrequency = reminderFrequency
+            goal.weeklyReminderTimes = selectedDays
+            goal.monthlyReminderTimes = selectedDaysOfMonth
+                                        
             dismiss = true
         }
         
@@ -80,14 +94,14 @@ extension EditHabitView {
         }
     
         func updateReminder() {
-            persistenceController.removeReminders(for: habit)
+            persistenceController.removeReminders(for: goal)
     
             Task { @MainActor in
-                if habit.reminderEnabled {
-                    let success = await persistenceController.addReminder(for: habit)
+                if goal.reminderEnabled {
+                    let success = await persistenceController.addReminder(for: goal)
     
                     if success == false {
-                        habit.reminderEnabled = false
+                        goal.reminderEnabled = false
                         showingNotificationsError = true
                     }
                 }
@@ -95,26 +109,24 @@ extension EditHabitView {
         }
         
         private func updateStreakFromTimeline() {
-            if habit.habitTimeline != habitTimelineInput {
-                habit.streak = 1
-                habit.lastStreakReset = Date.now
-                habit.lastStreakIncrease = nil
+            if goal.goalTimeline != goalTimelineInput {
+                if goal.streak > 0 {
+                    goal.streak = 1
+                    goal.lastStreakReset = Date.now
+                    goal.lastStreakIncrease = nil
+                }
             }
         }
         
-        private func updateStreakFromTasksAdded() {
-            if habit.tasksCompleted < habit.tasksNeeded {
-                habit.streak -= 1
-                habit.lastStreakIncrease = nil
-            }
-        }
-        
-        init(persistenceController: PersistenceController, habit: Habit) {
+        init(persistenceController: PersistenceController, goal: Goal) {
             self.persistenceController = persistenceController
-            self.habit = habit
-            self.habitTasksInput = habit.tasksNeeded
-            self.habitTimelineInput = habit.habitTimeline
-            self.originalTasksNeeded = habit.tasksNeeded
+            self.goal = goal
+            self.goalTasksInput = goal.tasksNeeded
+            self.goalTimelineInput = goal.goalTimeline
+            self.originalTasksNeeded = goal.tasksNeeded
+            self.reminderFrequency = goal.goalReminderFrequency == "" ? "Daily" : goal.goalReminderFrequency
+            self.selectedDays = goal.goalWeeklyReminders
+            self.selectedDaysOfMonth = goal.goalMonthlyReminders
         }
     }
 }
