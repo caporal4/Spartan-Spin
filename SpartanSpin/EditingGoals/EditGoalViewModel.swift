@@ -76,7 +76,7 @@ extension EditGoalView {
                 return
             }
             
-            updateStreakFromTimeline()
+            goal.updateStreakFromTimeline(goalTimelineInput)
             
             goal.goalTimeline = goalTimelineInput
             goal.goalTitle = validatedTitle
@@ -84,36 +84,17 @@ extension EditGoalView {
             goal.goalReminderFrequency = reminderFrequency
             goal.weeklyReminderTimes = selectedDays
             goal.monthlyReminderTimes = selectedDaysOfMonth
-                                        
+                                                    
             dismiss = true
         }
-        
-        func createAppSettingsURL() -> URL? {
-            let settingsURL = URL(string: UIApplication.openNotificationSettingsURLString)
-            return settingsURL
-        }
     
-        func updateReminder() {
-            persistenceController.removeReminders(for: goal)
-    
+        func updateReminder(_ goal: Goal) {
             Task { @MainActor in
-                if goal.reminderEnabled {
-                    let success = await persistenceController.addReminder(for: goal)
-    
-                    if success == false {
-                        goal.reminderEnabled = false
-                        showingNotificationsError = true
-                    }
-                }
-            }
-        }
-        
-        private func updateStreakFromTimeline() {
-            if goal.goalTimeline != goalTimelineInput {
-                if goal.streak > 0 {
-                    goal.streak = 1
-                    goal.lastStreakReset = Date.now
-                    goal.lastStreakIncrease = nil
+                let success = await persistenceController.updateReminder(for: goal)
+
+                if !success {
+                    goal.reminderEnabled = false
+                    showingNotificationsError = true
                 }
             }
         }

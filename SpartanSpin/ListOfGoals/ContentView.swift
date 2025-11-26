@@ -65,9 +65,9 @@ struct ContentView: View {
                     }
                 } else {
                     List {
-                        if !viewModel.dailyGoals(viewModel.goals).isEmpty {
+                        if !viewModel.goals.dailyGoals.isEmpty {
                             Section("Daily Goals") {
-                                ForEach(viewModel.dailyGoals(viewModel.goals)) { goal in
+                                ForEach(viewModel.goals.dailyGoals) { goal in
                                     NavigationLink(value: goal) {
                                         ZStack(alignment: .leading) {
                                             ContentViewRectangle()
@@ -80,12 +80,12 @@ struct ContentView: View {
                                     }
                                     .accessibilityIdentifier(goal.goalTitle)
                                 }
-                                .onDelete(perform: viewModel.dailyDelete)
+                                .onDelete(perform: viewModel.dailySwipeToDelete)
                             }
                         }
-                        if !viewModel.weeklyGoals(viewModel.goals).isEmpty {
+                        if !viewModel.goals.weeklyGoals.isEmpty {
                             Section("Weekly Goals") {
-                                ForEach(viewModel.weeklyGoals(viewModel.goals)) { goal in
+                                ForEach(viewModel.goals.weeklyGoals) { goal in
                                     NavigationLink(value: goal) {
                                         ZStack(alignment: .leading) {
                                             ContentViewRectangle()
@@ -98,12 +98,12 @@ struct ContentView: View {
                                     }
                                     .accessibilityIdentifier(goal.goalTitle)
                                 }
-                                .onDelete(perform: viewModel.weeklyDelete)
+                                .onDelete(perform: viewModel.weeklySwipeToDelete)
                             }
                         }
-                        if !viewModel.monthlyGoals(viewModel.goals).isEmpty {
+                        if !viewModel.goals.monthlyGoals.isEmpty {
                             Section("Monthly Goals") {
-                                ForEach(viewModel.monthlyGoals(viewModel.goals)) { goal in
+                                ForEach(viewModel.goals.monthlyGoals) { goal in
                                     NavigationLink(value: goal) {
                                         ZStack(alignment: .leading) {
                                             ContentViewRectangle()
@@ -116,7 +116,7 @@ struct ContentView: View {
                                     }
                                     .accessibilityIdentifier(goal.goalTitle)
                                 }
-                                .onDelete(perform: viewModel.monthlyDelete)
+                                .onDelete(perform: viewModel.monthlySwipeToDelete)
                             }
                         }
                     }

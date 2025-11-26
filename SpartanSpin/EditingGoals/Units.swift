@@ -35,3 +35,22 @@ struct Units {
         return [repititions, millileters, ounces, gallons, miles, kilometers, seconds, minutes, hours, noUnit]
     }
 }
+
+extension Units {
+    func convertToPlural(_ goal: Goal) -> String {
+        guard goal.unit != "No Unit" else { return "" }
+        
+        if goal.tasksNeeded == 1 {
+            return goal.goalUnit
+        } else {
+            if let index = list.firstIndex(of: goal.goalUnit) {
+                if goal.tasksNeeded == 1 {
+                    return list[index]
+                } else {
+                    return pluralList[index]
+                }
+            }
+            return goal.goalUnit
+        }
+    }
+}

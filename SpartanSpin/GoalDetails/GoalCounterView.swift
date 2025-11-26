@@ -20,7 +20,7 @@ struct GoalCounterView: View {
     
     var body: some View {
         HStack {
-            Button("Undo Task", systemImage: "minus", action: viewModel.undoTask)
+            Button("Undo Task", systemImage: "minus", action: goal.undoTask)
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()
@@ -39,7 +39,7 @@ struct GoalCounterView: View {
                         TextField("Enter Amount", text: $viewModel.numberInput)
                             .keyboardType(.decimalPad)
                         Button("Cancel", role: .cancel) { }
-                        Button("OK", action: viewModel.updateTasks)
+                        Button("OK", action: viewModel.updateTasksFromTextField)
                     }
                     .alert(
                         viewModel.errorMessage,
@@ -50,11 +50,11 @@ struct GoalCounterView: View {
                 Text("/\(Int(goal.tasksNeeded))")
                     .font(.title)
                     .foregroundStyle(.white)
-                Text(LocalizedStringKey(viewModel.convertToPlural(goal)))
+                Text(viewModel.units.convertToPlural(goal))
                     .font(.title)
                     .foregroundStyle(.white)
             }
-            Button("Complete Task", systemImage: "plus", action: viewModel.doTask)
+            Button("Complete Task", systemImage: "plus", action: goal.doTask)
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()

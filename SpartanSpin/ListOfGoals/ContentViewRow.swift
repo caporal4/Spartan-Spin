@@ -36,7 +36,7 @@ struct ContentViewRow: View {
                     .font(.headline)
                     .foregroundStyle(.white)
                 HStack {
-                    Text(LocalizedStringKey(viewModel.convertToPlural(goal: goal)))
+                    Text(LocalizedStringKey(viewModel.createFraction(goal: goal)))
                         .foregroundStyle(.white)
                 }
             }

@@ -323,7 +323,7 @@ final class SpartanSpinUITests: XCTestCase {
     
     func testSwipeToDelete() {
         app.buttons["Add Sample Goals"].tap()
-        let goalToDelete = "Feed Dog"
+        let goalToDelete = "Brush Teeth"
         let goalCell = app.cells.containing(.staticText, identifier: goalToDelete).firstMatch
         XCTAssertTrue(goalCell.exists, "Goal cell should exist")
         

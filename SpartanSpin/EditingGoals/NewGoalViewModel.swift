@@ -37,7 +37,6 @@ extension NewGoalView {
         @Published var enterNumberErrorMessage = "Enter a number of tasks required."
         @Published var titleErrorMessage = "Enter a valid goal title."
         
-        let frequencies = ["Daily", "Weekly", "Monthly"]
         let dayAbbreviations = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         
         @Published var reminderFrequency = "Daily"
@@ -90,7 +89,7 @@ extension NewGoalView {
             newGoal.tasksNeeded = tasksNeeded
             newGoal.unit = unit
             
-            updateReminder(newGoal)
+            callPersistenceToUpdateReminder(newGoal)
             
             try? viewContext.save()
             dismiss = true
@@ -99,7 +98,7 @@ extension NewGoalView {
         func checkSettings() {
             Task { @MainActor in
                 if reminderEnabled {
-                    let success = await persistenceController.addReminderNewGoal()
+                    let success = await persistenceController.ensureNotificationPermissions()
     
                     if success == false {
                         reminderEnabled = false
@@ -109,22 +108,13 @@ extension NewGoalView {
             }
         }
         
-        func createAppSettingsURL() -> URL? {
-            let settingsURL = URL(string: UIApplication.openNotificationSettingsURLString)
-            return settingsURL
-        }
-        
-        private func updateReminder(_ goal: Goal) {
-            persistenceController.removeReminders(for: goal)
-    
+        private func callPersistenceToUpdateReminder(_ goal: Goal) {
             Task { @MainActor in
-                if goal.reminderEnabled {
-                    let success = await persistenceController.addReminder(for: goal)
-    
-                    if success == false {
-                        goal.reminderEnabled = false
-                        showingNotificationsError = true
-                    }
+                let success = await persistenceController.updateReminder(for: goal)
+
+                if !success {
+                    goal.reminderEnabled = false
+                    showingNotificationsError = true
                 }
             }
         }

@@ -163,7 +163,7 @@ struct EditGoalView: View {
                 .preferredColorScheme(.light)
                 .alert("Oops!", isPresented: $viewModel.showingNotificationsError) {
                     Button("Check Settings") {
-                        guard let settingsURL = viewModel.createAppSettingsURL() else { return }
+                        guard let settingsURL = UIApplication.notificationSettingsURL else { return }
                         openURL(settingsURL)
                     }
                     Button("Cancel", role: .cancel) { }
@@ -204,10 +204,10 @@ struct EditGoalView: View {
                 }
                 
                 .onChange(of: goal.reminderEnabled, initial: false) { _, _  in
-                    viewModel.updateReminder()
+                    viewModel.updateReminder(goal)
                 }
                 .onChange(of: goal.reminderTime, initial: false) { _, _  in
-                    viewModel.updateReminder()
+                    viewModel.updateReminder(goal)
                 }
                 .onChange(of: viewModel.goalTimelineInput) { _, _ in
                     if goal.streak > 0 {

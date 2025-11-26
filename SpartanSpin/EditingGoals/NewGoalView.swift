@@ -71,7 +71,7 @@ struct NewGoalView: View {
                         
                         if viewModel.reminderEnabled {
                             Picker("Frequency", selection: $viewModel.reminderFrequency) {
-                                ForEach(viewModel.frequencies, id: \.self) {
+                                ForEach(viewModel.timelines.list, id: \.self) {
                                     Text($0)
                                 }
                             }
@@ -160,7 +160,7 @@ struct NewGoalView: View {
                 
                 .alert("Error", isPresented: $viewModel.showingNotificationsError) {
                     Button("Check Settings") {
-                        guard let settingsURL = viewModel.createAppSettingsURL() else { return }
+                        guard let settingsURL = UIApplication.notificationSettingsURL else { return }
                         openURL(settingsURL)
                     }
                     Button("Cancel", role: .cancel) { }

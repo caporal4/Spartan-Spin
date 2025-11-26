@@ -30,7 +30,7 @@ struct GoalView: View {
                 GoalCounterView(goal: goal, persistenceController: viewModel.persistenceController)
                 Spacer()
                 Spacer()
-                Text(viewModel.streakSentence(goal))
+                Text(goal.streakSentence())
                     .padding()
                     .font(.largeTitle)
                     .foregroundStyle(.white)

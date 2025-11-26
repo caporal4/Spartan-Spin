@@ -9,6 +9,18 @@ import Foundation
 import UserNotifications
 
 extension PersistenceController {
+    @MainActor
+    func updateReminder(for goal: Goal) async -> Bool {
+        removeReminders(for: goal)
+
+        if goal.reminderEnabled {
+            let success = await addReminder(for: goal)
+            return success
+        } else {
+            return true
+        }
+    }
+    
     func addReminder(for goal: Goal) async -> Bool {
         do {
             let center = UNUserNotificationCenter.current()
@@ -36,7 +48,7 @@ extension PersistenceController {
         }
     }
     
-    func addReminderNewGoal() async -> Bool {
+    func ensureNotificationPermissions() async -> Bool {
         do {
             let center = UNUserNotificationCenter.current()
             let settings = await center.notificationSettings()
@@ -61,7 +73,6 @@ extension PersistenceController {
         }
     }
 
-    // Make sure this works
     func removeReminders(for goal: Goal) {
         let center = UNUserNotificationCenter.current()
         let baseId = goal.objectID.uriRepresentation().absoluteString

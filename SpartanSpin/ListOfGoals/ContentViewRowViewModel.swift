@@ -13,18 +13,18 @@ extension ContentViewRow {
         
         let units = Units()
         
-        func convertToPlural(goal: Goal) -> String {
-            if goal.goalUnit != "No Unit" {
-                if goal.tasksNeeded == 1 {
-                    return "\(Int(goal.tasksCompleted))/\(Int(goal.tasksNeeded)) \(goal.goalUnit)"
-                } else {
-                    if let index = units.list.firstIndex(of: goal.goalUnit) {
-                        return "\(Int(goal.tasksCompleted))/\(Int(goal.tasksNeeded)) \(units.pluralList[index])"
-                    }
-                    return "\(Int(goal.tasksCompleted))/\(Int(goal.tasksNeeded)) \(goal.goalUnit)"
-                }
+        func createFraction(goal: Goal) -> String {
+            guard let index = units.list.firstIndex(of: goal.goalUnit) else {
+                return "\(Int(goal.tasksCompleted))/\(Int(goal.tasksNeeded)) \(goal.goalUnit)"
             }
-            return "\(Int(goal.tasksCompleted))/\(Int(goal.tasksNeeded))"
+            guard goal.goalUnit != "No Unit" else {
+                return "\(Int(goal.tasksCompleted))/\(Int(goal.tasksNeeded))"
+            }
+            if goal.tasksNeeded == 1 {
+                return "\(Int(goal.tasksCompleted))/\(Int(goal.tasksNeeded)) \(goal.goalUnit)"
+            } else {
+                return "\(Int(goal.tasksCompleted))/\(Int(goal.tasksNeeded)) \(units.pluralList[index])"
+            }
         }
         
         init(goal: Goal) {
