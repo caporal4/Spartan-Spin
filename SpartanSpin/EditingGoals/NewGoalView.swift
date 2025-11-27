@@ -67,6 +67,7 @@ struct NewGoalView: View {
                     Section("Reminders") {
                         Toggle("Enable reminders", isOn: $viewModel.reminderEnabled.animation())
                             .accessibilityIdentifier("Reminders Toggle")
+                            .accessibilityLabel("Reminders Toggle")
                             .tint(.green)
                         
                         if viewModel.reminderEnabled {

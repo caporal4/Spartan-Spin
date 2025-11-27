@@ -1,5 +1,5 @@
 //
-//  SpartanSpinUITests.swift
+//  SpartanSpinUIInteractionTests.swift
 //  SpartanSpin
 //
 //  Created by Brendan Caporale on 11/13/25.
@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class SpartanSpinUITests: XCTestCase {
+final class SpartanSpinUIInteractionTests: XCTestCase {
     var app: XCUIApplication!
 
     override func setUpWithError() throws {
@@ -16,93 +16,6 @@ final class SpartanSpinUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments = ["enable-testing"]
         app.launch()
-    }
-    
-    func testNoGoalsAtStart() {
-        XCTAssertTrue(
-            app.staticTexts["Create a new goal!"].exists,
-            "Static text saying 'Create a new goal!' exists, meaning no goals have been created yet."
-        )
-    }
-    
-//    func testForButtons() {
-//        XCTAssertTrue(app.buttons["Add Goal"].exists, "There should be an Add Goal button.")
-//        XCTAssertTrue(app.buttons["Add Sample Goals"].exists, "There should be an Add Sample Goals debug button.")
-//        
-//        app.buttons["Add Sample Goals"].tap()
-//        
-//        XCTAssertTrue(app.navigationBars.buttons["Add Goal"].exists, "There should be an Add Samples toolbar button.")
-//        XCTAssertTrue(
-//            app.navigationBars.buttons["ADD SAMPLES"].exists,
-//            "There should be an ADD SAMPLES debug toolbar button."
-//        )
-//        XCTAssertTrue(
-//            app.navigationBars.buttons["DELETE SAMPLES"].exists,
-//            "There should be an DELETE SAMPLES toolbar debug button."
-//        )
-//        
-//        app.buttons["Add Goal"].tap()
-//        
-//        XCTAssertTrue(app.textFields["Title TextField"].exists, "There should be a title text field.")
-//        XCTAssertTrue(app.textFields["Amount TextField"].exists, "There should be an amount text field.")
-//        XCTAssertTrue(
-//            app.buttons["Unit Picker"].exists,
-//            "There should be a unit picker."
-//        )
-//        XCTAssertTrue(
-//            app.buttons["Timeline Picker"].exists,
-//            "There should be a timeline picker."
-//        )
-//        XCTAssertTrue(
-//            app.navigationBars.buttons["Save"].exists,
-//            "There should be a save toolbar button."
-//        )
-//        XCTAssertTrue(
-//            app.toggles["Reminders Toggle"].exists,
-//            "There should be a reminders toggle."
-//        )
-//        
-//        app.buttons["Save"].tap()
-//        
-//        app.buttons["Feed Dog"].tap()
-//        
-//        XCTAssertTrue(app.navigationBars.buttons["Edit Goal"].exists, "There should be a Edit Goal toolbar button.")
-//        XCTAssertTrue(
-//    app.navigationBars.buttons["Delete Goal"].exists,
-//    "There should be a Delete Goal toolbar button."
-//    )
-//        XCTAssertTrue(app.buttons["Complete Task"].exists, "There should be a Complete Task button.")
-//        XCTAssertTrue(app.buttons["Undo Task"].exists, "There should be a Undo Task button.")
-//    }
-    
-    func testAddingAndDeletingGoalsWorks() {
-        XCTAssertTrue(app.buttons["Add Goal"].exists, "There should be a Add Goal button.")
-        
-        app.buttons["Add Goal"].tap()
-        app.textFields["Enter the goal title here"].tap()
-        app.typeText("Run")
-        app.textFields["Amount"].tap()
-        app.typeText("1")
-        
-        XCTAssertTrue(app.buttons["Add Goal"].exists, "There should be a Add Goal button.")
-        
-        app.buttons["Save"].tap()
-
-        XCTAssertTrue(app.buttons["Run"].exists, "Run goal should appear in list")
-        XCTAssertTrue(
-            app.navigationBars.buttons["Add Goal"].exists,
-            "There should be a Add Goal button in the toolbar."
-        )
-        
-        app.buttons["Run"].tap()
-        app.buttons["Delete Goal"].tap()
-        
-        XCTAssertTrue(app.buttons["Cancel"].exists, "There should be a Cancel button.")
-        XCTAssertTrue(app.buttons["Delete"].exists, "There should be a Cancel button.")
-        
-        app.buttons["Delete"].tap()
-        
-        XCTAssertFalse(app.buttons["Run"].exists, "Run goal should no longer in list")
     }
     
     func testEditingGoals() {
@@ -181,9 +94,7 @@ final class SpartanSpinUITests: XCTestCase {
         
         app.buttons["Undo Task"].tap()
         
-        XCTAssertFalse(app.staticTexts["1 Day Streak"].exists,
-            "There is no longer a 1 day streak."
-        )
+        XCTAssertFalse(app.staticTexts["1 Day Streak"].exists, "There is no longer a 1 day streak.")
     }
     
     func testCompletingTasksViaTextField() {
@@ -245,9 +156,7 @@ final class SpartanSpinUITests: XCTestCase {
         app.textFields["Amount"].tap()
         app.typeText("2")
         app.buttons["Save"].tap()
-        
         app.buttons["New Goal"].tap()
-        
         app.buttons["Complete Task"].tap()
         app.buttons["Complete Task"].tap()
         

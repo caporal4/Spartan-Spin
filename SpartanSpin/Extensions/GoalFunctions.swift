@@ -16,15 +16,15 @@ extension Goal {
         // If the streak has never increased, bail out so as to not reset everything
         guard let lastIncrease = lastStreakIncrease else { return false }
         
-        guard let lastWeek = calendar.date(byAdding: .weekOfYear, value: -1, to: today) else { return false }
-        
-        guard let lastMonth = calendar.date(byAdding: .month, value: -1, to: today) else { return false }
+        let yesterday = returnYesterday(today)
+        let lastWeek = returnLastWeek(today)
+        let lastMonth = returnLastMonth(today)
 
         switch goalTimeline {
         case "Daily":
             // If last increase wasn't today or yesterday, reset the streak
             let streakIncreasedToday = calendar.isDate(lastIncrease, inSameDayAs: today)
-            let streakIncreasedYesterday = calendar.isDateInYesterday(lastIncrease)
+            let streakIncreasedYesterday = calendar.isDate(lastIncrease, inSameDayAs: yesterday)
             if streakIncreasedToday || streakIncreasedYesterday {
                 return false
             } else {
@@ -55,6 +55,30 @@ extension Goal {
         default:
             return false
         }
+    }
+    
+    private func returnYesterday(_ date: Date) -> Date {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        
+        guard let yesterday = calendar.date(byAdding: .day, value: -1, to: date) else { return date }
+        return yesterday
+    }
+    
+    private func returnLastWeek(_ date: Date) -> Date {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        
+        guard let lastWeek = calendar.date(byAdding: .weekOfYear, value: -1, to: date) else { return date }
+        return lastWeek
+    }
+    
+    private func returnLastMonth(_ date: Date) -> Date {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        
+        guard let lastMonth = calendar.date(byAdding: .month, value: -1, to: date) else { return date }
+        return lastMonth
     }
     
     func shouldResetTasksForNewPeriod(_ today: Date) -> Bool {
@@ -101,6 +125,7 @@ extension Goal {
     
     func resetTasks() {
         tasksCompleted = 0
+        lastTaskReset = Date.now
     }
     // Used in GoalCounterView
     func doTask() {
@@ -161,6 +186,7 @@ extension Goal {
     }
     
     // Used in GoalView
+    // oldValue is the value of tasksCompleted at the time the user opens the text field.
     func handleTextField(_ input: Double, _ oldValue: Double) {
         tasksCompleted = input
         

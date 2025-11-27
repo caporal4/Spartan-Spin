@@ -9,7 +9,7 @@ import CoreData
 import XCTest
 @testable import SpartanSpin
 
-final class ExtensionTests: BaseTestCase {
+final class ExtensionUnwrapTests: BaseTestCase {
     let persistenceContainer = PersistenceController()
     
     func testGoalTitleUnwrap() {
