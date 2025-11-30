@@ -6,35 +6,61 @@
 //
 
 import SwiftUI
+import UIKit
 
-struct CalendarView: View {
+struct CalendarView: UIViewRepresentable {
+    @Binding var selectedDate: DateComponents?
+    
     @Environment(\.colorScheme) var colorScheme
 
-    var body: some View {
-        NavigationStack {
-            ZStack {
-                Colors.gradientC
-                    .ignoresSafeArea()
-                VStack {
-                    Text("Calendar View Coming Soon")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(Colors.spartanSpinGreen)
-                        .multilineTextAlignment(.center)
-                        .padding()
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Spartan Spin")
-                        .font(.headline)
-                        .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
-                }
-            }
+    var calendar: Calendar = .current
+
+    func makeUIView(context: Context) -> UICalendarView {
+        let calendarView = UICalendarView()
+        calendarView.calendar = calendar
+        calendarView.delegate = context.coordinator
+        
+        let dateSelection = UICalendarSelectionSingleDate(delegate: context.coordinator)
+        calendarView.selectionBehavior = dateSelection
+        
+        let tintColor = context.environment.colorScheme == .dark
+            ? UIColor(.white)
+            : UIColor(.black)
+        calendarView.tintColor = tintColor
+        
+        return calendarView
+    }
+    
+    func updateUIView(_ uiView: UICalendarView, context: Context) {
+        if let selection = uiView.selectionBehavior as? UICalendarSelectionSingleDate,
+           let selectedDate = selectedDate {
+            selection.setSelected(selectedDate, animated: true)
+        }
+        
+        let tintColor = context.environment.colorScheme == .dark
+            ? UIColor(.white)
+            : UIColor(.black)
+        uiView.tintColor = tintColor
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate {
+        var parent: CalendarView
+        
+        init(_ parent: CalendarView) {
+            self.parent = parent
+        }
+        
+        func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
+            parent.selectedDate = dateComponents
         }
     }
 }
 
 #Preview {
-    CalendarView()
+    // Provide a concrete Binding for previews
+    CalendarView(selectedDate: .constant(nil))
 }
