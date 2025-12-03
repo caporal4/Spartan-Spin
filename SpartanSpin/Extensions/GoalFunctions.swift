@@ -127,6 +127,7 @@ extension Goal {
         tasksCompleted = 0
         lastTaskReset = Date.now
     }
+    
     // Used in GoalCounterView
     func doTask() {
         tasksCompleted += 1

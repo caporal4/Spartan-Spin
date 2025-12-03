@@ -32,7 +32,7 @@ struct EditGoalView: View {
                             Text("Title")
                             TextField(
                                 "Title",
-                                text: $viewModel.goal.goalTitle,
+                                text: $viewModel.goalTitleInput,
                                 prompt: Text("Enter the goal title here")
                             )
                             .multilineTextAlignment(.trailing)
@@ -150,7 +150,7 @@ struct EditGoalView: View {
                 .scrollContentBackground(.hidden)
                 .toolbar {
                     Button("Save") {
-                        viewModel.validateChanges(title: viewModel.goal.goalTitle)
+                        viewModel.validateChanges(title: viewModel.goalTitleInput)
                         if viewModel.dismiss {
                             goal.objectWillChange.send()
                             viewModel.persistenceController.save()

@@ -18,6 +18,7 @@ extension EditGoalView {
         
         let originalTasksNeeded: Double
         
+        @Published var goalTitleInput: String
         @Published var goalTasksInput: Double?
         @Published var goalTimelineInput: String
             
@@ -102,6 +103,7 @@ extension EditGoalView {
         init(persistenceController: PersistenceController, goal: Goal) {
             self.persistenceController = persistenceController
             self.goal = goal
+            self.goalTitleInput = goal.goalTitle
             self.goalTasksInput = goal.tasksNeeded
             self.goalTimelineInput = goal.goalTimeline
             self.originalTasksNeeded = goal.tasksNeeded

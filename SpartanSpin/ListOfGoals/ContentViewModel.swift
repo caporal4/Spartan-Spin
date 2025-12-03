@@ -17,6 +17,8 @@ extension ContentView {
         
         @Published var goals = [Goal]()
         @Published var newGoal = false
+        @Published var newGoalMonthlyMove = false
+        @Published var monthlyMove = "Push-ups"
         
         init(persistenceController: PersistenceController) {
             self.persistenceController = persistenceController
@@ -70,6 +72,10 @@ extension ContentView {
         
         func showNewGoalView() {
             newGoal = true
+        }
+        
+        func showNewGoalViewMonthlyMove() {
+            newGoalMonthlyMove = true
         }
         
         func dailySwipeToDelete(_ offsets: IndexSet) {

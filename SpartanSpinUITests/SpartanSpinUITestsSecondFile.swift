@@ -1,5 +1,5 @@
 //
-//  SpartanSpinBasicUITests.swift
+//  SpartanSpinUITestsSecondFile.swift
 //  SpartanSpinUITests
 //
 //  Created by Brendan Caporale on 11/26/25.
@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class SpartanSpinBasicUITests: XCTestCase {
+final class SpartanSpinUITestsSecondFile: XCTestCase {
     var app: XCUIApplication!
 
     override func setUpWithError() throws {
@@ -107,5 +107,78 @@ final class SpartanSpinBasicUITests: XCTestCase {
         app.buttons["Delete"].tap()
         
         XCTAssertFalse(app.buttons["Run"].exists, "Run goal should no longer in list")
+    }
+    
+    func testMoveOfTheMonthButton() {
+        XCTAssertTrue(app.buttons["Move of the Month"].exists, "There should be a Move of the Month button.")
+        
+        app.buttons["Add Sample Goals"].tap()
+
+        XCTAssertTrue(app.buttons["Move of the Month"].exists, "There should be a Move of the Month button.")
+        
+        app.buttons["Move of the Month"].tap()
+        app.textFields["Amount TextField"].tap()
+        app.typeText("1")
+        
+        XCTAssertFalse(
+            app.staticTexts["Enter the goal title here"].exists,
+            "Move of the month should be pre populated, meaning placeholder text will not be there."
+        )
+        XCTAssertTrue(
+            app.staticTexts["Repitition"].exists,
+            "The unit should be preset to Repititions for move of the month."
+        )
+        
+        app.buttons["Save"].tap()
+        
+        XCTAssertFalse(
+            app.buttons["Move of the Month"].exists,
+            "There should not be a Move of the Month button now that the move of the month is a set goal."
+        )
+    }
+    
+    func testLevenshteinDistance() {
+        app.buttons["Move of the Month"].tap()
+        
+        app.textFields["Enter the goal title here"].tap()
+        app.textFields["Enter the goal title here"].press(forDuration: 1.0)
+        app.menuItems["Select All"].tap()
+        app.typeText("Push-up")
+        app.textFields["Amount TextField"].tap()
+        app.typeText("1")
+        app.buttons["Save"].tap()
+        
+        XCTAssertFalse(
+            app.buttons["Move of the Month"].exists,
+            "There should not be a Move of the Month button, even with a slight misspelling."
+        )
+        
+        app.buttons["Push-up"].tap()
+        app.buttons["Edit Goal"].tap()
+        app.textFields["Enter the goal title here"].tap()
+        app.textFields["Enter the goal title here"].press(forDuration: 1.0)
+        app.menuItems["Select All"].tap()
+        app.typeText("Pushup")
+        app.buttons["Save"].tap()
+        app.buttons["Back"].tap()
+
+        XCTAssertFalse(
+            app.buttons["Move of the Month"].exists,
+            "There should not be a Move of the Month button, even with a slight misspelling."
+        )
+        
+        app.buttons["Pushup"].tap()
+        app.buttons["Edit Goal"].tap()
+        app.textFields["Enter the goal title here"].tap()
+        app.textFields["Enter the goal title here"].press(forDuration: 1.0)
+        app.menuItems["Select All"].tap()
+        app.typeText("Pushp")
+        app.buttons["Save"].tap()
+        app.buttons["Back"].tap()
+        
+        XCTAssertTrue(
+            app.buttons["Move of the Month"].exists,
+            "There should be a Move of the Month button if it is off by more than 2 characters."
+        )
     }
 }

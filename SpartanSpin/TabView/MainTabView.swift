@@ -29,20 +29,12 @@ struct MainTabView: View {
                 ZStack {
                     Colors.gradientC
                         .ignoresSafeArea()
-                    VStack {
-                        CalendarView(selectedDate: $viewModel.selectedDate)
-                            .frame(height: 400)
-                        Spacer()
-                    }
-                }
-                .navigationDestination(isPresented: $viewModel.showingDetail) {
-                    if let selectedDate = viewModel.selectedDate {
-                        GoalsForDateView(date: selectedDate)
-                            .toolbar(.hidden, for: .tabBar)
-                    }
-                }
-                .onChange(of: viewModel.selectedDate) { _, newValue in
-                    viewModel.showingDetail = (newValue != nil)
+                    Text("Calendar View Coming Soon")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Colors.spartanSpinGreen)
+                        .multilineTextAlignment(.center)
+                        .padding()
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -51,17 +43,20 @@ struct MainTabView: View {
                             .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
                     }
                 }
+                .toolbarBackground(Colors.spartanSpinGreen.opacity(0.3), for: .tabBar)
+                .toolbarBackground(.visible, for: .tabBar)
             }
             .tabItem {
                 Label("Calendar", systemImage: "calendar")
             }
         }
-        .tabViewStyle(.tabBarOnly)
-        .tint(colorScheme == .dark ? .white : .black)    }
+        .tabViewStyle(.automatic)
+        .toolbarVisibility(.visible, for: .tabBar)
+        .tint(colorScheme == .dark ? .white : .black)
+        .persistentSystemOverlays(.hidden) 
+    }
 }
 
 #Preview {
-    let persistenceController = PersistenceController()
-
     MainTabView(persistenceController: .preview)
 }

@@ -103,4 +103,50 @@ class PersistenceController: ObservableObject {
     func count<T>(for fetchRequest: NSFetchRequest<T>) -> Int {
         (try? container.viewContext.count(for: fetchRequest)) ?? 0
     }
+    
+    func isMonthlyMoveActive(string: String, goals: [Goal]) -> Bool {
+        let normalizedMonthlyMove = string
+            .lowercased()
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        return goals.contains { goal in
+            let normalizedGoalTitle = goal.goalTitle
+                .lowercased()
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if normalizedGoalTitle == normalizedMonthlyMove {
+                return true
+            }
+            
+            if normalizedGoalTitle.contains(normalizedMonthlyMove) ||
+               normalizedMonthlyMove.contains(normalizedGoalTitle) {
+                return true
+            }
+            
+            return levenshteinDistance(normalizedGoalTitle, normalizedMonthlyMove) <= 2
+        }
+    }
+    
+    private func levenshteinDistance(_ stringOne: String, _ stringTwo: String) -> Int {
+        let stringOne = Array(stringOne)
+        let stringTwo = Array(stringTwo)
+        var dist = Array(repeating: Array(repeating: 0, count: stringTwo.count + 1), count: stringOne.count + 1)
+        
+        for count in 0...stringOne.count { dist[count][0] = count }
+        for count in 0...stringTwo.count { dist[0][count] = count }
+        
+        for countOne in 1...stringOne.count {
+            for countTwo in 1...stringTwo.count {
+                if stringOne[countOne-1] == stringTwo[countTwo-1] {
+                    dist[countOne][countTwo] = dist[countOne-1][countTwo-1]
+                } else {
+                    dist[countOne][countTwo] = min(dist[countOne-1][countTwo],
+                                                   dist[countOne][countTwo-1],
+                                                   dist[countOne-1][countTwo-1]) + 1
+                }
+            }
+        }
+        
+        return dist[stringOne.count][stringTwo.count]
+    }
 }

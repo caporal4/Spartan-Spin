@@ -17,9 +17,9 @@ extension NewGoalView {
         let timelines = Timelines()
         var calendar = Calendar.current
 
-        @Published var title = ""
+        @Published var title: String
         @Published var tasksNeeded: Double?
-        @Published var unit = "No Unit"
+        @Published var unit: String
         @Published var timeline = "Daily"
         @Published var reminderEnabled = false
         @Published var reminderTime = Date.now
@@ -119,7 +119,9 @@ extension NewGoalView {
             }
         }
         
-        init(persistenceController: PersistenceController) {
+        init(title: String, unit: String, persistenceController: PersistenceController) {
+            self.title = title
+            self.unit = unit
             self.persistenceController = persistenceController
         }
     }

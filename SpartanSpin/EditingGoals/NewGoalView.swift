@@ -12,9 +12,9 @@ struct NewGoalView: View {
     @Environment(\.openURL) var openURL
     
     @StateObject private var viewModel: ViewModel
-    
-    init(persistenceController: PersistenceController) {
-        let viewModel = ViewModel(persistenceController: persistenceController)
+        
+    init(title: String, unit: String, persistenceController: PersistenceController) {
+        let viewModel = ViewModel(title: title, unit: unit, persistenceController: persistenceController)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -208,6 +208,6 @@ struct NewGoalView: View {
 #Preview {
     let persistenceController = PersistenceController()
     
-    NewGoalView(persistenceController: .preview)
+    NewGoalView(title: "", unit: "Daily", persistenceController: .preview)
         .environmentObject(persistenceController)
 }
