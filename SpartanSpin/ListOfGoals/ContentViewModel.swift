@@ -18,10 +18,22 @@ extension ContentView {
         @Published var goals = [Goal]()
         @Published var newGoal = false
         @Published var newGoalMonthlyMove = false
-        @Published var monthlyMove = "Push-ups"
         
-        init(persistenceController: PersistenceController) {
+        private let moveService: MonthlyMoveService
+        private let moveCache: MonthlyMoveCache
+        
+        @Published var currentMove: MonthlyMove?
+        @Published var isLoadingMove = false
+        @Published var failedToLoad = false
+        
+        init(
+            persistenceController: PersistenceController,
+            moveService: MonthlyMoveService = MonthlyMoveAPI(),
+            moveCache: MonthlyMoveCache = MonthlyMoveCache()
+        ) {
             self.persistenceController = persistenceController
+            self.moveService = moveService
+            self.moveCache = moveCache
             
             let request = Goal.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(keyPath: \Goal.title, ascending: true)]
@@ -62,6 +74,40 @@ extension ContentView {
             } catch {
                 print("Failed to fetch goals")
             }
+        }
+        
+        @MainActor
+        func fetchMoveOfTheMonth() async {
+            isLoadingMove = true
+            
+            do {
+                if let move = moveCache.getCached() {
+                    currentMove = move
+                    isLoadingMove = false
+                    failedToLoad = false
+                    print("cached item retrieved")
+                    return
+                }
+                let moves = try await moveService.fetchMoves()
+                let calendar = Calendar.current
+                let currentMonth = calendar.component(.month, from: Date())
+                let currentYear = calendar.component(.year, from: Date())
+                
+                currentMove = moves.first { move in
+                    let monthName = calendar.monthSymbols[currentMonth - 1]
+                    return move.month == monthName && move.year == currentYear
+                }
+                failedToLoad = false
+                
+                guard let currentMove = currentMove else { return }
+                moveCache.cache(currentMove)
+            } catch {
+                failedToLoad = true
+                isLoadingMove = false
+                print("Move fetch error: \(error)")
+            }
+            
+            isLoadingMove = false
         }
         
         func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

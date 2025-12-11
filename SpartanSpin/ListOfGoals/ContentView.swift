@@ -46,11 +46,31 @@ struct ContentView: View {
                             .tint(colorScheme == .dark ? .white : .black)
                             Spacer()
                             Spacer()
-                            Button(action: viewModel.showNewGoalViewMonthlyMove) {
-                                MonthlyMoveButton(monthlyMove: viewModel.monthlyMove)
+                            if viewModel.isLoadingMove {
+                                ProgressView()
+                            } else {
+                                if let currentMove = viewModel.currentMove {
+                                    Button(action: viewModel.showNewGoalViewMonthlyMove) {
+                                        MonthlyMoveButton(
+                                            monthlyMove: currentMove.move,
+                                            failedToLoad: viewModel.failedToLoad
+                                        )
+                                    }
+                                    .accessibilityIdentifier("Move of the Month")
+                                    .padding()
+                                } else {
+                                    Button {
+                                        Task { await viewModel.fetchMoveOfTheMonth() }
+                                    } label: {
+                                        MonthlyMoveButton(
+                                            monthlyMove: "Failed to load",
+                                            failedToLoad: viewModel.failedToLoad
+                                        )
+                                    }
+                                    .accessibilityIdentifier("Move of the Month")
+                                    .padding()
+                                }
                             }
-                            .accessibilityIdentifier("Move of the Month")
-                            .padding()
                             Spacer()
 #if DEBUG
                             Button(action: viewModel.persistenceController.createSampleData) {
@@ -70,16 +90,6 @@ struct ContentView: View {
                                 .font(.headline)
                                 .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
                         }
-                    }
-                    .sheet(isPresented: $viewModel.newGoal) {
-                        NewGoalView(title: "", unit: "No Unit", persistenceController: viewModel.persistenceController)
-                    }
-                    .sheet(isPresented: $viewModel.newGoalMonthlyMove) {
-                        NewGoalView(
-                            title: viewModel.monthlyMove,
-                            unit: "Repitition",
-                            persistenceController: viewModel.persistenceController
-                        )
                     }
                 } else {
                     VStack(spacing: 0) {
@@ -139,25 +149,13 @@ struct ContentView: View {
                                 }
                             }
                         }
+                        .toolbarBackground(Colors.spartanSpinGreen.opacity(0.3), for: .tabBar)
+                        .toolbarBackground(.visible, for: .tabBar)
                         .scrollContentBackground(.hidden)
                         .background(Colors.gradientC)
                         .navigationDestination(for: Goal.self) { goal in
                             GoalView(goal: goal, persistenceController: viewModel.persistenceController)
                                 .toolbar(.hidden, for: .tabBar)
-                        }
-                        .sheet(isPresented: $viewModel.newGoal) {
-                            NewGoalView(
-                                title: "",
-                                unit: "No Unit",
-                                persistenceController: viewModel.persistenceController
-                            )
-                        }
-                        .sheet(isPresented: $viewModel.newGoalMonthlyMove) {
-                            NewGoalView(
-                                title: viewModel.monthlyMove,
-                                unit: "Repitition",
-                                persistenceController: viewModel.persistenceController
-                            )
                         }
                         .toolbar {
                             ToolbarItem(placement: .principal) {
@@ -194,25 +192,58 @@ struct ContentView: View {
                             }
 #endif
                         }
-                        
-                        .onAppear {
-                            viewModel.checkAndResetStreaks()
-                        }
-                        .toolbarBackground(Colors.spartanSpinGreen.opacity(0.3), for: .tabBar)
-                        .toolbarBackground(.visible, for: .tabBar)
                         if !viewModel.persistenceController.isMonthlyMoveActive(
-                            string: viewModel.monthlyMove,
+                            // fix nil coalesce
+                            string: viewModel.currentMove?.move ?? "Failed to load monthly move",
                             goals: viewModel.goals
                         ) {
-                            Button(action: viewModel.showNewGoalViewMonthlyMove) {
-                                MonthlyMoveButton(monthlyMove: viewModel.monthlyMove)
+                            if viewModel.isLoadingMove {
+                                ProgressView()
+                                    .frame(maxWidth: .infinity, maxHeight: 45)
+                                    .background(Colors.spartanSpinGreen)
+                            } else {
+                                if let currentMove = viewModel.currentMove {
+                                    Button(action: viewModel.showNewGoalViewMonthlyMove) {
+                                        MonthlyMoveButton(
+                                            monthlyMove: currentMove.move,
+                                            failedToLoad: viewModel.failedToLoad
+                                        )
+                                    }
+                                    .accessibilityIdentifier("Move of the Month")
+                                    .padding([.horizontal, .bottom])
+                                    .background(Colors.spartanSpinGreen)
+                                } else {
+                                    Button {
+                                        Task { await viewModel.fetchMoveOfTheMonth() }
+                                    } label: {
+                                        MonthlyMoveButton(monthlyMove: nil, failedToLoad: viewModel.failedToLoad)
+                                    }
+                                    .accessibilityIdentifier("Move of the Month")
+                                    .padding([.horizontal, .bottom])
+                                    .background(Colors.spartanSpinGreen)
+                                }
                             }
-                            .accessibilityIdentifier("Move of the Month")
-                            .padding([.horizontal, .bottom])
-                            .background(Colors.spartanSpinGreen)
                         }
                     }
                 }
+            }
+            .task {
+                await viewModel.fetchMoveOfTheMonth()
+            }
+
+            .sheet(isPresented: $viewModel.newGoal) {
+                NewGoalView(
+                    title: "",
+                    unit: "No Unit",
+                    persistenceController: viewModel.persistenceController
+                )
+            }
+            .sheet(isPresented: $viewModel.newGoalMonthlyMove) {
+                NewGoalView(
+                    title: viewModel.currentMove?.move ?? "",
+                    unit: "Repitition",
+                    persistenceController: viewModel.persistenceController
+                )
             }
         }
     }

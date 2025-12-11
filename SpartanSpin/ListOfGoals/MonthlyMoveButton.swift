@@ -8,27 +8,43 @@
 import SwiftUI
 
 struct MonthlyMoveButton: View {
-    let monthlyMove: String
-    
+    let monthlyMove: String?
+    let failedToLoad: Bool
     var body: some View {
         VStack(spacing: 20) {
             VStack(spacing: 8) {
-                Text("MOVE OF THE MONTH")
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Colors.spartanSpinGreen)
-                    .tracking(1)
-                
-                Text(monthlyMove)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-                
-                Text("Tap here to add as a goal")
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Colors.spartanSpinGreen)
-                    .tracking(1)
+                if failedToLoad {
+                    Text("Failed to load Move of the Month")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Colors.spartanSpinGreen)
+                        .tracking(1)
+                    
+                    Text("Tap here to try again")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Colors.spartanSpinGreen)
+                        .tracking(1)
+                } else {
+                    Text("MOVE OF THE MONTH")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Colors.spartanSpinGreen)
+                        .tracking(1)
+                    
+                    if let monthlyMove {
+                        Text(monthlyMove)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.black)
+                    }
+                    
+                    Text("Tap here to add as a goal")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Colors.spartanSpinGreen)
+                        .tracking(1)
+                }
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -44,5 +60,5 @@ struct MonthlyMoveButton: View {
 }
 
 #Preview {
-    MonthlyMoveButton(monthlyMove: "Push-ups")
+    MonthlyMoveButton(monthlyMove: "Push-ups", failedToLoad: false)
 }

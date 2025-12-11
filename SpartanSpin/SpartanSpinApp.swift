@@ -12,7 +12,7 @@ struct SpartanSpinApp: App {
     @Environment(\.scenePhase) var scenePhase
     
     @StateObject var persistenceController = PersistenceController()
-
+    
     var body: some Scene {
         WindowGroup {
             MainTabView(persistenceController: persistenceController)
