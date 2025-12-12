@@ -91,6 +91,12 @@ extension PersistenceController {
         
         center.removePendingNotificationRequests(withIdentifiers: identifiers)
     }
+    
+    func removeMultipleReminders(_ goals: [Goal]) {
+        for goal in goals {
+            removeReminders(for: goal)
+        }
+    }
 
     private func requestNotifications() async throws -> Bool {
         let center = UNUserNotificationCenter.current()

@@ -19,7 +19,6 @@ class MonthlyMoveCache: MonthlyMoveCaching {
     func cache(_ move: MonthlyMove) {
         guard let encoded = try? JSONEncoder().encode(move) else { return }
         userDefaults.set(encoded, forKey: cacheKey)
-        print("move cached")
     }
     
     func getCached() -> MonthlyMove? {

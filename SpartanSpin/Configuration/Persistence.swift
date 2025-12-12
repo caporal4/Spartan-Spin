@@ -118,8 +118,23 @@ class PersistenceController: ObservableObject {
                 return true
             }
             
-            if normalizedGoalTitle.contains(normalizedMonthlyMove) ||
-               normalizedMonthlyMove.contains(normalizedGoalTitle) {
+            return levenshteinDistance(normalizedGoalTitle, normalizedMonthlyMove) <= 2
+        }
+    }
+    
+    func findMatchingMonthlyMoveGoals(monthlyMoveTitle: String, goals: [Goal]) -> [Goal] {
+        
+        let normalizedMonthlyMove = monthlyMoveTitle
+            .lowercased()
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        return goals.filter { goal in
+            
+            let normalizedGoalTitle = goal.goalTitle
+                .lowercased()
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if normalizedGoalTitle == normalizedMonthlyMove {
                 return true
             }
             

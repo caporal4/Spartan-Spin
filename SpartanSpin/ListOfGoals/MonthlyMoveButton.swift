@@ -10,6 +10,13 @@ import SwiftUI
 struct MonthlyMoveButton: View {
     let monthlyMove: String?
     let failedToLoad: Bool
+    let count: Int? // Count refers to the number of goals that match the monthly move
+    let phrases = [
+        "Tap here to add as a goal",
+        "Tap here to view goal",
+        "Tap here to view goals"
+    ]
+    
     var body: some View {
         VStack(spacing: 20) {
             VStack(spacing: 8) {
@@ -39,11 +46,13 @@ struct MonthlyMoveButton: View {
                             .foregroundColor(.black)
                     }
                     
-                    Text("Tap here to add as a goal")
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .foregroundColor(Colors.spartanSpinGreen)
-                        .tracking(1)
+                    if let count = count {
+                        Text(phrases[calculatePhrase(count)])
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(Colors.spartanSpinGreen)
+                            .tracking(1)
+                    }
                 }
             }
             .frame(maxWidth: .infinity)
@@ -57,8 +66,17 @@ struct MonthlyMoveButton: View {
             .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
         }
     }
+    private func calculatePhrase(_ int: Int) -> Int {
+        if int == 0 {
+            return int
+        } else if int == 1 {
+            return int
+        } else {
+            return 2
+        }
+    }
 }
 
 #Preview {
-    MonthlyMoveButton(monthlyMove: "Push-ups", failedToLoad: false)
+    MonthlyMoveButton(monthlyMove: "Push-ups", failedToLoad: false, count: 1)
 }

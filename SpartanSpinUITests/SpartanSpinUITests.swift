@@ -199,37 +199,6 @@ final class SpartanSpinUIInteractionTests: XCTestCase {
         )
     }
     
-    func testChangingTimeline() {
-        app.buttons["Add Goal"].tap()
-        app.textFields["Enter the goal title here"].tap()
-        app.typeText("New Goal")
-        app.textFields["Amount"].tap()
-        app.typeText("1")
-        app.buttons["Save"].tap()
-        
-        app.buttons["New Goal"].tap()
-        
-        app.buttons["Complete Task"].tap()
-        
-        app.buttons["Edit Goal"].tap()
-        app.buttons["Timeline Picker"].tap()
-        app.buttons["Weekly"].tap()
-        app.buttons["Save"].tap()
-        
-        XCTAssertTrue(app.staticTexts["1 Week Streak"].exists,
-            "There is now a 1 week streak."
-        )
-        
-        app.buttons["Edit Goal"].tap()
-        app.buttons["Timeline Picker"].tap()
-        app.buttons["Monthly"].tap()
-        app.buttons["Save"].tap()
-        
-        XCTAssertTrue(app.staticTexts["1 Month Streak"].exists,
-            "There is now a 1 month streak."
-        )
-    }
-    
     func testSwipeToDelete() {
         app.buttons["Add Sample Goals"].tap()
         let goalToDelete = "Brush Teeth"

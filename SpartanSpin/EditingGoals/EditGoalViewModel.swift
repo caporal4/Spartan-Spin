@@ -20,7 +20,6 @@ extension EditGoalView {
         
         @Published var goalTitleInput: String
         @Published var goalTasksInput: Double?
-        @Published var goalTimelineInput: String
             
         @Published var showingNotificationsError = false
         @Published var showWholeNumberError = false
@@ -77,9 +76,8 @@ extension EditGoalView {
                 return
             }
             
-            goal.updateStreakFromTimeline(goalTimelineInput)
+            goal.updateStreakFromTimeline(goal.goalTimeline)
             
-            goal.goalTimeline = goalTimelineInput
             goal.goalTitle = validatedTitle
             goal.tasksNeeded = validatedTasksInput
             goal.goalReminderFrequency = reminderFrequency
@@ -105,7 +103,6 @@ extension EditGoalView {
             self.goal = goal
             self.goalTitleInput = goal.goalTitle
             self.goalTasksInput = goal.tasksNeeded
-            self.goalTimelineInput = goal.goalTimeline
             self.originalTasksNeeded = goal.tasksNeeded
             self.reminderFrequency = goal.goalReminderFrequency == "" ? "Daily" : goal.goalReminderFrequency
             self.selectedDays = goal.goalWeeklyReminders

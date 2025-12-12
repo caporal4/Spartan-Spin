@@ -25,6 +25,7 @@ extension ContentView {
         @Published var currentMove: MonthlyMove?
         @Published var isLoadingMove = false
         @Published var failedToLoad = false
+        @Published var multipleGoalsWithMonthlyMove = false
         
         init(
             persistenceController: PersistenceController,
@@ -78,6 +79,29 @@ extension ContentView {
         
         @MainActor
         func fetchMoveOfTheMonth() async {
+            if CommandLine.arguments.contains("-forceMonthlyMove"),
+               let forceIndex = CommandLine.arguments.firstIndex(of: "-forceMonthlyMove"),
+               forceIndex + 1 < CommandLine.arguments.count {
+                
+                let forcedMoveName = CommandLine.arguments[forceIndex + 1]
+                
+                let currentDate = Date()
+                let calendar = Calendar.current
+                let month = calendar.component(.month, from: currentDate)
+                let year = calendar.component(.year, from: currentDate)
+                
+                // Get month name
+                let monthName = calendar.monthSymbols[month - 1] // January = index 0
+                
+                let testMove = MonthlyMove(
+                    move: forcedMoveName,
+                    month: monthName,
+                    year: year
+                )
+                
+                currentMove = testMove
+                return
+            }
             isLoadingMove = true
             
             do {
@@ -85,7 +109,6 @@ extension ContentView {
                     currentMove = move
                     isLoadingMove = false
                     failedToLoad = false
-                    print("cached item retrieved")
                     return
                 }
                 let moves = try await moveService.fetchMoves()
@@ -124,6 +147,10 @@ extension ContentView {
             newGoalMonthlyMove = true
         }
         
+        func showMonthlyMoveList() {
+            multipleGoalsWithMonthlyMove = true
+        }
+        
         func dailySwipeToDelete(_ offsets: IndexSet) {
             let dailyGoals = goals.dailyGoals
             for offset in offsets {
@@ -151,12 +178,6 @@ extension ContentView {
                 persistenceController.removeReminders(for: item)
                 persistenceController.delete(item)
                 persistenceController.save()
-            }
-        }
-        
-        func removeAllNotifications() {
-            for goal in goals {
-                persistenceController.removeReminders(for: goal)
             }
         }
 
