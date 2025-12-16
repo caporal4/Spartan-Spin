@@ -198,6 +198,9 @@ struct ContentView: View {
                     .toolbarBackground(.visible, for: .tabBar)
                 }
             }
+            .onAppear {
+                viewModel.checkAndResetStreaks()
+            }
             .task {
                 await viewModel.fetchMoveOfTheMonth()
             }
