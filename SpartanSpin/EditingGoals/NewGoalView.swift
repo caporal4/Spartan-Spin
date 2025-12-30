@@ -41,7 +41,8 @@ struct NewGoalView: View {
                             TextField(
                                 "Amount",
                                 value: $viewModel.tasksNeeded,
-                                format: .number
+                                format: .number,
+                                prompt: Text("Enter the amount needed")
                             )
                             .accessibilityIdentifier("Amount TextField")
                             .multilineTextAlignment(.trailing)
