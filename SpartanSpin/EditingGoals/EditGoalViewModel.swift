@@ -11,7 +11,7 @@ import SwiftUI
 extension EditGoalView {
     class ViewModel: ObservableObject {
         var persistenceController: PersistenceController
-        var goal: Goal
+        @ObservedObject var goal: Goal
         
         let units = Units()
         let timelines = Timelines()
@@ -83,6 +83,8 @@ extension EditGoalView {
             goal.goalReminderFrequency = reminderFrequency
             goal.weeklyReminderTimes = selectedDays
             goal.monthlyReminderTimes = selectedDaysOfMonth
+            
+            updateReminder(goal)
                                                     
             dismiss = true
         }

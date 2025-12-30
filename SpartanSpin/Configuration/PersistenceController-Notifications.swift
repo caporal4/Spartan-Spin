@@ -107,9 +107,8 @@ extension PersistenceController {
         let content = UNMutableNotificationContent()
         content.sound = .default
         content.title = goal.goalTitle
-        
-        let timeComponents = Calendar.current.dateComponents([.day, .hour, .minute], from: goal.goalReminderTime)
         let baseId = goal.objectID.uriRepresentation().absoluteString
+        let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: goal.goalReminderTime)
 
         switch goal.reminderFrequency {
         case "Daily":
@@ -124,7 +123,7 @@ extension PersistenceController {
                 let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
                 let id = "\(baseId)-weekday\(weekday)"
                 let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-                return try await UNUserNotificationCenter.current().add(request)
+                try await UNUserNotificationCenter.current().add(request)
             }
         case "Monthly":
             for day in goal.goalMonthlyReminders {

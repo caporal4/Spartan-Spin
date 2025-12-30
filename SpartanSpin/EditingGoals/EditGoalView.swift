@@ -206,9 +206,6 @@ struct EditGoalView: View {
                 .onChange(of: goal.reminderEnabled, initial: false) { _, _  in
                     viewModel.updateReminder(goal)
                 }
-                .onChange(of: goal.reminderTime, initial: false) { _, _  in
-                    viewModel.updateReminder(goal)
-                }
                 .onChange(of: viewModel.goal.goalTimeline) { _, _ in
                     if goal.streak > 0 {
                         viewModel.streakAlert = true

@@ -17,9 +17,10 @@ struct Units {
     let second = "Second"
     let minute = "Hour"
     let hour = "Minute"
+    let classUnit = "Class"
     let noUnit = "No Unit"
     var list: [String] {
-        return [repitition, millileter, ounce, gallon, mile, kilometer, second, minute, hour, noUnit]
+        return [repitition, millileter, ounce, gallon, mile, kilometer, second, minute, hour, classUnit, noUnit]
     }
 
     let repititions = "Repititions"
@@ -31,8 +32,9 @@ struct Units {
     let seconds = "Seconds"
     let minutes = "Hours"
     let hours = "Minutes"
+    let classes = "Classes"
     var pluralList: [String] {
-        return [repititions, millileters, ounces, gallons, miles, kilometers, seconds, minutes, hours, noUnit]
+        return [repititions, millileters, ounces, gallons, miles, kilometers, seconds, minutes, hours, classes, noUnit]
     }
 }
 
