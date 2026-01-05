@@ -29,12 +29,20 @@ struct MainTabView: View {
                 ZStack {
                     Colors.gradientC
                         .ignoresSafeArea()
-                    Text("Calendar View Coming Soon")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(Colors.spartanSpinGreen)
-                        .multilineTextAlignment(.center)
-                        .padding()
+                    VStack {
+                        CalendarView(selectedDate: $viewModel.selectedDate)
+                            .frame(height: 400)
+                        Spacer()
+                    }
+                }
+                .navigationDestination(isPresented: $viewModel.showingDetail) {
+                    if let selectedDate = viewModel.selectedDate {
+                        GoalsForDateView(date: selectedDate)
+                            .toolbar(.hidden, for: .tabBar)
+                    }
+                }
+                .onChange(of: viewModel.selectedDate) { _, newValue in
+                    viewModel.showingDetail = (newValue != nil)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
