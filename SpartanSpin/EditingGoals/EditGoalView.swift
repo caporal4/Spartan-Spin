@@ -54,7 +54,7 @@ struct EditGoalView: View {
                             .keyboardType(.decimalPad)
                             .tint(.blue)
                         }
-                        Picker(selection: $viewModel.goal.goalUnit) {
+                        Picker(selection: $viewModel.goalUnitInput) {
                             ForEach(viewModel.units.list, id: \.self) {
                                 Text($0)
                             }
@@ -69,7 +69,7 @@ struct EditGoalView: View {
                         }
                         .tint(.secondary)
                         .accessibilityIdentifier("Unit Picker")
-                        Picker(selection: $viewModel.goal.goalTimeline) {
+                        Picker(selection: $viewModel.goalTimelineInput) {
                             ForEach(viewModel.timelines.list, id: \.self) {
                                 Text($0)
                             }
@@ -226,7 +226,7 @@ struct EditGoalView: View {
                 .onChange(of: goal.reminderEnabled, initial: false) { _, _  in
                     viewModel.updateReminder(goal)
                 }
-                .onChange(of: viewModel.goal.goalTimeline) { _, _ in
+                .onChange(of: viewModel.goalTimelineInput) { _, _ in
                     if goal.streak > 0 {
                         viewModel.streakAlert = true
                     }
