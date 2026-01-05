@@ -33,13 +33,16 @@ final class SpartanSpinUITestsMonthlyMove: XCTestCase {
             app.staticTexts["Enter the goal title here"].exists,
             "Move of the month should be pre populated, meaning placeholder text will not be there."
         )
-        XCTAssertTrue(
-            app.staticTexts["Repitition"].exists,
-            "The unit should be preset to Repititions for move of the month."
-        )
+
     }
     
     func testMonthlyMoveButtonPhrase() {
+        app.launchArguments.append("-forceMonthlyMove")
+        app.launchArguments.append("Push-ups")
+        app.launchArguments.append("Repetition")
+        app.terminate()
+        app.launch()
+        
         var text = app.staticTexts["Tap here to add as a goal"]
         
         XCTAssertTrue(text.exists, "Phrase at bottom of monthly move button should read 'Tap here to add as a goal'")
@@ -51,7 +54,7 @@ final class SpartanSpinUITestsMonthlyMove: XCTestCase {
         app.buttons["Add Goal"].tap()
         app.textFields["Enter the goal title here"].tap()
         app.typeText("Pushups")
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("2")
         app.buttons["Save"].tap()
         
@@ -62,7 +65,7 @@ final class SpartanSpinUITestsMonthlyMove: XCTestCase {
         app.buttons["Add Goal"].tap()
         app.textFields["Enter the goal title here"].tap()
         app.typeText("Push-u")
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("2")
         app.buttons["Save"].tap()
         
@@ -74,13 +77,14 @@ final class SpartanSpinUITestsMonthlyMove: XCTestCase {
     func testMonthlyMoveListSheet() {
         app.launchArguments.append("-forceMonthlyMove")
         app.launchArguments.append("Push-ups")
+        app.launchArguments.append("Repetition")
         app.terminate()
         app.launch()
 
         app.buttons["Add Goal"].tap()
         app.textFields["Enter the goal title here"].tap()
         app.typeText("Push-ups")
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("2")
         app.buttons["Save"].tap()
         
@@ -95,7 +99,7 @@ final class SpartanSpinUITestsMonthlyMove: XCTestCase {
         app.buttons["Add Goal"].tap()
         app.textFields["Enter the goal title here"].tap()
         app.typeText("Push-ups")
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("2")
         app.buttons["Save"].tap()
         

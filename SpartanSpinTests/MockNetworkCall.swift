@@ -31,9 +31,9 @@ final class MockNetworkCall: BaseTestCase {
      func testFetchMovesSuccess() async throws {
          // Arrange: Create mock JSON data
          let mockMoves = [
-             MonthlyMove(move: "Push-ups", month: "January", year: 2025),
-             MonthlyMove(move: "Squats", month: "February", year: 2025),
-             MonthlyMove(move: "Lunges", month: "March", year: 2025)
+             MonthlyMove(move: "Push-ups", unit: "Repetition", month: "January", year: 2025),
+             MonthlyMove(move: "Squats", unit: "Repetition", month: "February", year: 2025),
+             MonthlyMove(move: "Lunges", unit: "Repetition", month: "March", year: 2025)
          ]
          
          let mockData = try JSONEncoder().encode(mockMoves)

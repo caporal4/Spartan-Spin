@@ -40,8 +40,13 @@ struct EditGoalView: View {
                         }
                         HStack {
                             Text("Amount")
+                            PopoverView(
+                                popoverText: viewModel.amountPopoverText,
+                                frameWidth: viewModel.amountPopoverWidth
+                            )
+                            Spacer()
                             TextField(
-                                "Amount",
+                                "Enter the amount needed",
                                 value: $viewModel.goalTasksInput,
                                 format: .number
                             )
@@ -49,21 +54,36 @@ struct EditGoalView: View {
                             .keyboardType(.decimalPad)
                             .tint(.blue)
                         }
-                        Picker("Unit", selection: $viewModel.goal.goalUnit) {
+                        Picker(selection: $viewModel.goal.goalUnit) {
                             ForEach(viewModel.units.list, id: \.self) {
                                 Text($0)
+                            }
+                        } label: {
+                            HStack {
+                                Text("Unit")
+                                PopoverView(
+                                    popoverText: viewModel.unitPopoverText,
+                                    frameWidth: viewModel.unitPopoverWidth
+                                )
                             }
                         }
                         .tint(.secondary)
                         .accessibilityIdentifier("Unit Picker")
-                        Picker("Timeline", selection: $viewModel.goal.goalTimeline) {
+                        Picker(selection: $viewModel.goal.goalTimeline) {
                             ForEach(viewModel.timelines.list, id: \.self) {
                                 Text($0)
+                            }
+                        } label: {
+                            HStack {
+                                Text("Timeline")
+                                PopoverView(
+                                    popoverText: viewModel.timelinePopoverText,
+                                    frameWidth: viewModel.timelinePopoverWidth
+                                )
                             }
                         }
                         .accessibilityIdentifier("Timeline Picker")
                         .tint(.secondary)
-
                     }
                     
                     Section("Reminders") {

@@ -32,7 +32,7 @@ extension GoalCounterView {
                 showError = true
                 return
             }
-            guard convertedNumber >= 0 else {
+            guard convertedNumber >= 0 && convertedNumber.truncatingRemainder(dividingBy: 1) == 0 else {
                 showError = true
                 return
             }

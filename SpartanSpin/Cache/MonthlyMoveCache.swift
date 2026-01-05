@@ -28,7 +28,6 @@ class MonthlyMoveCache: MonthlyMoveCaching {
         let calendar = Calendar.current
         let currentMonth = calendar.monthSymbols[calendar.component(.month, from: Date()) - 1]
         let currentYear = calendar.component(.year, from: Date())
-        
         guard move.month == currentMonth && move.year == currentYear else {
             clearCache()
             return nil

@@ -22,7 +22,7 @@ final class SpartanSpinUIInteractionTests: XCTestCase {
         app.buttons["Add Goal"].tap()
         app.textFields["Enter the goal title here"].tap()
         app.typeText("New Goal")
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("1")
         app.buttons["Save"].tap()
         
@@ -35,15 +35,15 @@ final class SpartanSpinUIInteractionTests: XCTestCase {
         app.buttons["Edit Goal"].tap()
         app.textFields["Enter the goal title here"].tap()
         app.typeText("Edited ")
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("1")
         app.buttons["Unit Picker"].tap()
-        app.buttons["Repitition"].tap()
+        app.buttons["Repetition"].tap()
         app.buttons["Save"].tap()
 
         XCTAssertTrue(
-            app.staticTexts["Repititions"].exists,
-            "Now that repititions is the unit, it shouls state such below the tasks needed and completed."
+            app.staticTexts["Repetitions"].exists,
+            "Now that repetitions is the unit, it shouls state such below the tasks needed and completed."
         )
         XCTAssertEqual(
             app.staticTexts["Goal Title Toolbar"].label, "Edited New Goal",
@@ -55,19 +55,19 @@ final class SpartanSpinUIInteractionTests: XCTestCase {
         )
         
         app.buttons["Edit Goal"].tap()
-        app.textFields["Amount"].tap()
-        app.textFields["Amount"].press(forDuration: 1.0)
+        app.textFields["Enter the amount needed"].tap()
+        app.textFields["Enter the amount needed"].press(forDuration: 1.0)
         app.menuItems["Select All"].tap()
         app.typeText("1")
         
-        XCTAssertTrue(app.staticTexts["Repitition"].exists, "Repitition should now be singular.")
+        XCTAssertTrue(app.staticTexts["Repetition"].exists, "Repetition should now be singular.")
     }
     
     func testCompletingAndUndoingTasks() {
         app.buttons["Add Goal"].tap()
         app.textFields["Enter the goal title here"].tap()
         app.typeText("New Goal")
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("2")
         app.buttons["Save"].tap()
         
@@ -153,7 +153,7 @@ final class SpartanSpinUIInteractionTests: XCTestCase {
         app.buttons["Add Goal"].tap()
         app.textFields["Enter the goal title here"].tap()
         app.typeText("New Goal")
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("2")
         app.buttons["Save"].tap()
         app.buttons["New Goal"].tap()
@@ -165,7 +165,7 @@ final class SpartanSpinUIInteractionTests: XCTestCase {
         )
         
         app.buttons["Edit Goal"].tap()
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("1")
         app.buttons["Save"].tap()
 
@@ -189,8 +189,8 @@ final class SpartanSpinUIInteractionTests: XCTestCase {
         )
         
         app.buttons["Edit Goal"].tap()
-        app.textFields["Amount"].tap()
-        app.textFields["Amount"].press(forDuration: 1.0)
+        app.textFields["Enter the amount needed"].tap()
+        app.textFields["Enter the amount needed"].press(forDuration: 1.0)
         app.menuItems["Select All"].tap()
         app.typeText("1")
         

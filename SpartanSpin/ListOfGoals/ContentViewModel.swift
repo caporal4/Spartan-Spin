@@ -84,6 +84,7 @@ extension ContentView {
                forceIndex + 1 < CommandLine.arguments.count {
                 
                 let forcedMoveName = CommandLine.arguments[forceIndex + 1]
+                let forcedMoveUnit = CommandLine.arguments[forceIndex + 2]
                 
                 let currentDate = Date()
                 let calendar = Calendar.current
@@ -93,8 +94,10 @@ extension ContentView {
                 // Get month name
                 let monthName = calendar.monthSymbols[month - 1] // January = index 0
                 
+                // fix
                 let testMove = MonthlyMove(
                     move: forcedMoveName,
+                    unit: forcedMoveUnit,
                     month: monthName,
                     year: year
                 )

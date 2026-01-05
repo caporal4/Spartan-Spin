@@ -39,6 +39,7 @@ final class CacheTests: BaseTestCase {
         
         let move = MonthlyMove(
             move: "Push-ups",
+            unit: "Repetition",
             month: currentMonth,
             year: currentYear
         )
@@ -48,6 +49,7 @@ final class CacheTests: BaseTestCase {
         let retrieved = cache.getCached()
         XCTAssertNotNil(retrieved, "Should retrieve cached move")
         XCTAssertEqual(retrieved?.move, "Push-ups")
+        XCTAssertEqual(retrieved?.unit, "Repetition")
         XCTAssertEqual(retrieved?.month, currentMonth)
         XCTAssertEqual(retrieved?.year, currentYear)
     }
@@ -66,6 +68,7 @@ final class CacheTests: BaseTestCase {
         
         let move = MonthlyMove(
             move: "Squats",
+            unit: "Repetition",
             month: currentMonth,
             year: currentYear
         )
@@ -90,6 +93,7 @@ final class CacheTests: BaseTestCase {
         
         let oldMove = MonthlyMove(
             move: "Old Move",
+            unit: "Repetition",
             month: previousMonthName,
             year: currentYear
         )
@@ -113,6 +117,7 @@ final class CacheTests: BaseTestCase {
         
         let oldMove = MonthlyMove(
             move: "Last Year's Move",
+            unit: "Repetition",
             month: currentMonth,
             year: lastYear
         )
@@ -144,6 +149,7 @@ final class CacheTests: BaseTestCase {
         
         let firstMove = MonthlyMove(
             move: "First Move",
+            unit: "Repetition",
             month: currentMonth,
             year: currentYear
         )
@@ -152,6 +158,7 @@ final class CacheTests: BaseTestCase {
         
         let secondMove = MonthlyMove(
             move: "Second Move",
+            unit: "Repetition",
             month: currentMonth,
             year: currentYear
         )
@@ -169,7 +176,8 @@ final class CacheTests: BaseTestCase {
         let currentYear = calendar.component(.year, from: Date())
         
         let move = MonthlyMove(
-            move: "Jumping Jacks™ & High-Knees (30°)",
+            move: "Jumping Jacks & High-Knees",
+            unit: "Repetition",
             month: currentMonth,
             year: currentYear
         )
@@ -177,7 +185,7 @@ final class CacheTests: BaseTestCase {
         cache.cache(move)
         let retrieved = cache.getCached()
         
-        XCTAssertEqual(retrieved?.move, "Jumping Jacks™ & High-Knees (30°)")
+        XCTAssertEqual(retrieved?.move, "Jumping Jacks & High-Knees")
     }
         
     func testMultipleCacheInstancesShareData() {
@@ -190,6 +198,7 @@ final class CacheTests: BaseTestCase {
         
         let move = MonthlyMove(
             move: "Shared Move",
+            unit: "Repetition",
             month: currentMonth,
             year: currentYear
         )

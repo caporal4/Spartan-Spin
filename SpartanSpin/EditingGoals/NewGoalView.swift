@@ -12,7 +12,7 @@ struct NewGoalView: View {
     @Environment(\.openURL) var openURL
     
     @StateObject private var viewModel: ViewModel
-        
+            
     init(title: String, unit: String, persistenceController: PersistenceController) {
         let viewModel = ViewModel(title: title, unit: unit, persistenceController: persistenceController)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -38,6 +38,12 @@ struct NewGoalView: View {
                         }
                         HStack {
                             Text("Amount")
+                            PopoverView(
+                                popoverText: viewModel.amountPopoverText,
+                                frameWidth: viewModel.amountPopoverWidth
+                            )
+                            Spacer()
+                            
                             TextField(
                                 "Amount",
                                 value: $viewModel.tasksNeeded,
@@ -49,16 +55,33 @@ struct NewGoalView: View {
                             .keyboardType(.decimalPad)
                             .tint(.blue)
                         }
-                        Picker("Unit", selection: $viewModel.unit) {
+                        Picker(selection: $viewModel.unit) {
                             ForEach(viewModel.units.list, id: \.self) {
                                 Text($0)
                             }
+                        } label: {
+                            HStack {
+                                Text("Unit")
+                                PopoverView(
+                                    popoverText: viewModel.unitPopoverText,
+                                    frameWidth: viewModel.unitPopoverWidth
+                                )
+                            }
                         }
-                        .tint(.secondary)
                         .accessibilityIdentifier("Unit Picker")
-                        Picker("Timeline", selection: $viewModel.timeline) {
+                        .tint(.secondary)
+
+                        Picker(selection: $viewModel.timeline) {
                             ForEach(viewModel.timelines.list, id: \.self) {
                                 Text($0)
+                            }
+                        } label: {
+                            HStack {
+                                Text("Timeline")
+                                PopoverView(
+                                    popoverText: viewModel.timelinePopoverText,
+                                    frameWidth: viewModel.timelinePopoverWidth
+                                )
                             }
                         }
                         .tint(.secondary)

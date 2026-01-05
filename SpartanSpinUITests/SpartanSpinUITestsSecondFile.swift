@@ -85,7 +85,7 @@ final class SpartanSpinUITestsSecondFile: XCTestCase {
         app.buttons["Add Goal"].tap()
         app.textFields["Enter the goal title here"].tap()
         app.typeText("Run")
-        app.textFields["Amount"].tap()
+        app.textFields["Enter the amount needed"].tap()
         app.typeText("1")
         
         XCTAssertTrue(app.buttons["Add Goal"].exists, "There should be a Add Goal button.")

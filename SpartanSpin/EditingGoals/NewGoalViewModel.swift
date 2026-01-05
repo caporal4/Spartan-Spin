@@ -29,6 +29,18 @@ extension NewGoalView {
         @Published var showEnterNumberError = false
         @Published var showTitleError = false
         
+        @Published var showAmountInfo = false
+        let amountPopoverText = "Enter the number of tasks you want to complete for this goal"
+        let amountPopoverWidth: CGFloat = 200
+        
+        @Published var showTimelineInfo = false
+        let timelinePopoverText = "Select how often you want to complete this goal"
+        let timelinePopoverWidth: CGFloat = 175
+        
+        @Published var showUnitInfo = false
+        let unitPopoverText = "Pick the measurement unit for your goal"
+        let unitPopoverWidth: CGFloat = 175
+        
         @Published var notificationErrorMessage =
             """
             There was a problem setting your notification. Please check you have notifications enabled.

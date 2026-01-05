@@ -218,7 +218,7 @@ struct ContentView: View {
             .sheet(isPresented: $viewModel.newGoalMonthlyMove) {
                 NewGoalView(
                     title: viewModel.currentMove?.move ?? "",
-                    unit: "Repitition",
+                    unit: viewModel.currentMove?.unit ?? "",
                     persistenceController: viewModel.persistenceController
                 )
             }
