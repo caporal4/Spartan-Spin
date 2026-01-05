@@ -16,8 +16,15 @@ extension MainTabView {
         
         @Published var showingDetail = false
         
+        let today = Date()
+        
+        func setToday() {
+            selectedDate = Calendar.current.dateComponents([.day, .month, .year], from: today)
+        }
+        
         init(persistenceController: PersistenceController) {
             self.persistenceController = persistenceController
+            self.selectedDate = Calendar.current.dateComponents([.day, .month, .year], from: Date())
         }
     }
 }
