@@ -90,7 +90,7 @@ extension EditGoalView {
                 return
             }
             
-            goal.updateStreakFromTimeline(goalTimelineInput)
+            goal.updateStreakFromTimeline(goalTimelineInput, context: persistenceController.container.viewContext)
             
             goal.goalTitle = validatedTitle
             goal.tasksNeeded = validatedTasksInput

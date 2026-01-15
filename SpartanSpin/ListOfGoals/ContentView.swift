@@ -11,6 +11,8 @@ import CoreData
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     
+    @EnvironmentObject var mainViewModel: MainTabView.ViewModel
+    
     @StateObject private var viewModel: ViewModel
     
     init(persistenceController: PersistenceController) {
@@ -21,7 +23,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if viewModel.goals.isEmpty {
+                if mainViewModel.goals.isEmpty {
                     ZStack {
                         Colors.gradientC
                             .ignoresSafeArea()
@@ -54,7 +56,7 @@ struct ContentView: View {
                                         MonthlyMoveButton(
                                             monthlyMove: currentMove.move,
                                             failedToLoad: viewModel.failedToLoad,
-                                            count: viewModel.goals.count
+                                            count: mainViewModel.goals.count
                                         )
                                     }
                                     .accessibilityIdentifier("Move of the Month")
@@ -98,21 +100,24 @@ struct ContentView: View {
                         List {
                             GoalSectionView(
                                 title: "Daily Goals",
-                                goals: viewModel.goals.dailyGoals,
-                                onDelete: viewModel.dailySwipeToDelete,
-                                reloadData: viewModel.reloadData
+                                goals: mainViewModel.goals.dailyGoals,
+                                onDelete: { offsets in
+                                    viewModel.swipeToDelete(goals: mainViewModel.goals.dailyGoals, offsets)
+                                }
                             )
                             GoalSectionView(
                                 title: "Weekly Goals",
-                                goals: viewModel.goals.weeklyGoals,
-                                onDelete: viewModel.weeklySwipeToDelete,
-                                reloadData: viewModel.reloadData
+                                goals: mainViewModel.goals.weeklyGoals,
+                                onDelete: { offsets in
+                                    viewModel.swipeToDelete(goals: mainViewModel.goals.weeklyGoals, offsets)
+                                }
                             )
                             GoalSectionView(
                                 title: "Monthly Goals",
-                                goals: viewModel.goals.monthlyGoals,
-                                onDelete: viewModel.monthlySwipeToDelete,
-                                reloadData: viewModel.reloadData
+                                goals: mainViewModel.goals.monthlyGoals,
+                                onDelete: { offsets in
+                                    viewModel.swipeToDelete(goals: mainViewModel.goals.monthlyGoals, offsets)
+                                }
                             )
                         }
                         .scrollContentBackground(.hidden)
@@ -125,11 +130,11 @@ struct ContentView: View {
                                     if let monthlyMove = viewModel.currentMove {
                                         let matchGoals = viewModel.persistenceController.findMatchingMonthlyMoveGoals(
                                             monthlyMoveTitle: monthlyMove.move,
-                                            goals: viewModel.goals
+                                            goals: mainViewModel.goals
                                         )
                                         if viewModel.persistenceController.isMonthlyMoveActive(
                                             string: monthlyMove.move,
-                                            goals: viewModel.goals
+                                            goals: mainViewModel.goals
                                         ) {
                                             // monthly move is equal to a goal, find out how many
                                             if matchGoals.count == 1 {
@@ -191,7 +196,7 @@ struct ContentView: View {
                         createSampleData: viewModel.persistenceController.createSampleData,
                         deleteAll: viewModel.persistenceController.deleteAll,
                         removeAllNotifications: {
-                            viewModel.persistenceController.removeMultipleReminders(viewModel.goals)
+                            viewModel.persistenceController.removeMultipleReminders(mainViewModel.goals)
                         }
                     )
                     .toolbarBackground(Colors.spartanSpinGreen.opacity(0.3), for: .tabBar)
@@ -199,7 +204,7 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                viewModel.checkAndResetStreaks()
+                viewModel.checkAndResetStreaks(goals: mainViewModel.goals)
             }
             .task {
                 await viewModel.fetchMoveOfTheMonth()
@@ -226,7 +231,7 @@ struct ContentView: View {
                 if let monthlyMove = viewModel.currentMove {
                     let matchGoals = viewModel.persistenceController.findMatchingMonthlyMoveGoals(
                         monthlyMoveTitle: monthlyMove.move,
-                        goals: viewModel.goals
+                        goals: mainViewModel.goals
                     )
                     MonthlyMoveListView(
                         persistenceController: viewModel.persistenceController,

@@ -5,6 +5,7 @@
 //  Created by Brendan Caporale on 11/13/25.
 //
 
+import Combine
 import Foundation
 
 extension GoalCounterView {
@@ -13,7 +14,7 @@ extension GoalCounterView {
         var goal: Goal
         
         let units = Units()
-        
+                
         @Published var showPopup = false
         @Published var numberInput = ""
         @Published var showError = false
@@ -37,7 +38,7 @@ extension GoalCounterView {
                 return
             }
             
-            goal.handleTextField(convertedNumber, oldValue)
+            goal.handleTextField(convertedNumber, oldValue, context: persistenceController.container.viewContext)
 
             numberInput = ""
         }
@@ -47,7 +48,10 @@ extension GoalCounterView {
             numberInput = ""
         }
         
-        init(persistenceController: PersistenceController, goal: Goal) {
+        init(
+            persistenceController: PersistenceController,
+            goal: Goal
+        ) {
             self.persistenceController = persistenceController
             self.goal = goal
         }

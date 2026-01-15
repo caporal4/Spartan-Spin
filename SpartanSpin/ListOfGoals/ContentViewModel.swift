@@ -5,17 +5,15 @@
 //  Created by Brendan Caporale on 11/13/25.
 //
 
+import Combine
 import CoreData
 import Foundation
 import SwiftUI
 
 extension ContentView {
-    class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
+    class ViewModel: ObservableObject {
         var persistenceController: PersistenceController
         
-        private let goalsController: NSFetchedResultsController<Goal>
-        
-        @Published var goals = [Goal]()
         @Published var newGoal = false
         @Published var newGoalMonthlyMove = false
         
@@ -35,46 +33,6 @@ extension ContentView {
             self.persistenceController = persistenceController
             self.moveService = moveService
             self.moveCache = moveCache
-            
-            let request = Goal.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(keyPath: \Goal.title, ascending: true)]
-            
-            goalsController = NSFetchedResultsController(
-                fetchRequest: request,
-                managedObjectContext: persistenceController.container.viewContext,
-                sectionNameKeyPath: nil,
-                cacheName: nil
-            )
-            
-            super.init()
-            
-            goalsController.delegate = self
-            
-            do {
-                try goalsController.performFetch()
-                goals = goalsController.fetchedObjects ?? []
-            } catch {
-                print("Failed to fetch goals")
-            }
-        }
-        
-        func reloadData() {
-            let request = Goal.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(keyPath: \Goal.title, ascending: true)]
-            
-            let newController: NSFetchedResultsController<Goal>
-            newController = NSFetchedResultsController(
-                fetchRequest: request,
-                managedObjectContext: persistenceController.container.viewContext,
-                sectionNameKeyPath: nil,
-                cacheName: nil
-            )
-            do {
-                try newController.performFetch()
-                goals = newController.fetchedObjects ?? []
-            } catch {
-                print("Failed to fetch goals")
-            }
         }
         
         @MainActor
@@ -136,12 +94,6 @@ extension ContentView {
             isLoadingMove = false
         }
         
-        func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-            if let newGoals = controller.fetchedObjects as? [Goal] {
-                goals = newGoals
-            }
-        }
-        
         func showNewGoalView() {
             newGoal = true
         }
@@ -154,46 +106,25 @@ extension ContentView {
             multipleGoalsWithMonthlyMove = true
         }
         
-        func dailySwipeToDelete(_ offsets: IndexSet) {
-            let dailyGoals = goals.dailyGoals
+        func swipeToDelete(goals: [Goal], _ offsets: IndexSet) {
             for offset in offsets {
-                let item = dailyGoals[offset]
-                persistenceController.removeReminders(for: item)
-                persistenceController.delete(item)
-                persistenceController.save()
-            }
-        }
-        
-        func weeklySwipeToDelete(_ offsets: IndexSet) {
-            let weeklyGoals = goals.weeklyGoals
-            for offset in offsets {
-                let item = weeklyGoals[offset]
-                persistenceController.removeReminders(for: item)
-                persistenceController.delete(item)
-                persistenceController.save()
-            }
-        }
-        
-        func monthlySwipeToDelete(_ offsets: IndexSet) {
-            let monthlyGoals = goals.monthlyGoals
-            for offset in offsets {
-                let item = monthlyGoals[offset]
+                let item = goals[offset]
                 persistenceController.removeReminders(for: item)
                 persistenceController.delete(item)
                 persistenceController.save()
             }
         }
 
-        func checkAndResetStreaks() {
+        func checkAndResetStreaks(goals: [Goal]) {
             let date = Date.now
             
             for goal in goals {
                 if goal.shouldResetStreak(date) {
                 // If true, this means the streak wasn't met today or in the last period, so it resets
-                    goal.resetStreak()
+                    goal.resetStreak(context: persistenceController.container.viewContext)
                 
                 } else if goal.shouldResetTasksForNewPeriod(date) {
-                    goal.resetTasks()
+                    goal.resetTasks(context: persistenceController.container.viewContext)
                 }
             }
         }

@@ -10,7 +10,7 @@ import SwiftUI
 struct MainTabView: View {
     @Environment(\.colorScheme) var colorScheme
 
-    @StateObject private var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
     
     init(persistenceController: PersistenceController) {
         let viewModel = ViewModel(persistenceController: persistenceController)
@@ -29,20 +29,35 @@ struct MainTabView: View {
                 ZStack {
                     Colors.gradientC
                         .ignoresSafeArea()
-                    VStack {
-                        CalendarView(selectedDate: $viewModel.selectedDate)
-                            .frame(height: 400)
-                        Spacer()
+                    ScrollView {
+                        VStack {
+                            MonthCalendarView(selectedDate: $viewModel.selectedDate)
+                                .frame(height: 400)
+                            Divider()
+                            WeekProgressView()
+                            Divider()
+                            MonthProgressView(goals: viewModel.goals)
+                                .padding()
+                        }
                     }
+                    .scrollIndicators(.never)
                 }
-                .navigationDestination(isPresented: $viewModel.showingDetail) {
-                    if let selectedDate = viewModel.selectedDate {
-                        GoalsForDateView(date: selectedDate)
+                // Navigation destination for individual dates
+                .navigationDestination(item: $viewModel.selectedDate) { date in
+                        GoalsForDateView(date: date, recordsForDate: viewModel.goalRecords)
                             .toolbar(.hidden, for: .tabBar)
-                    }
+                            .onDisappear {
+                                viewModel.selectedDate = nil
+                            }
                 }
-                .onChange(of: viewModel.selectedDate) { _, newValue in
-                    viewModel.showingDetail = (newValue != nil)
+                // Navigation destination for weeks
+                .navigationDestination(for: Date.self) { date in
+                    let components = Calendar.current.dateComponents(
+                        [.year, .month, .day],
+                        from: date
+                    )
+                    GoalsForDateView(date: components, recordsForDate: viewModel.goalRecords)
+                        .toolbar(.hidden, for: .tabBar)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -58,6 +73,7 @@ struct MainTabView: View {
                 Label("Calendar", systemImage: "calendar")
             }
         }
+        .environmentObject(viewModel)
         .tabViewStyle(.automatic)
         .toolbarVisibility(.visible, for: .tabBar)
         .tint(colorScheme == .dark ? .white : .black)

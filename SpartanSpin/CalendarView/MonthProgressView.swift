@@ -1,20 +1,18 @@
 //
-//  GoalSectionView.swift
+//  MonthProgressView.swift
 //  SpartanSpin
 //
-//  Created by Brendan Caporale on 12/11/25.
+//  Created by Brendan Caporale on 1/6/26.
 //
 
 import SwiftUI
 
-struct GoalSectionView: View {
-    let title: String
+struct MonthProgressView: View {
     let goals: [Goal]
-    let onDelete: (IndexSet) -> Void
-    
+
     var body: some View {
         if !goals.isEmpty {
-            Section(title) {
+            Section("Monthly Goals") {
                 ForEach(goals) { goal in
                     NavigationLink(value: goal) {
                         ZStack(alignment: .leading) {
@@ -25,12 +23,11 @@ struct GoalSectionView: View {
                     .listRowBackground(Colors.spartanSpinGreen)
                     .accessibilityIdentifier(goal.goalTitle)
                 }
-                .onDelete(perform: onDelete)
             }
         }
     }
 }
 
 #Preview {
-    GoalSectionView(title: "Daily", goals: [], onDelete: {_ in })
+    MonthProgressView(goals: [])
 }

@@ -10,6 +10,8 @@ import SwiftUI
 struct GoalView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
+    
+    @EnvironmentObject var mainViewModel: MainTabView.ViewModel
 
     @StateObject private var viewModel: ViewModel
     

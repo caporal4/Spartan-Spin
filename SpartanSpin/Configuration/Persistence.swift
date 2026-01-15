@@ -11,11 +11,9 @@ import SwiftUI
 
 class PersistenceController: ObservableObject {
     let container: NSPersistentContainer
-    
+        
     var spotlightDelegate: NSCoreDataCoreSpotlightDelegate?
-    
-    @Published var selectedGoal: Goal?
-    
+            
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Goal", managedObjectModel: Self.model)
         

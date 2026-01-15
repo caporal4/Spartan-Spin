@@ -10,6 +10,8 @@ import SwiftUI
 struct GoalCounterView: View {
     @StateObject private var viewModel: ViewModel
     
+    @EnvironmentObject var mainViewModel: MainTabView.ViewModel
+    
     @ObservedObject var goal: Goal
     
     init(goal: Goal, persistenceController: PersistenceController) {
@@ -20,7 +22,13 @@ struct GoalCounterView: View {
     
     var body: some View {
         HStack {
-            Button("Undo Task", systemImage: "minus", action: goal.undoTask)
+            Button("Undo Task", systemImage: "minus") {
+                mainViewModel.goalRecords = goal.undoTask(
+                    context: viewModel.persistenceController.container.viewContext,
+                    records: mainViewModel.goalRecords
+                )
+                print(mainViewModel.goalRecords.count)
+            }
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()
@@ -54,7 +62,13 @@ struct GoalCounterView: View {
                     .font(.title)
                     .foregroundStyle(.white)
             }
-            Button("Complete Task", systemImage: "plus", action: goal.doTask)
+            Button("Complete Task", systemImage: "plus") {
+                mainViewModel.goalRecords = goal.doTask(
+                    context: viewModel.persistenceController.container.viewContext,
+                    records: mainViewModel.goalRecords
+                )
+                print(mainViewModel.goalRecords.count)
+            }
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()

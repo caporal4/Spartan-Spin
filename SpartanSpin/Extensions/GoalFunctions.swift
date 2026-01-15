@@ -5,6 +5,7 @@
 //  Created by Brendan Caporale on 11/25/25.
 //
 
+import CoreData
 import Foundation
 
 extension Goal {
@@ -117,33 +118,42 @@ extension Goal {
         }
     }
 
-    func resetStreak() {
+    func resetStreak(context: NSManagedObjectContext) {
         streak = 0
         tasksCompleted = 0
         lastStreakReset = Date.now
+        try? self.managedObjectContext?.save()
     }
     
-    func resetTasks() {
+    func resetTasks(context: NSManagedObjectContext) {
         tasksCompleted = 0
         lastTaskReset = Date.now
+        try? self.managedObjectContext?.save()
     }
     
     // Used in GoalCounterView
-    func doTask() {
+    func doTask(context: NSManagedObjectContext, records: [GoalRecord]) -> [GoalRecord] {
         tasksCompleted += 1
-
-        guard allowStreakUpdate() else { return }
+        let (record, updatedRecords) = createOrFindRecord(context: context, records: records, goal: self)
+        updateRecord(record)
+        guard allowStreakUpdate() else {
+            try? self.managedObjectContext?.save()
+            return updatedRecords
+        }
 
         if tasksCompleted == tasksNeeded {
             streak += 1
             lastStreakIncrease = Date.now
+            updateRecord(record)
         }
         
         try? self.managedObjectContext?.save()
+        return updatedRecords
     }
     
-    func undoTask() {
-        guard tasksCompleted > 0 else { return }
+    func undoTask(context: NSManagedObjectContext, records: [GoalRecord]) -> [GoalRecord] {
+        guard tasksCompleted > 0 else { return records }
+        let (record, updatedRecords) = createOrFindRecord(context: context, records: records, goal: self)
         if tasksCompleted == tasksNeeded {
             if streak > 0 {
                 streak -= 1
@@ -151,7 +161,9 @@ extension Goal {
             lastStreakIncrease = nil
         }
         tasksCompleted -= 1
+        updateRecord(record)
         try? self.managedObjectContext?.save()
+        return updatedRecords
     }
     
     private func allowStreakUpdate() -> Bool {
@@ -188,7 +200,7 @@ extension Goal {
     
     // Used in GoalView
     // oldValue is the value of tasksCompleted at the time the user opens the text field.
-    func handleTextField(_ input: Double, _ oldValue: Double) {
+    func handleTextField(_ input: Double, _ oldValue: Double, context: NSManagedObjectContext) {
         tasksCompleted = input
         
         if tasksCompleted < tasksNeeded && oldValue >= tasksNeeded {
@@ -218,7 +230,7 @@ extension Goal {
     }
     
     // Used in EditGoalViewModel
-    func updateStreakFromTimeline(_ input: String) {
+    func updateStreakFromTimeline(_ input: String, context: NSManagedObjectContext) {
         if goalTimeline != input {
             if streak > 0 {
                 streak = 1
