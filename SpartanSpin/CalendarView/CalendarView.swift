@@ -76,5 +76,6 @@ struct MonthCalendarView: View {
 }
 
 #Preview {
-    MonthCalendarView(displayedMonth: Date(), selectedDate: .constant(nil))
+    let components = Calendar.current.dateComponents([.day, .month, .year], from: Date())
+    MonthCalendarView(displayedMonth: Date(), selectedDate: .constant(components))
 }
