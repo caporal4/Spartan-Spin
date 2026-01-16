@@ -8,26 +8,25 @@
 import SwiftUI
 
 struct MonthProgressView: View {
+    let month: Date
     let goals: [Goal]
 
     var body: some View {
         if !goals.isEmpty {
-            Section("Monthly Goals") {
-                ForEach(goals) { goal in
-                    NavigationLink(value: goal) {
-                        ZStack(alignment: .leading) {
-                            ContentViewRectangle()
-                            ContentViewRow(goal: goal)
-                        }
+            ForEach(goals) { goal in
+                NavigationLink(value: goal) {
+                    ZStack(alignment: .leading) {
+                        ContentViewRectangle()
+                        ContentViewRow(goal: goal)
                     }
-                    .listRowBackground(Colors.spartanSpinGreen)
-                    .accessibilityIdentifier(goal.goalTitle)
                 }
+                .listRowBackground(Colors.spartanSpinGreen)
+                .accessibilityIdentifier(goal.goalTitle)
             }
         }
     }
 }
 
 #Preview {
-    MonthProgressView(goals: [])
+    MonthProgressView(month: Date(), goals: [])
 }

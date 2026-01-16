@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MonthCalendarView: View {
-    @State private var displayedMonth: Date = Date()
+    let displayedMonth: Date
     @Binding var selectedDate: DateComponents?
     
     let calendar = Calendar.current
@@ -20,47 +20,8 @@ struct MonthCalendarView: View {
         cellHeight * cellSpacing * maxRows
     }
     
-    var monthTitle: String {
-        displayedMonth.formatted(.dateTime.month(.wide).year())
-    }
-    
-    func daysInMonth() -> [Date] {
-        guard let monthInterval = calendar.dateInterval(of: .month, for: displayedMonth) else { return [] }
-        guard let firstWeek = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.start) else { return [] }
-        
-        let dates = calendar.generateDates(
-            inside: DateInterval(start: firstWeek.start, end: monthInterval.end),
-            matching: DateComponents(hour: 0, minute: 0, second: 0)
-        )
-        
-        print(dates.count)
-
-        return dates
-    }
-    
     var body: some View {
         VStack(spacing: 12) {
-            HStack {
-                Button {
-                    displayedMonth = calendar.date(byAdding: .month, value: -1, to: displayedMonth)!
-                } label: {
-                    Image(systemName: "chevron.left")
-                }
-                
-                Spacer()
-                
-                Text(monthTitle)
-                    .font(.headline)
-                
-                Spacer()
-                
-                Button {
-                    displayedMonth = calendar.date(byAdding: .month, value: 1, to: displayedMonth)!
-                } label: {
-                    Image(systemName: "chevron.right")
-                }
-            }
-            
             LazyVGrid(columns: columns) {
                 ForEach(calendar.shortWeekdaySymbols, id: \.self) {
                     Text($0)
@@ -86,18 +47,34 @@ struct MonthCalendarView: View {
                 }
             }
         }
-        .frame(height: 360, alignment: .topLeading)
+        .frame(alignment: .topLeading)
         .padding()
     }
     
+    // Add error handling
     func convertToDate(date: DateComponents) -> Date {
-        return calendar.date(from: date)!
+        guard let convertedDate = calendar.date(from: date) else { return Date.now }
+        return convertedDate
+            
     }
+    
     func convertToDateComponents(date: Date) -> DateComponents {
         return calendar.dateComponents([.day, .month, .year], from: date)
+    }
+    
+    func daysInMonth() -> [Date] {
+        guard let monthInterval = calendar.dateInterval(of: .month, for: displayedMonth) else { return [] }
+        guard let firstWeek = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.start) else { return [] }
+        
+        let dates = calendar.generateDates(
+            inside: DateInterval(start: firstWeek.start, end: monthInterval.end),
+            matching: DateComponents(hour: 0, minute: 0, second: 0)
+        )
+        
+        return dates
     }
 }
 
 #Preview {
-    MonthCalendarView(selectedDate: .constant(nil))
+    MonthCalendarView(displayedMonth: Date(), selectedDate: .constant(nil))
 }

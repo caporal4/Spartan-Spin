@@ -22,14 +22,6 @@ struct GoalsForDateView: View {
                 if let day = date.day {
                     Text(String(day))
                 }
-                ForEach(recordsForDate) { record in
-                    VStack {
-                        let components = calendar.dateComponents([.day], from: record.date!)
-                        if components.day == date.day {
-                            Text(record.title!)
-                        }
-                    }
-                }
             }
         }
         .toolbar {

@@ -22,10 +22,15 @@ extension MainTabView {
         @Published var goalRecords = [GoalRecord]()
 
         @Published var selectedDate: DateComponents?
+        @Published var displayedMonth: Date = Date()
 
         var calendar: Calendar = .current
+        var monthTitle: String {
+            displayedMonth.formatted(.dateTime.month(.wide).year())
+        }
         
         @Published var showingDetail = false
+        @Published var showingMonthPicker = false
         
         init(persistenceController: PersistenceController) {
             self.persistenceController = persistenceController
@@ -71,6 +76,12 @@ extension MainTabView {
             if let newGoalRecords = controller.fetchedObjects as? [GoalRecord] {
                 goalRecords = newGoalRecords
             }
+        }
+        
+        // Add error handling
+        func calculateNewDate(of date: Date, amount: Int) {
+            guard let newMonth =  Calendar.current.date(byAdding: .month, value: amount, to: date) else { return }
+            displayedMonth = newMonth
         }
     }
 }

@@ -132,9 +132,10 @@ extension Goal {
     }
     
     // Used in GoalCounterView
+    // test: ensure record updates properly
     func doTask(context: NSManagedObjectContext, records: [GoalRecord]) -> [GoalRecord] {
-        tasksCompleted += 1
         let (record, updatedRecords) = createOrFindRecord(context: context, records: records, goal: self)
+        tasksCompleted += 1
         updateRecord(record)
         guard allowStreakUpdate() else {
             try? self.managedObjectContext?.save()
@@ -151,6 +152,7 @@ extension Goal {
         return updatedRecords
     }
     
+    // test: ensure record updates properly
     func undoTask(context: NSManagedObjectContext, records: [GoalRecord]) -> [GoalRecord] {
         guard tasksCompleted > 0 else { return records }
         let (record, updatedRecords) = createOrFindRecord(context: context, records: records, goal: self)
@@ -200,16 +202,19 @@ extension Goal {
     
     // Used in GoalView
     // oldValue is the value of tasksCompleted at the time the user opens the text field.
-    func handleTextField(_ input: Double, _ oldValue: Double, context: NSManagedObjectContext) {
+    // test: ensure record updates properly
+    func handleTextField(_ input: Double, _ oldValue: Double, records: [GoalRecord], context: NSManagedObjectContext) {
+        let (record, _) = createOrFindRecord(context: context, records: records, goal: self)
         tasksCompleted = input
-        
         if tasksCompleted < tasksNeeded && oldValue >= tasksNeeded {
             streak -= 1
             lastStreakIncrease = nil
+            updateRecord(record)
             try? self.managedObjectContext?.save()
         } else if tasksCompleted >= tasksNeeded && oldValue < tasksNeeded {
             streak += 1
             lastStreakIncrease = Date.now
+            updateRecord(record)
             try? self.managedObjectContext?.save()
         }
     }

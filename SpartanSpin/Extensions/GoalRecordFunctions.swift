@@ -29,10 +29,8 @@ extension Goal {
         
         // Check if record exists for today
         if let existing = findRecord(for: today, records: records, goal: goal) {
-            print("Old Record found")
             return (existing, records)
         }
-        print("New record created")
         
         // Create new record for today
         let record = GoalRecord(context: context)

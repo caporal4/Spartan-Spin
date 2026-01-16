@@ -8,17 +8,15 @@
 import SwiftUI
 
 struct WeekProgressView: View {
-    @State private var month: Date = Date()
-
+    let month: Date
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Weekly Goals Progress")
-                .font(.headline)
-            
             ForEach(weeksInMonth, id: \.self) { weekStart in
                 NavigationLink(value: weekStart) {
                     WeekProgressViewRow(
-                        weekStart: weekStart
+                        weekStart: weekStart,
+                        weekEnd: weekEnd(of: weekStart)
                     )
                 }
             }
@@ -47,8 +45,14 @@ struct WeekProgressView: View {
         
         return weeks
     }
+    
+    // Add error handling
+    func weekEnd(of date: Date) -> Date {
+        guard let weekEnd =  Calendar.current.date(byAdding: .day, value: 6, to: date) else { return date }
+        return weekEnd
+    }
 }
 
 #Preview {
-    WeekProgressView()
+    WeekProgressView(month: Date())
 }

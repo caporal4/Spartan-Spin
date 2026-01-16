@@ -47,7 +47,10 @@ struct GoalCounterView: View {
                         TextField("Enter Amount", text: $viewModel.numberInput)
                             .keyboardType(.decimalPad)
                         Button("Cancel", role: .cancel) { }
-                        Button("OK", action: viewModel.updateTasksFromTextField)
+                        Button("OK") {
+                            viewModel.updateTasksFromTextField(records: mainViewModel.goalRecords)
+                            print(mainViewModel.goalRecords.count)
+                        }
                     }
                     .alert(
                         viewModel.errorMessage,
