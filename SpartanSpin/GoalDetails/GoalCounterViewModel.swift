@@ -26,7 +26,7 @@ extension GoalCounterView {
             showPopup = true
         }
         
-        func updateTasksFromTextField(records: [GoalRecord]) {
+        func updateTasksFromTextField() {
             let oldValue = goal.tasksCompleted
             
             guard let convertedNumber = Double(numberInput) else {
@@ -38,12 +38,7 @@ extension GoalCounterView {
                 return
             }
             
-            goal.handleTextField(
-                convertedNumber,
-                oldValue,
-                records: records,
-                context: persistenceController.container.viewContext
-            )
+            goal.handleTextField(input: convertedNumber, oldValue: oldValue)
 
             numberInput = ""
         }

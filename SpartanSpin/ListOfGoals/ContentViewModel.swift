@@ -121,10 +121,10 @@ extension ContentView {
             for goal in goals {
                 if goal.shouldResetStreak(date) {
                 // If true, this means the streak wasn't met today or in the last period, so it resets
-                    goal.resetStreak(context: persistenceController.container.viewContext)
+                    goal.resetStreak()
                 
                 } else if goal.shouldResetTasksForNewPeriod(date) {
-                    goal.resetTasks(context: persistenceController.container.viewContext)
+                    goal.resetTasks()
                 }
             }
         }

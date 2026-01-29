@@ -78,6 +78,18 @@ extension MainTabView {
             }
         }
         
+        func createNewRecords() {
+            for goal in goals {
+                if goal.findRecord(for: Date.now, records: goalRecords) {
+                    continue
+                }
+                goalRecords.append(goal.createRecord(
+                    on: Date.now,
+                    context: persistenceController.container.viewContext
+                ))
+            }
+        }
+        
         // Add error handling
         func calculateNewDate(of date: Date, amount: Int) {
             guard let newMonth =  Calendar.current.date(byAdding: .month, value: amount, to: date) else { return }

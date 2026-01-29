@@ -142,6 +142,9 @@ struct MainTabView: View {
             }
         }
         .environmentObject(viewModel)
+        .onAppear {
+            viewModel.createNewRecords()
+        }
         .tabViewStyle(.automatic)
         .toolbarVisibility(.visible, for: .tabBar)
         .tint(colorScheme == .dark ? .white : .black)
