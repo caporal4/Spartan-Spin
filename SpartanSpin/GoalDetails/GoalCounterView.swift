@@ -22,7 +22,16 @@ struct GoalCounterView: View {
     
     var body: some View {
         HStack {
-            Button("Undo Task", systemImage: "minus") { goal.undoTask() }
+            Button("Undo Task", systemImage: "minus") {
+                goal.undoTask()
+                if let record = goal.findRecord(
+                    for: Date.now,
+                    records: mainViewModel.goalRecords,
+                    timeline: goal.goalTimeline
+                ) {
+                    goal.updateRecord(record)
+                }
+            }
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()
@@ -41,7 +50,16 @@ struct GoalCounterView: View {
                         TextField("Enter Amount", text: $viewModel.numberInput)
                             .keyboardType(.decimalPad)
                         Button("Cancel", role: .cancel) { }
-                        Button("OK") { viewModel.updateTasksFromTextField() }
+                        Button("OK") {
+                            viewModel.updateTasksFromTextField()
+                            if let record = goal.findRecord(
+                                for: Date.now,
+                                records: mainViewModel.goalRecords,
+                                timeline: goal.goalTimeline
+                            ) {
+                                goal.updateRecord(record)
+                            }
+                        }
                     }
                     .alert(
                         viewModel.errorMessage,
@@ -56,7 +74,16 @@ struct GoalCounterView: View {
                     .font(.title)
                     .foregroundStyle(.white)
             }
-            Button("Complete Task", systemImage: "plus") { goal.doTask(on: Date.now) }
+            Button("Complete Task", systemImage: "plus") {
+                goal.doTask(on: Date.now)
+                if let record = goal.findRecord(
+                    for: Date.now,
+                    records: mainViewModel.goalRecords,
+                    timeline: goal.goalTimeline
+                ) {
+                    goal.updateRecord(record)
+                }
+            }
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()

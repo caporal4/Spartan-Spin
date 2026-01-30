@@ -58,10 +58,14 @@ extension MainTabView {
             super.init()
             
             goalsController.delegate = self
+            goalRecordsController.delegate = self
             
             do {
+                // Add error handling
                 try goalsController.performFetch()
                 goals = goalsController.fetchedObjects ?? []
+                
+                // Add error handling
                 try goalRecordsController.performFetch()
                 goalRecords = goalRecordsController.fetchedObjects ?? []
             } catch {
@@ -79,14 +83,95 @@ extension MainTabView {
         }
         
         func createNewRecords() {
+            let now = Date.now
             for goal in goals {
-                if goal.findRecord(for: Date.now, records: goalRecords) {
+                if goal.doesRecordExist(
+                    record: goal.findRecord(
+                        for: now,
+                        records: goalRecords,
+                        timeline: goal.goalTimeline
+                    )
+                ) {
                     continue
                 }
-                goalRecords.append(goal.createRecord(
-                    on: Date.now,
+                
+                goal.createRecord(
+                    on: now,
                     context: persistenceController.container.viewContext
-                ))
+                )
+            }
+        }
+        
+        func createHistoricRecords() {
+            let now = Date.now
+            
+            for goal in goals {
+                guard let lastRecordDate = findLastRecordDate(for: goal) else {
+                    continue
+                }
+                
+                createMissingRecords(for: goal, from: lastRecordDate, until: now)
+            }
+        }
+
+        private func findLastRecordDate(for goal: Goal) -> Date? {
+            let goalRecordsForThisGoal = goalRecords.filter { record in
+                record.goal?.objectID == goal.objectID
+            }
+            
+            let lastRecord = goalRecordsForThisGoal.max(by: {
+                ($0.date ?? Date.distantPast) < ($1.date ?? Date.distantPast)
+            })
+            
+            return lastRecord?.date
+        }
+
+        private func createMissingRecords(for goal: Goal, from startDate: Date, until endDate: Date) {
+            let calendar = Calendar.current
+            
+            guard var currentDate = getNextPeriodDate(
+                after: startDate,
+                for: goal.goalTimeline,
+                calendar: calendar
+            ) else {
+                return
+            }
+            
+            while currentDate <= endDate {
+                if !goal.doesRecordExist(
+                    record: goal.findRecord(
+                        for: currentDate,
+                        records: goalRecords,
+                        timeline: goal.goalTimeline
+                    )
+                ) {
+                    goal.createHistoricRecord(
+                        on: currentDate,
+                        context: persistenceController.container.viewContext
+                    )
+                }
+                
+                guard let nextDate = getNextPeriodDate(
+                    after: currentDate,
+                    for: goal.goalTimeline,
+                    calendar: calendar
+                ) else {
+                    break
+                }
+                currentDate = nextDate
+            }
+        }
+
+        private func getNextPeriodDate(after date: Date, for timeline: String, calendar: Calendar) -> Date? {
+            switch timeline {
+            case "Daily":
+                return calendar.date(byAdding: .day, value: 1, to: date)
+            case "Weekly":
+                return calendar.date(byAdding: .weekOfYear, value: 1, to: date)
+            case "Monthly":
+                return calendar.date(byAdding: .month, value: 1, to: date)
+            default:
+                return nil
             }
         }
         

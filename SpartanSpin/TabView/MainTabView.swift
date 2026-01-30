@@ -143,7 +143,12 @@ struct MainTabView: View {
         }
         .environmentObject(viewModel)
         .onAppear {
+            viewModel.createHistoricRecords()
             viewModel.createNewRecords()
+            print(viewModel.goalRecords.count)
+        }
+        .onChange(of: viewModel.goalRecords) {
+            print(viewModel.goalRecords.count)
         }
         .tabViewStyle(.automatic)
         .toolbarVisibility(.visible, for: .tabBar)

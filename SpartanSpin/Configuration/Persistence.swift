@@ -43,6 +43,7 @@ class PersistenceController: ObservableObject {
     
     func createSampleData() {
         let viewContext = container.viewContext
+        let now = Date.now
         
         let availableGoal = ["Brush Teeth", "Floss", "Feed Dog", "Walk Dog", "Take Medicine", "Make Bed"]
         let timelines = ["Daily", "Weekly", "Monthly", "Daily", "Weekly"]
@@ -52,12 +53,13 @@ class PersistenceController: ObservableObject {
             newGoal.title = availableGoal[int]
             newGoal.unit = "No Unit"
             newGoal.timeline = timelines[int]
-            newGoal.lastStreakReset = Date.now
-            newGoal.lastTaskReset = Date.now
+            newGoal.lastStreakReset = now
+            newGoal.lastTaskReset = now
             newGoal.tasksNeeded = 2
+            newGoal.createRecord(on: now, context: viewContext)
         }
         
-        try? viewContext.save()
+        save()
     }
     
     func save() {

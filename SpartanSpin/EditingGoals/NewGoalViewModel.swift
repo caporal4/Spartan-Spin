@@ -64,6 +64,7 @@ extension NewGoalView {
         }
         
         func addGoal() {
+            let now = Date.now
             guard title.count > 0 else {
                 showTitleError = true
                 return
@@ -91,8 +92,8 @@ extension NewGoalView {
             newGoal.timeline = timeline
             newGoal.tasksCompleted = 0
             newGoal.streak = 0
-            newGoal.lastStreakReset = Date.now
-            newGoal.lastTaskReset = Date.now
+            newGoal.lastStreakReset = now
+            newGoal.lastTaskReset = now
             newGoal.reminderEnabled = reminderEnabled
             newGoal.reminderFrequency = reminderFrequency
             newGoal.reminderTime = reminderTime
@@ -100,6 +101,7 @@ extension NewGoalView {
             newGoal.monthlyReminderTimes = selectedDaysOfMonth
             newGoal.tasksNeeded = tasksNeeded
             newGoal.unit = unit
+            newGoal.createRecord(on: now, context: viewContext)
             
             callPersistenceToUpdateReminder(newGoal)
             
