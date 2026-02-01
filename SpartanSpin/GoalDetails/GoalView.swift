@@ -81,8 +81,9 @@ struct GoalView: View {
 }
 
 #Preview {
-    let persistenceController = PersistenceController()
+    let persistenceController = PersistenceController.preview
+    let mainViewModel = MainTabView.ViewModel(persistenceController: persistenceController)
     
     GoalView(goal: Goal.example(controller: persistenceController), persistenceController: .preview)
-        .environmentObject(persistenceController)
+        .environmentObject(mainViewModel)
 }

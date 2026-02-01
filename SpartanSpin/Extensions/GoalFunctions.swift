@@ -235,4 +235,18 @@ extension Goal {
         }
         try? self.managedObjectContext?.save()
     }
+    
+    func createFraction() -> String {
+        guard let index = Units().list.firstIndex(of: self.goalUnit) else {
+            return "\(Int(self.tasksCompleted))/\(Int(self.tasksNeeded)) \(self.goalUnit)"
+        }
+        guard self.goalUnit != "No Unit" else {
+            return "\(Int(self.tasksCompleted))/\(Int(self.tasksNeeded))"
+        }
+        if self.tasksNeeded == 1 {
+            return "\(Int(self.tasksCompleted))/\(Int(self.tasksNeeded)) \(self.goalUnit)"
+        } else {
+            return "\(Int(self.tasksCompleted))/\(Int(self.tasksNeeded)) \(Units().pluralList[index])"
+        }
+    }
 }

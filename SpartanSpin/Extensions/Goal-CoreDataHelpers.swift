@@ -1,5 +1,5 @@
 //
-//  SpartanSpin-CoreDataHelpers.swift
+//  Goal-CoreDataHelpers.swift
 //  SpartanSpin
 //
 //  Created by Brendan Caporale on 11/13/25.
@@ -50,6 +50,7 @@ extension Goal {
     static func example(controller: PersistenceController) -> Goal {
         let controller = controller
         let viewContext = controller.container.viewContext
+        let now = Date.now
 
         let goal = Goal(context: viewContext)
         goal.title = "Example Goal"
@@ -57,10 +58,11 @@ extension Goal {
         goal.tasksNeeded = 2
         goal.unit = "No Unit"
         goal.timeline = "Daily"
-        goal.lastStreakReset = Date.now
-        goal.lastTaskReset = Date.now
-        goal.streak = 0
+        goal.lastStreakReset = now
+        goal.lastTaskReset = now
+        goal.streak = 1
         goal.tasksCompleted = 0
+        goal.createRecord(on: now, context: viewContext)
         return goal
     }
 }

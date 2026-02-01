@@ -7,16 +7,8 @@
 
 import SwiftUI
 
-struct ContentViewRow: View {
-    @StateObject private var viewModel: ViewModel
-    
+struct ContentViewRow: View {    
     @ObservedObject var goal: Goal
-    
-    init(goal: Goal) {
-        self.goal = goal
-        let viewModel = ViewModel(goal: goal)
-        _viewModel = StateObject(wrappedValue: viewModel)
-    }
     
     var body: some View {
         HStack {
@@ -36,7 +28,7 @@ struct ContentViewRow: View {
                     .font(.headline)
                     .foregroundStyle(.white)
                 HStack {
-                    Text(LocalizedStringKey(viewModel.createFraction(goal: goal)))
+                    Text(LocalizedStringKey(goal.createFraction()))
                         .foregroundStyle(.white)
                 }
             }

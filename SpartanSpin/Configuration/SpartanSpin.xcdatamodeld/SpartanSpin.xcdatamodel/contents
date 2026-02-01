@@ -16,7 +16,7 @@
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="unit" optional="YES" attributeType="String"/>
         <attribute name="weeklyReminderTimes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="Set&lt;Int&gt;"/>
-        <relationship name="records" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GoalRecord" inverseName="goal" inverseEntity="GoalRecord"/>
+        <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GoalRecord" inverseName="goal" inverseEntity="GoalRecord"/>
     </entity>
     <entity name="GoalRecord" representedClassName="GoalRecord" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

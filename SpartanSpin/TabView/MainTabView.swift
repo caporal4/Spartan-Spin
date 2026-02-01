@@ -104,10 +104,11 @@ struct MainTabView: View {
                                     .padding()
                                 Spacer()
                             }
-                            MonthProgressView(month: viewModel.displayedMonth, goals: viewModel.goals)
+                            MonthProgressView()
                                 .padding()
                         }
                     }
+                    .padding(.top, -50)
                     .scrollIndicators(.never)
                 }
                 // Navigation destination for individual dates

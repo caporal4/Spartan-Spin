@@ -8,17 +8,14 @@
 import SwiftUI
 
 struct MonthProgressView: View {
-    let month: Date
-    let goals: [Goal]
-
+    @EnvironmentObject var mainViewModel: MainTabView.ViewModel
+    
     var body: some View {
-        if !goals.isEmpty {
-            ForEach(goals) { goal in
-                NavigationLink(value: goal) {
-                    ZStack(alignment: .leading) {
-                        ContentViewRectangle()
-                        ContentViewRow(goal: goal)
-                    }
+        if !mainViewModel.goals.monthlyGoals.isEmpty {
+            ForEach(mainViewModel.goals.monthlyGoals) { goal in
+                ZStack(alignment: .leading) {
+                    ContentViewRectangle()
+                    RecordRow(goal: goal, date: mainViewModel.displayedMonth)
                 }
                 .listRowBackground(Colors.spartanSpinGreen)
                 .accessibilityIdentifier(goal.goalTitle)
@@ -28,5 +25,9 @@ struct MonthProgressView: View {
 }
 
 #Preview {
-    MonthProgressView(month: Date(), goals: [])
+    let persistenceController = PersistenceController.preview
+    let mainViewModel = MainTabView.ViewModel(persistenceController: persistenceController)
+    
+    MonthProgressView()
+        .environmentObject(mainViewModel)
 }

@@ -203,6 +203,7 @@ struct ContentView: View {
                     .toolbarBackground(.visible, for: .tabBar)
                 }
             }
+            .padding(.top, -50)
             .onAppear {
                 viewModel.checkAndResetStreaks(goals: mainViewModel.goals)
             }
@@ -245,5 +246,9 @@ struct ContentView: View {
 }
 
 #Preview {
+    let persistenceController = PersistenceController.preview
+    let mainViewModel = MainTabView.ViewModel(persistenceController: persistenceController)
+    
     ContentView(persistenceController: .preview)
+        .environmentObject(mainViewModel)
 }
