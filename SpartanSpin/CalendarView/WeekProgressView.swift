@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct WeekProgressView: View {
+    @EnvironmentObject var mainViewModel: MainTabView.ViewModel
+    
+    let calendar = Calendar.current
     let month: Date
     
     var body: some View {
@@ -16,7 +19,11 @@ struct WeekProgressView: View {
                 NavigationLink(value: weekStart) {
                     WeekProgressViewRow(
                         weekStart: weekStart,
-                        weekEnd: weekEnd(of: weekStart)
+                        weekEnd: weekEnd(of: weekStart),
+                        progress: calculateProgress(records: weeklyRecords(
+                            date: weekStart,
+                            records: mainViewModel.goalRecords
+                        ))
                     )
                 }
             }
@@ -46,6 +53,37 @@ struct WeekProgressView: View {
         return weeks
     }
     
+    func calculateProgress(records: [GoalRecord]) -> Double {
+        guard records.count > 0 else { return 0.0 }
+        var temporaryValue = 0.0
+        
+        var numerator = 0.0
+        var denominator = 0.0
+                
+        for record in records {
+             if record.tasksCompleted > record.tasksNeeded {
+                temporaryValue = record.tasksNeeded
+                numerator += temporaryValue
+                denominator += record.tasksNeeded
+            } else {
+                numerator += record.tasksCompleted
+                denominator += record.tasksNeeded
+            }
+        }
+        let answer = numerator / denominator
+        return answer
+    }
+    
+    func weeklyRecords(date: Date, records: [GoalRecord]) -> [GoalRecord] {
+        let weeklyRecords = records.filter { record in
+            guard let recordDate = record.date else { return false }
+            guard record.recordTimeline == "Weekly" else { return false }
+            return Calendar.current.isDate(recordDate, equalTo: date, toGranularity: .weekOfYear)
+        }
+        
+        return weeklyRecords
+    }
+    
     // Add error handling
     func weekEnd(of date: Date) -> Date {
         guard let weekEnd =  Calendar.current.date(byAdding: .day, value: 6, to: date) else { return date }
@@ -54,5 +92,9 @@ struct WeekProgressView: View {
 }
 
 #Preview {
+    let persistenceController = PersistenceController.preview
+    let mainViewModel = MainTabView.ViewModel(persistenceController: persistenceController)
+    
     WeekProgressView(month: Date())
+        .environmentObject(mainViewModel)
 }

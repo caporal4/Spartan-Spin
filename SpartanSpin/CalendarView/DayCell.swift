@@ -12,6 +12,7 @@ struct DayCell: View {
     let displayedMonth: Date
     let isSelected: Bool
     let isToday: Bool
+    let progress: Double
 
     private let calendar = Calendar.current
     
@@ -20,16 +21,18 @@ struct DayCell: View {
     var body: some View {
         if checkMonth(date: date, displayedMonth: displayedMonth) {
             ZStack {
-                if isSelected {
-                    Circle()
-                        .fill(.white)
-                        .frame(width: 36, height: 36)
-                } else if isToday {
+                if isToday {
                     Circle()
                         .stroke(.white, lineWidth: 2)
-                        .frame(width: 36, height: 36)
+                        .frame(width: 30, height: 30)
+                    Text("\(unwrapDay(day: date.day))")
+                        .foregroundStyle(.white)
                 }
-                
+                Circle()
+                    .trim(from: 0, to: progress)
+                    .stroke(.white, lineWidth: 2)
+                    .frame(width: 40, height: 40)
+                    .rotationEffect(.degrees(-90))
                 Text("\(unwrapDay(day: date.day))")
                     .foregroundStyle(.white)
             }
@@ -60,6 +63,7 @@ struct DayCell: View {
         date: calendar.dateComponents([.day, .month, .year], from: date),
         displayedMonth: date,
         isSelected: true,
-        isToday: true
+        isToday: true,
+        progress: 0.25
     )
 }

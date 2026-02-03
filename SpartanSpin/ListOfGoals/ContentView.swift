@@ -241,6 +241,10 @@ struct ContentView: View {
                     )
                 }
             }
+            .onAppear {
+                mainViewModel.createHistoricRecords()
+                mainViewModel.createNewRecords()
+            }
         }
     }
 }

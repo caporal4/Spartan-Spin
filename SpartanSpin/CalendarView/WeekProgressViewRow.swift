@@ -10,6 +10,7 @@ import SwiftUI
 struct WeekProgressViewRow: View {
     let weekStart: Date
     let weekEnd: Date
+    let progress: Double
 
     @Environment(\.colorScheme) var colorScheme
 
@@ -19,23 +20,17 @@ struct WeekProgressViewRow: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .frame(minWidth: 135, alignment: .leading)
-            ProgressView(value: weeklyProgress)
+            ProgressView(value: progress)
                 .tint(.white)
         }
     }
-    
     func weekLabel(dateOne: Date, dateTwo: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM d"
         return "\(formatter.string(from: dateOne)) - \(formatter.string(from: dateTwo))"
     }
-    
-    // Add total progress of weekly goals
-    private var weeklyProgress: Double {
-        return Double(1) / Double(2)
-    }
 }
 
 #Preview {
-    WeekProgressViewRow(weekStart: Date.now, weekEnd: Date.now)
+    WeekProgressViewRow(weekStart: Date.now, weekEnd: Date.now, progress: 0.5)
 }

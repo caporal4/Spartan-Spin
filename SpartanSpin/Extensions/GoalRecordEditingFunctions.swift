@@ -59,6 +59,7 @@ extension Goal {
     func updateRecord(_ record: GoalRecord) {
         record.tasksCompleted = self.tasksCompleted
         record.streak = self.streak
+        try? managedObjectContext?.save()
     }
     
     // Add in places where records are loaded for the day
@@ -69,5 +70,6 @@ extension Goal {
         record.tasksCompleted = self.tasksCompleted
         record.tasksNeeded = self.tasksNeeded
         record.streak = self.streak
+        try? managedObjectContext?.save()
     }
 }

@@ -104,7 +104,7 @@ struct MainTabView: View {
                                     .padding()
                                 Spacer()
                             }
-                            MonthProgressView()
+                            MonthlyRecordList(timeline: "Monthly")
                                 .padding()
                         }
                     }
@@ -113,7 +113,7 @@ struct MainTabView: View {
                 }
                 // Navigation destination for individual dates
                 .navigationDestination(item: $viewModel.selectedDate) { date in
-                        GoalsForDateView(date: date, recordsForDate: viewModel.goalRecords)
+                    DailyAndWeeklyRecordList(date: date, timeline: "Daily")
                             .toolbar(.hidden, for: .tabBar)
                             .onDisappear {
                                 viewModel.selectedDate = nil
@@ -125,7 +125,7 @@ struct MainTabView: View {
                         [.year, .month, .day],
                         from: date
                     )
-                    GoalsForDateView(date: components, recordsForDate: viewModel.goalRecords)
+                    DailyAndWeeklyRecordList(date: components, timeline: "Weekly")
                         .toolbar(.hidden, for: .tabBar)
                 }
                 .toolbar {
@@ -143,14 +143,6 @@ struct MainTabView: View {
             }
         }
         .environmentObject(viewModel)
-        .onAppear {
-            viewModel.createHistoricRecords()
-            viewModel.createNewRecords()
-            print(viewModel.goalRecords.count)
-        }
-        .onChange(of: viewModel.goalRecords) {
-            print(viewModel.goalRecords.count)
-        }
         .tabViewStyle(.automatic)
         .toolbarVisibility(.visible, for: .tabBar)
         .tint(colorScheme == .dark ? .white : .black)
