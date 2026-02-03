@@ -18,10 +18,11 @@ struct MainTabView: View {
     }
     
     var body: some View {
-        TabView {
+        TabView(selection: $viewModel.selectedTab) {
             NavigationStack {
                 ContentView(persistenceController: viewModel.persistenceController)
             }
+            .tag(0)
             .tabItem {
                 Label("List", systemImage: "list.bullet")
             }
@@ -138,8 +139,14 @@ struct MainTabView: View {
                 .toolbarBackground(Colors.spartanSpinGreen.opacity(0.3), for: .tabBar)
                 .toolbarBackground(.visible, for: .tabBar)
             }
+            .tag(1)
             .tabItem {
                 Label("Calendar", systemImage: "calendar")
+            }
+        }
+        .onChange(of: viewModel.selectedTab) { oldValue, newValue in
+            if newValue == 0 && oldValue != 0 {
+                viewModel.displayedMonth = Date.now
             }
         }
         .environmentObject(viewModel)

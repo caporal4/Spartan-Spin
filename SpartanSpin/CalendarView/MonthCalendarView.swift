@@ -54,7 +54,6 @@ struct MonthCalendarView: View {
         .frame(alignment: .topLeading)
         .padding()
         .onAppear {
-            mainViewModel.displayedMonth = Date.now
             mainViewModel.createHistoricRecords()
             mainViewModel.createNewRecords()
         }
