@@ -21,20 +21,21 @@ struct DayCell: View {
     var body: some View {
         if checkMonth(date: date, displayedMonth: displayedMonth) {
             ZStack {
-                if isToday {
-                    Circle()
-                        .stroke(.white, lineWidth: 2)
-                        .frame(width: 30, height: 30)
-                    Text("\(unwrapDay(day: date.day))")
-                        .foregroundStyle(.white)
-                }
                 Circle()
                     .trim(from: 0, to: progress)
                     .stroke(.white, lineWidth: 2)
                     .frame(width: 40, height: 40)
                     .rotationEffect(.degrees(-90))
-                Text("\(unwrapDay(day: date.day))")
-                    .foregroundStyle(.white)
+                if isToday {
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 30, height: 30)
+                    Text("\(unwrapDay(day: date.day))")
+                        .foregroundStyle(.black)
+                } else {
+                    Text("\(unwrapDay(day: date.day))")
+                        .foregroundStyle(.white)
+                }
             }
             .frame(height: 40)
         } else {

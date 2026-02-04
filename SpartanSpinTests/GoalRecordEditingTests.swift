@@ -24,17 +24,20 @@ final class GoalRecordEditingTests: BaseTestCase {
         let today = Date.now
         let calendar = Calendar.current
 
-        let record = goal.findRecord(for: today, records: recordsArray, timeline: "Daily")
+        let record = try XCTUnwrap(
+            goal.findRecord(for: today, records: recordsArray, timeline: "Daily"),
+            "There should be a record for today"
+            )
         
-        XCTAssertEqual(record?.recordTimeline, "Daily", "Example record timeline is 'Daily'")
-        XCTAssertEqual(record?.recordTitle, "Example Goal", "Example record title is 'Example Goal'")
-        XCTAssertEqual(record?.recordUnit, "No Unit", "Example record unit is 'Unit'")
-        XCTAssertEqual(record?.tasksNeeded, 2, "Example record tasksNeeded is 2")
-        XCTAssertEqual(record?.tasksCompleted, 0, "Example record tasksCompleted is 0")
-        XCTAssertEqual(record?.streak, 0, "Example record streak is 0")
-        XCTAssertEqual(record?.goal, goal, "Example record goal is goal")
+        XCTAssertEqual(record.recordTimeline, "Daily", "Example record timeline is 'Daily'")
+        XCTAssertEqual(record.recordTitle, "Example Goal", "Example record title is 'Example Goal'")
+        XCTAssertEqual(record.recordUnit, "No Unit", "Example record unit is 'Unit'")
+        XCTAssertEqual(record.tasksNeeded, 2, "Example record tasksNeeded is 2")
+        XCTAssertEqual(record.tasksCompleted, 0, "Example record tasksCompleted is 0")
+        XCTAssertEqual(record.streak, 0, "Example record streak is 0")
+        XCTAssertEqual(record.goal, goal, "Example record goal is goal")
         let date = try XCTUnwrap(
-            record?.date,
+            record.date,
             "Record should have date"
             )
         XCTAssertTrue(
@@ -91,7 +94,36 @@ final class GoalRecordEditingTests: BaseTestCase {
         XCTAssertNil(foundRecordFive, "There is not a record for wrongGoal")
     }
     
-    func testUpdateRecord() {
+    func testUpdateRecord() throws {
+        let goal = Goal.example(controller: persistenceController)
         
+        let today = Date.now
+        let recordsSet = goal.records as? Set<GoalRecord> ?? Set<GoalRecord>()
+        let recordsArray = Array(recordsSet)
+        
+        let record = try XCTUnwrap(
+            goal.findRecord(for: today, records: recordsArray, timeline: "Daily"),
+            "There should be a record created today"
+            )
+        
+        XCTAssertEqual(record.tasksCompleted, 0, "Record should not have any tasks completed")
+        
+        goal.doTask()
+        goal.updateRecord(record)
+        
+        XCTAssertEqual(record.tasksCompleted, 1, "Record should have 1 task completed")
+        XCTAssertEqual(record.streak, 0, "Record should have not have a streak until 2 tasks are completed")
+
+        goal.doTask()
+        goal.updateRecord(record)
+        
+        XCTAssertEqual(record.tasksCompleted, 2, "Record should have 2 tasks completed")
+        XCTAssertEqual(record.streak, 1, "Record should have not have a streak of 1")
+        
+        goal.undoTask()
+        goal.updateRecord(record)
+        
+        XCTAssertEqual(record.tasksCompleted, 1, "Record should have 1 task completed")
+        XCTAssertEqual(record.streak, 0, "Record should have not have a streak until 2 tasks are completed")
     }
 }

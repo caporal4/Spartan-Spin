@@ -83,16 +83,14 @@ extension MainTabView {
             }
         }
         
-        func createNewRecords() {
-            let now = Date.now
-            
+        func createNewRecords(for date: Date = Date.now) {
             for goal in goals where goal.findRecord(
-                for: now,
+                for: date,
                 records: goalRecords,
                 timeline: goal.goalTimeline
             ) == nil {
                 goal.createRecord(
-                    on: now,
+                    on: date,
                     context: persistenceController.container.viewContext
                 )
             }
