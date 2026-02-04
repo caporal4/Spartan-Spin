@@ -78,7 +78,7 @@ final class TaskAndStreakTests: BaseTestCase {
         
         goal.tasksNeeded = 2
         
-        goal.handleTextField(2, goal.tasksCompleted)
+        goal.handleTextField(input: 2, oldValue: goal.tasksCompleted)
         
         XCTAssertEqual(
             goal.tasksCompleted,
@@ -88,7 +88,7 @@ final class TaskAndStreakTests: BaseTestCase {
         
         XCTAssertEqual(goal.streak, 1, "goal.tasksCompleted equals goal.tasksNeeded. Streak is now 1.")
         
-        goal.handleTextField(3, goal.tasksCompleted)
+        goal.handleTextField(input: 3, oldValue: goal.tasksCompleted)
         
         XCTAssertEqual(
             goal.streak,
@@ -96,11 +96,11 @@ final class TaskAndStreakTests: BaseTestCase {
             "Streak still equals 1. Streak will not increase multiple increments in one period."
         )
         
-        goal.handleTextField(1, goal.tasksCompleted)
+        goal.handleTextField(input: 1, oldValue: goal.tasksCompleted)
 
         XCTAssertEqual(goal.streak, 0, "goal.tasksCompleted is now less than goal.tasksNeeded. Streak decreases.")
         
-        goal.handleTextField(3, goal.tasksCompleted)
+        goal.handleTextField(input: 3, oldValue: goal.tasksCompleted)
 
         XCTAssertEqual(
             goal.streak,
@@ -124,6 +124,20 @@ final class TaskAndStreakTests: BaseTestCase {
         )
     }
     
+    func testUpdateStreakFromTimeline() {
+        let goal = Goal(context: managedObjectContext)
+        goal.timeline = "Daily"
+        goal.streak = 2
+        
+        goal.updateStreakFromTimeline("Daily")
+        
+        XCTAssertEqual(goal.streak, 2, "Goal timeline didn't change, therefore streak is still 2")
+        
+        goal.updateStreakFromTimeline("Weekly")
+        
+        XCTAssertEqual(goal.streak, 1, "Goal timeline changed, therefore streak is now 1")
+    }
+    
     func testStreakSentence() {
         let goal = Goal(context: managedObjectContext)
 
@@ -144,5 +158,40 @@ final class TaskAndStreakTests: BaseTestCase {
         let twoDayStreakSentence = goal.streakSentence()
         
         XCTAssertEqual(twoDayStreakSentence, "2 Week Streak", "Streak equals 2, and timeline equals weekly.")
+    }
+    
+    func testFraction() {
+        let goal = Goal(context: managedObjectContext)
+        goal.tasksNeeded = 2
+        goal.tasksCompleted = 1
+        goal.unit = "No Unit"
+
+        let stringOne = goal.createFraction()
+        
+        XCTAssertEqual(
+            stringOne,
+            "1/2",
+            "Goal unit is 'No Unit', therefore string output is tasks completed over tasks needed"
+        )
+        
+        goal.goalUnit = "Mile"
+        
+        let stringTwo = goal.createFraction()
+        
+        XCTAssertEqual(
+            stringTwo,
+            "1/2 Miles",
+            "Goal unit is 'Mile' and tasksCompleted != 1, string output is tasks completed over tasks needed plus Miles"
+        )
+        
+        goal.tasksNeeded = 1
+        
+        let stringThree = goal.createFraction()
+        
+        XCTAssertEqual(
+            stringThree,
+            "1/1 Mile",
+            "Goal unit is 'Mile' and tasksCompleted == 1, string output is tasks completed over tasks needed plus Mile"
+        )
     }
 }

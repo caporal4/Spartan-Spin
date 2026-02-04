@@ -60,7 +60,7 @@ extension Goal {
         goal.timeline = "Daily"
         goal.lastStreakReset = now
         goal.lastTaskReset = now
-        goal.streak = 1
+        goal.streak = 0
         goal.tasksCompleted = 0
         goal.createRecord(on: now, context: viewContext)
         return goal

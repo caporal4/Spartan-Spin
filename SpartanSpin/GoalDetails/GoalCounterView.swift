@@ -75,7 +75,7 @@ struct GoalCounterView: View {
                     .foregroundStyle(.white)
             }
             Button("Complete Task", systemImage: "plus") {
-                goal.doTask(on: Date.now)
+                goal.doTask()
                 if let record = goal.findRecord(
                     for: Date.now,
                     records: mainViewModel.goalRecords,

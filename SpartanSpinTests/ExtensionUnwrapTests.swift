@@ -123,13 +123,30 @@ final class ExtensionUnwrapTests: BaseTestCase {
         )
     }
     
-    func testExampleData() {
+    func testExampleData() throws {
         let goal = Goal.example(controller: persistenceContainer)
+        let calendar = Calendar.current
+        let today = Date.now
+        
         XCTAssertEqual(goal.goalTitle, "Example Goal", "Example Goal title should be Example Goal.")
         XCTAssertEqual(goal.goalUnit, "No Unit", "Example Goal unit should be No Unit.")
         XCTAssertEqual(goal.tasksNeeded, 2, "Example Goal tasks needed should be 2.")
         XCTAssertEqual(goal.tasksCompleted, 0, "Example Goal tasks completed should be 0.")
         XCTAssertEqual(goal.streak, 0, "Example Goal streak should be 0.")
-        XCTAssertEqual(goal.timeline, "Daily", "Example Goal timelin should be Daily.")
+        XCTAssertEqual(goal.timeline, "Daily", "Example Goal timeline should be Daily.")
+        XCTAssertEqual(goal.streak, 0, "Example Goal streak should be 0.")
+        let records = goal.records as? Set<GoalRecord> ?? Set<GoalRecord>()
+        let taskReset = try XCTUnwrap(
+            goal.lastTaskReset,
+            "Goal should have lastTaskResetDate"
+            )
+        XCTAssertTrue(calendar.isDate(taskReset, inSameDayAs: today), "lastTaskReset is today")
+        
+        let streakReset = try XCTUnwrap(
+            goal.lastStreakReset,
+            "Goal should have lastStreakResetDate"
+            )
+        XCTAssertTrue(calendar.isDate(streakReset, inSameDayAs: today), "lastStreakReset is today")
+        XCTAssertEqual(records.count, 1, "Example Goal should have 1 record.")
     }
 }

@@ -132,7 +132,7 @@ extension Goal {
     }
     
     // Used in GoalCounterView
-    func doTask(on date: Date) {
+    func doTask() {
         // Increment tasks completed
         tasksCompleted += 1
 

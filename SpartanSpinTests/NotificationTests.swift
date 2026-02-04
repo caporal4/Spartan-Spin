@@ -47,7 +47,9 @@ final class NotificationTests: BaseTestCase {
         }
         
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            XCTAssertEqual(requests.count, 1)
+            DispatchQueue.main.async {
+                XCTAssertEqual(requests.count, 1)
+            }
         }
         
         persistenceContainer.removeReminders(for: goal)
@@ -73,6 +75,10 @@ final class NotificationTests: BaseTestCase {
         let timeComponents = Calendar.current.dateComponents([.day, .hour, .minute], from: goal.goalReminderTime)
         let baseId = goal.objectID.uriRepresentation().absoluteString
         
+        print("Goal weekly reminders: \(goal.goalWeeklyReminders)")
+        print("Time components: \(timeComponents)")
+        print("Base ID: \(baseId)")
+        
         for weekday in goal.goalWeeklyReminders {
             var components = timeComponents
             let calendarWeekday = weekday == 7 ? 1 : weekday + 1
@@ -88,7 +94,9 @@ final class NotificationTests: BaseTestCase {
         }
         
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            XCTAssertEqual(requests.count, 7)
+            DispatchQueue.main.async {
+                XCTAssertEqual(requests.count, 7)
+            }
         }
         
         persistenceContainer.removeReminders(for: goal)
@@ -128,7 +136,9 @@ final class NotificationTests: BaseTestCase {
         }
         
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            XCTAssertEqual(requests.count, 31)
+            DispatchQueue.main.async {
+                XCTAssertEqual(requests.count, 31)
+            }
         }
         
         persistenceContainer.removeReminders(for: goal)
@@ -173,7 +183,9 @@ final class NotificationTests: BaseTestCase {
         }
                 
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            XCTAssertEqual(requests.count, 62)
+            DispatchQueue.main.async {
+                XCTAssertEqual(requests.count, 62)
+            }
         }
         
         persistenceContainer.removeMultipleReminders(goals)

@@ -56,6 +56,7 @@ class PersistenceController: ObservableObject {
             newGoal.lastStreakReset = now
             newGoal.lastTaskReset = now
             newGoal.tasksNeeded = 2
+            newGoal.streak = 0
             newGoal.createRecord(on: now, context: viewContext)
         }
         

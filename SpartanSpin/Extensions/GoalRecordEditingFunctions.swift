@@ -11,10 +11,6 @@ import Foundation
 // Consider not passing in a list of records anywhere. Update the list directly in the viewmodel.
 
 extension Goal {
-    func doesRecordExist(record: GoalRecord?) -> Bool {
-        return record != nil
-    }
-    
     func findRecord(for date: Date, records: [GoalRecord], timeline: String) -> GoalRecord? {
         let calendar = Calendar.current
 

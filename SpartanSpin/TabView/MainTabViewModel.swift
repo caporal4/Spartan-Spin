@@ -85,17 +85,12 @@ extension MainTabView {
         
         func createNewRecords() {
             let now = Date.now
-            for goal in goals {
-                if goal.doesRecordExist(
-                    record: goal.findRecord(
-                        for: now,
-                        records: goalRecords,
-                        timeline: goal.goalTimeline
-                    )
-                ) {
-                    continue
-                }
-                
+            
+            for goal in goals where goal.findRecord(
+                for: now,
+                records: goalRecords,
+                timeline: goal.goalTimeline
+            ) == nil {
                 goal.createRecord(
                     on: now,
                     context: persistenceController.container.viewContext
@@ -139,13 +134,11 @@ extension MainTabView {
             }
             
             while currentDate <= endDate {
-                if !goal.doesRecordExist(
-                    record: goal.findRecord(
+                if goal.findRecord(
                         for: currentDate,
                         records: goalRecords,
                         timeline: goal.goalTimeline
-                    )
-                ) {
+                    ) == nil {
                     goal.createHistoricRecord(
                         on: currentDate,
                         context: persistenceController.container.viewContext
