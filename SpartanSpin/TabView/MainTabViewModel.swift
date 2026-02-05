@@ -25,7 +25,11 @@ extension MainTabView {
         @Published var displayedMonth: Date = Date()
         @Published var selectedTab = 0
 
-        var calendar: Calendar = .current
+        var calendar: Calendar {
+            var cal = Calendar.current
+            cal.firstWeekday = 2  // Monday
+            return cal
+        }
         var monthTitle: String {
             displayedMonth.formatted(.dateTime.month(.wide).year())
         }
@@ -96,16 +100,15 @@ extension MainTabView {
             }
         }
         
-        func createHistoricRecords() {
-            let now = Date.now
-            
+        func createHistoricRecords(for date: Date = Date.now) {
             for goal in goals {
                 guard let lastRecordDate = findLastRecordDate(for: goal) else {
                     continue
                 }
                 
-                createMissingRecords(for: goal, from: lastRecordDate, until: now)
+                createMissingRecords(for: goal, from: lastRecordDate, until: date)
             }
+            persistenceController.save()
         }
 
         private func findLastRecordDate(for goal: Goal) -> Date? {
@@ -128,10 +131,11 @@ extension MainTabView {
                 for: goal.goalTimeline,
                 calendar: calendar
             ) else {
+                // error handling?
                 return
             }
             
-            while currentDate <= endDate {
+            while currentDate < endDate {
                 if goal.findRecord(
                         for: currentDate,
                         records: goalRecords,
@@ -168,8 +172,12 @@ extension MainTabView {
         }
         
         // Add error handling
-        func calculateNewDate(of date: Date, amount: Int) {
-            guard let newMonth =  Calendar.current.date(byAdding: .month, value: amount, to: date) else { return }
+        func calculateNewDate(amount: Int) {
+            guard let newMonth =  Calendar.current.date(
+                byAdding: .month,
+                value: amount,
+                to: displayedMonth
+            ) else { return }
             displayedMonth = newMonth
         }
     }

@@ -11,7 +11,11 @@ struct MonthlyRecordList: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var mainViewModel: MainTabView.ViewModel
 
-    let calendar = Calendar.current
+    var calendar: Calendar {
+        var cal = Calendar.current
+        cal.firstWeekday = 2  // Monday
+        return cal
+    }
     
     let timeline: String
     

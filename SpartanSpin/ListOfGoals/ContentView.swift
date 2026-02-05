@@ -77,14 +77,20 @@ struct ContentView: View {
                             }
                             Spacer()
 #if DEBUG
-                            Button(action: viewModel.persistenceController.createSampleData) {
-                                Label("Add Sample Goals", systemImage: "plus.app")
-                                    .font(.headline)
-                                    .padding()
-                                    .background(Colors.spartanSpinGreen.opacity(Numbers.newGoalOpacity))
-                                    .cornerRadius(Numbers.newGoalCornerRadius)
-                            }
-                            .tint(colorScheme == .dark ? .white : .black)
+                            Button(
+                                action: {
+                                    viewModel.persistenceController.createSampleData()
+                                },
+                                label: {
+                                    Label("Add Sample Goals", systemImage: "plus.app")
+                                        .font(.headline)
+                                        .padding()
+                                        .background(Colors.spartanSpinGreen.opacity(Numbers.newGoalOpacity))
+                                        .cornerRadius(Numbers.newGoalCornerRadius)
+                                    
+                                }
+                            )
+                                    .tint(colorScheme == .dark ? .white : .black)
 #endif
                         }
                     }
@@ -193,7 +199,9 @@ struct ContentView: View {
                     .background(Colors.gradientC.ignoresSafeArea())
                     .contentViewToolbar(
                         showNewGoalView: viewModel.showNewGoalView,
-                        createSampleData: viewModel.persistenceController.createSampleData,
+                        createSampleData: {
+                            viewModel.persistenceController.createSampleData()
+                        },
                         deleteAll: viewModel.persistenceController.deleteAll,
                         removeAllNotifications: {
                             viewModel.persistenceController.removeMultipleReminders(mainViewModel.goals)

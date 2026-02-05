@@ -42,7 +42,6 @@ struct MainTabView: View {
                             HStack {
                                 Button {
                                     viewModel.calculateNewDate(
-                                        of: viewModel.displayedMonth,
                                         amount: -1
                                     )
                                 } label: {
@@ -65,7 +64,6 @@ struct MainTabView: View {
                                 
                                 Button {
                                     viewModel.calculateNewDate(
-                                        of: viewModel.displayedMonth,
                                         amount: 1
                                     )
                                 } label: {

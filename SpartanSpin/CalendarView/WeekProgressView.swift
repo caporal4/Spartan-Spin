@@ -10,7 +10,11 @@ import SwiftUI
 struct WeekProgressView: View {
     @EnvironmentObject var mainViewModel: MainTabView.ViewModel
     
-    let calendar = Calendar.current
+    var calendar: Calendar {
+        var cal = Calendar.current
+        cal.firstWeekday = 2  // Monday
+        return cal
+    }
     let month: Date
     
     var body: some View {
@@ -32,7 +36,11 @@ struct WeekProgressView: View {
     }
     
     private var weeksInMonth: [Date] {
-        let calendar = Calendar.current
+        var calendar: Calendar {
+            var cal = Calendar.current
+            cal.firstWeekday = 2  // Monday
+            return cal
+        }
         var weeks: [Date] = []
         
         guard let monthStart = calendar.date(

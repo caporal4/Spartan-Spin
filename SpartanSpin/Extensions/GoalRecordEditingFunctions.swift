@@ -12,7 +12,11 @@ import Foundation
 
 extension Goal {
     func findRecord(for date: Date, records: [GoalRecord], timeline: String) -> GoalRecord? {
-        let calendar = Calendar.current
+        var calendar: Calendar {
+            var cal = Calendar.current
+            cal.firstWeekday = 2  // Monday
+            return cal
+        }
 
         let currentRecord = records.first { record in
             guard record.goal?.objectID == self.objectID else { return false }
