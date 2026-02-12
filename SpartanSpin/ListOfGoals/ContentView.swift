@@ -21,7 +21,6 @@ struct ContentView: View {
     }
 
     var body: some View {
-        NavigationStack {
             Group {
                 if mainViewModel.goals.isEmpty {
                     ZStack {
@@ -211,7 +210,7 @@ struct ContentView: View {
                     .toolbarBackground(.visible, for: .tabBar)
                 }
             }
-            .padding(.top, -50)
+//            .padding(.top, -50)
             .onAppear {
                 viewModel.checkAndResetStreaks(goals: mainViewModel.goals)
             }
@@ -253,7 +252,7 @@ struct ContentView: View {
                 mainViewModel.createHistoricRecords()
                 mainViewModel.createNewRecords()
             }
-        }
+        
     }
 }
 
