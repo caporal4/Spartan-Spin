@@ -69,7 +69,7 @@ extension Goal {
         record.unit = self.unit
         record.tasksCompleted = self.tasksCompleted
         record.tasksNeeded = self.tasksNeeded
-        record.streak = self.streak
+        record.streak = 0
         try? managedObjectContext?.save()
     }
 }

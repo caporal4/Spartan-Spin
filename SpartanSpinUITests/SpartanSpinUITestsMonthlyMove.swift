@@ -88,8 +88,12 @@ final class SpartanSpinUITestsMonthlyMove: XCTestCase {
         app.typeText("2")
         app.buttons["Save"].tap()
         
-        app.buttons["Move of the Month"].tap()
+        let moveButton = app.buttons["Move of the Month"]
 
+        XCTAssertTrue(moveButton.waitForExistence(timeout: 5))
+        
+        moveButton.tap()
+        
         XCTAssertTrue(
             app.buttons["Edit Goal"].exists,
             "Edit goal button exists, which means the navigation link worked and the user is in the edit goal view."
@@ -103,7 +107,9 @@ final class SpartanSpinUITestsMonthlyMove: XCTestCase {
         app.typeText("2")
         app.buttons["Save"].tap()
         
-        app.buttons["Move of the Month"].tap()
+        XCTAssertTrue(moveButton.waitForExistence(timeout: 5))
+        
+        moveButton.tap()
         
         XCTAssertTrue(
             app.otherElements["Monthly Move List Sheet"].exists,

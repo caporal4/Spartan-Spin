@@ -111,12 +111,19 @@ struct MainTabView: View {
                     .scrollIndicators(.never)
                 }
                 // Navigation destination for individual dates
-                .navigationDestination(item: $viewModel.selectedDate) { date in
-                    DailyAndWeeklyRecordList(date: date, timeline: "Daily")
-                            .toolbar(.hidden, for: .tabBar)
+                .navigationDestination(
+                    isPresented: Binding(
+                        get: { viewModel.selectedDate != nil },
+                        set: { if !$0 { viewModel.selectedDate = nil } }
+                    )
+                ) {
+                    if let date = viewModel.selectedDate {
+                        DailyAndWeeklyRecordList(date: date, timeline: "Daily")
+                            .modifier(HideTabBarIfAvailable())
                             .onDisappear {
                                 viewModel.selectedDate = nil
                             }
+                    }
                 }
                 // Navigation destination for weeks
                 .navigationDestination(for: Date.self) { date in
@@ -125,7 +132,7 @@ struct MainTabView: View {
                         from: date
                     )
                     DailyAndWeeklyRecordList(date: components, timeline: "Weekly")
-                        .toolbar(.hidden, for: .tabBar)
+                        .modifier(HideTabBarIfAvailable())
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -135,23 +142,21 @@ struct MainTabView: View {
                     }
                 }
                 .toolbarBackground(Colors.spartanSpinGreen.opacity(0.3), for: .tabBar)
-                .toolbarBackground(.visible, for: .tabBar)
             }
             .tag(1)
             .tabItem {
                 Label("Calendar", systemImage: "calendar")
             }
         }
-        .onChange(of: viewModel.selectedTab) { oldValue, newValue in
-            if newValue == 0 && oldValue != 0 {
+        .onChange(of: viewModel.selectedTab) { newValue in
+            if newValue == 0 && viewModel.previousTab != 0 {
                 viewModel.displayedMonth = Date.now
             }
+            viewModel.previousTab = newValue
         }
         .environmentObject(viewModel)
         .tabViewStyle(.automatic)
-        .toolbarVisibility(.visible, for: .tabBar)
         .tint(colorScheme == .dark ? .white : .black)
-        .persistentSystemOverlays(.hidden) 
     }
 }
 

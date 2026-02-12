@@ -190,49 +190,56 @@ struct EditGoalView: View {
                 } message: {
                     Text(viewModel.notificationErrorMessage)
                 }
-                .alert(
-                    "Error",
-                    isPresented: $viewModel.showTitleError
-                ) {
-                    Button("OK") { }
-                } message: {
-                    Text(viewModel.titleErrorMessage)
-                }
-                .alert(
-                    "Error",
-                    isPresented: $viewModel.showEnterNumberError
-                ) {
-                    Button("OK") { }
-                } message: {
-                    Text(viewModel.enterNumberErrorMessage)
-                }
-                .alert(
-                    "Error",
-                    isPresented: $viewModel.showWholeNumberError
-                ) {
-                    Button("OK") { }
-                } message: {
-                    Text(viewModel.wholeNumberErrorMessage)
-                }
-                .alert(
-                    "Warning",
-                    isPresented: $viewModel.streakAlert
-                ) {
-                    Button("OK") { }
-                } message: {
-                    Text(viewModel.streakAlertMessage)
-                }
+                .modifier(AlertsModifier(viewModel: viewModel, openURL: openURL))
                 
-                .onChange(of: goal.reminderEnabled, initial: false) { _, _  in
+                .onChange(of: goal.reminderEnabled) { _  in
                     viewModel.updateReminder(goal)
                 }
-                .onChange(of: viewModel.goalTimelineInput) { _, _ in
+                .onChange(of: viewModel.goalTimelineInput) { _ in
                     if goal.streak > 0 {
                         viewModel.streakAlert = true
                     }
                 }
             }
         }
+    }
+}
+
+struct AlertsModifier: ViewModifier {
+    @ObservedObject var viewModel: EditGoalView.ViewModel
+    let openURL: OpenURLAction
+    
+    func body(content: Content) -> some View {
+        content
+            .alert("Oops!", isPresented: $viewModel.showingNotificationsError) {
+                Button("Check Settings") {
+                    guard let settingsURL = UIApplication.notificationSettingsURL else { return }
+                    openURL(settingsURL)
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text(viewModel.notificationErrorMessage)
+            }
+            .alert("Error", isPresented: $viewModel.showTitleError) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.titleErrorMessage)
+            }
+            .alert("Error", isPresented: $viewModel.showEnterNumberError) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.enterNumberErrorMessage)
+            }
+            .alert("Error", isPresented: $viewModel.showWholeNumberError) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.wholeNumberErrorMessage)
+            }
+            .alert("Warning", isPresented: $viewModel.streakAlert) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.streakAlertMessage)
+            }
     }
 }
 

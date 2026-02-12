@@ -46,10 +46,10 @@ struct MonthYearPicker: View {
             .pickerStyle(.wheel)
             .frame(width: 100)
         }
-        .onChange(of: selectedMonth) { _, newMonth in
+        .onChange(of: selectedMonth) { newMonth in
             updateDate(month: newMonth, year: selectedYear)
         }
-        .onChange(of: selectedYear) { _, newYear in
+        .onChange(of: selectedYear) { newYear in
             updateDate(month: selectedMonth, year: newYear)
         }
     }

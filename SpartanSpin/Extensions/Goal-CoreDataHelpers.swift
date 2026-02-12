@@ -47,10 +47,9 @@ extension Goal {
         set { monthlyReminderTimes = newValue }
     }
     
-    static func example(controller: PersistenceController) -> Goal {
+    static func example(controller: PersistenceController, date: Date = Date.now) -> Goal {
         let controller = controller
         let viewContext = controller.container.viewContext
-        let now = Date.now
 
         let goal = Goal(context: viewContext)
         goal.title = "Example Goal"
@@ -58,11 +57,11 @@ extension Goal {
         goal.tasksNeeded = 2
         goal.unit = "No Unit"
         goal.timeline = "Daily"
-        goal.lastStreakReset = now
-        goal.lastTaskReset = now
+        goal.lastStreakReset = date
+        goal.lastTaskReset = date
         goal.streak = 0
         goal.tasksCompleted = 0
-        goal.createRecord(on: now, context: viewContext)
+        goal.createRecord(on: date, context: viewContext)
         return goal
     }
 }

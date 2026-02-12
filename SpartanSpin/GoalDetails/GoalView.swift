@@ -47,6 +47,9 @@ struct GoalView: View {
                 Spacer()
             }
         }
+        .toolbar(.hidden, for: .tabBar)
+        .toolbarBackground(.hidden, for: .tabBar)
+        .modifier(HideTabBarIfAvailable())
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(goal.goalTitle)

@@ -170,4 +170,51 @@ final class MainTabViewModelTests: BaseTestCase {
             "Goal records should update when new record is added"
         )
     }
+    
+    func testRecordCreationStreak() throws {
+        let calendar = Calendar.current
+        let firstOfJanuary = try XCTUnwrap(
+            calendar.date(from: DateComponents(year: 2026, month: 1, day: 1)),
+            "Should create date for first day of January"
+        )
+        let secondOfJanuary = try XCTUnwrap(
+            calendar.date(from: DateComponents(year: 2026, month: 1, day: 2)),
+            "Should create date for second day of January"
+        )
+        let thirdOfJanuary = try XCTUnwrap(
+            calendar.date(from: DateComponents(year: 2026, month: 1, day: 3)),
+            "Should create date for third day of January"
+        )
+        
+        let goal = Goal.example(controller: testController, date: firstOfJanuary)
+        
+        goal.doTask()
+        goal.doTask()
+        
+        let firstRecord = try XCTUnwrap(
+            goal.findRecord(for: firstOfJanuary, records: viewModel.goalRecords, timeline: "Daily"),
+            "There should be a record created for the first of January"
+            )
+        
+        goal.updateRecord(firstRecord)
+        
+        XCTAssertEqual(firstRecord.streak, 1, "Record should have not have a streak of 1")
+        
+        viewModel.createHistoricRecords(for: thirdOfJanuary)
+        viewModel.createNewRecords(for: thirdOfJanuary)
+        
+        XCTAssertEqual(viewModel.goalRecords.count, 3, "Three records should have been created in total.")
+        
+        let secondRecord = try XCTUnwrap(
+            goal.findRecord(for: secondOfJanuary, records: viewModel.goalRecords, timeline: "Daily"),
+            "There should be a record created for the second of January"
+            )
+        let thirdRecord = try XCTUnwrap(
+            goal.findRecord(for: thirdOfJanuary, records: viewModel.goalRecords, timeline: "Daily"),
+            "There should be a record created for the second of January"
+            )
+        
+        XCTAssertEqual(secondRecord.streak, 0, "The second record's streak should be 0.")
+        XCTAssertEqual(thirdRecord.streak, 0, "The third record's streak should be 0.")
+    }
 }

@@ -18,7 +18,7 @@ struct SpartanSpinApp: App {
             MainTabView(persistenceController: persistenceController)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(persistenceController)
-                .onChange(of: scenePhase, initial: false) { _, phase  in
+                .onChange(of: scenePhase) { phase in
                     if phase != .active {
                         persistenceController.save()
                     }

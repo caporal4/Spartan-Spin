@@ -28,7 +28,17 @@ struct PopoverView: View {
             }
             .frame(width: frameWidth)
             .padding()
-            .presentationCompactAdaptation(.popover)
+            .modifier(PopoverAdaptation())
+        }
+    }
+}
+
+struct PopoverAdaptation: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 16.4, *) {
+            content.presentationCompactAdaptation(.popover)
+        } else {
+            content
         }
     }
 }

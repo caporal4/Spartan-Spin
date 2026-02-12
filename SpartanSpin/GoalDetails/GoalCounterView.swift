@@ -35,12 +35,8 @@ struct GoalCounterView: View {
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()
-                .sensoryFeedback(trigger: goal.tasksCompleted) { oldValue, newValue in
-                    if oldValue > newValue {
-                        .decrease
-                    } else {
-                        nil
-                    }
+                .conditionalDecreaseFeedback(trigger: goal.tasksCompleted) { oldValue, newValue in
+                    oldValue > newValue
                 }
             VStack {
                 Button("\(Int(goal.tasksCompleted))", action: viewModel.enterAmount)
@@ -87,12 +83,8 @@ struct GoalCounterView: View {
                 .labelStyle(.iconOnly)
                 .foregroundStyle(.white)
                 .padding()
-                .sensoryFeedback(trigger: goal.tasksCompleted) { oldValue, newValue in
-                    if newValue > oldValue {
-                        .increase
-                    } else {
-                        nil
-                    }
+                .conditionalIncreaseFeedback(trigger: goal.tasksCompleted) { oldValue, newValue in
+                    newValue > oldValue
                 }
             
         }

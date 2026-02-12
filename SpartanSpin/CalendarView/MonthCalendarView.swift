@@ -107,7 +107,7 @@ struct MonthCalendarView: View {
         let dailyRecords = records.filter { record in
             guard let recordDate = record.date else { return false }
             guard record.recordTimeline == "Daily" else { return false }
-            return Calendar.current.isDate(recordDate, equalTo: date, toGranularity: .dayOfYear)
+            return Calendar.current.isDate(recordDate, equalTo: date, toGranularity: .day)
         }
         
         return dailyRecords

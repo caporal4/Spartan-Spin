@@ -210,13 +210,6 @@ struct ContentView: View {
                     .toolbarBackground(.visible, for: .tabBar)
                 }
             }
-//            .padding(.top, -50)
-            .onAppear {
-                viewModel.checkAndResetStreaks(goals: mainViewModel.goals)
-            }
-            .task {
-                await viewModel.fetchMoveOfTheMonth()
-            }
             .navigationDestination(for: Goal.self) { goal in
                 GoalView(goal: goal, persistenceController: viewModel.persistenceController)
                     .toolbar(.hidden, for: .tabBar)
@@ -249,10 +242,13 @@ struct ContentView: View {
                 }
             }
             .onAppear {
+                viewModel.checkAndResetStreaks(goals: mainViewModel.goals)
                 mainViewModel.createHistoricRecords()
                 mainViewModel.createNewRecords()
             }
-        
+            .task {
+                await viewModel.fetchMoveOfTheMonth()
+            }
     }
 }
 

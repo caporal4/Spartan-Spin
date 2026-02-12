@@ -23,7 +23,9 @@ extension MainTabView {
 
         @Published var selectedDate: DateComponents?
         @Published var displayedMonth: Date = Date()
+        
         @Published var selectedTab = 0
+        @Published var previousTab = 0
 
         var calendar: Calendar {
             var cal = Calendar.current

@@ -218,10 +218,10 @@ struct NewGoalView: View {
                     Text(viewModel.wholeNumberErrorMessage)
                 }
                 
-                .onChange(of: viewModel.reminderEnabled, initial: false) { _, _  in
+                .onChange(of: viewModel.reminderEnabled) { _  in
                     viewModel.checkSettings()
                 }
-                .onChange(of: viewModel.reminderTime, initial: false) { _, _  in
+                .onChange(of: viewModel.reminderTime) { _  in
                     viewModel.checkSettings()
                 }
             }

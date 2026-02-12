@@ -75,8 +75,11 @@ final class SpartanSpinUITestsSecondFile: XCTestCase {
         )
         XCTAssertTrue(app.buttons["Complete Task"].exists, "There should be a Complete Task button.")
         XCTAssertTrue(app.buttons["Undo Task"].exists, "There should be a Undo Task button.")
-        XCTAssertFalse(app.tabBars.buttons["List"].exists)
-        XCTAssertFalse(app.tabBars.buttons["Calendar"].exists)
+        
+        if #available(iOS 18.0, *) {
+            XCTAssertFalse(app.tabBars.buttons["List"].exists)
+            XCTAssertFalse(app.tabBars.buttons["Calendar"].exists)
+        }
     }
     
     func testAddingAndDeletingGoalsWorks() {

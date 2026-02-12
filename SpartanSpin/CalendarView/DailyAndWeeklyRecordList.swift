@@ -17,6 +17,10 @@ struct DailyAndWeeklyRecordList: View {
     
     var records: [GoalRecord] {
         mainViewModel.goalRecords.filter { record in
+            guard record.goal == nil else {
+                return false
+            }
+            
             guard let recordDate = record.date,
                   let componentsDate = calendar.date(from: date) else {
                 return false
@@ -38,10 +42,46 @@ struct DailyAndWeeklyRecordList: View {
         }
     }
     
+    var inactiveRecords: [GoalRecord] {
+        mainViewModel.goalRecords.filter { record in
+            guard record.goal != nil else {
+                return false
+            }
+            guard let recordDate = record.date,
+                  let componentsDate = calendar.date(from: date) else {
+                return false
+            }
+                
+            guard record.recordTimeline == timeline else { return false }
+            
+            switch timeline {
+            case "Daily":
+                return calendar.isDate(recordDate, inSameDayAs: componentsDate)
+            case "Weekly":
+                return calendar.isDate(recordDate, equalTo: componentsDate, toGranularity: .weekOfYear)
+
+            default:
+                return false
+            }
+        }.sorted {
+            $0.recordTitle < $1.recordTitle
+        }
+    }
+    
     var body: some View {
-        if !records.isEmpty {
+        if !records.isEmpty || !inactiveRecords.isEmpty {
             List {
                 Section("\(timeline) Goals") {
+                    ForEach(records) { record in
+                        ZStack(alignment: .leading) {
+                            ContentViewRectangle()
+                            RecordRow(record: record)
+                        }
+                        .listRowBackground(Colors.spartanSpinGreen)
+                        .accessibilityIdentifier(record.recordTitle)
+                    }
+                }
+                Section("Inactive \(timeline) Goals") {
                     ForEach(records) { record in
                         ZStack(alignment: .leading) {
                             ContentViewRectangle()
@@ -59,6 +99,7 @@ struct DailyAndWeeklyRecordList: View {
                         .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
                 }
             }
+            .modifier(HideTabBarIfAvailable())
             .scrollContentBackground(.hidden)
             .background(Colors.gradientC.ignoresSafeArea())
         } else {
@@ -79,6 +120,7 @@ struct DailyAndWeeklyRecordList: View {
                         .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
                 }
             }
+            .modifier(HideTabBarIfAvailable())
         }
     }
     func addSixDays(to dateComponents: DateComponents) -> DateComponents {
