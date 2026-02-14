@@ -107,12 +107,31 @@ extension ContentView {
         }
         
         func swipeToDelete(goals: [Goal], _ offsets: IndexSet) {
+            let today = Calendar.current.startOfDay(for: Date())
+            guard let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: today) else { return }
+            let context = persistenceController.container.viewContext
+            
             for offset in offsets {
                 let item = goals[offset]
+                
+                let fetchRequest: NSFetchRequest<GoalRecord> = GoalRecord.fetchRequest()
+                fetchRequest.predicate = NSPredicate(
+                    format: "goal == %@ AND date >= %@ AND date < %@",
+                    item,
+                    today as NSDate,
+                    endOfDay as NSDate
+                )
+                
+                if let todayRecords = try? context.fetch(fetchRequest) {
+                    for record in todayRecords {
+                        context.delete(record)
+                    }
+                }
+                
                 persistenceController.removeReminders(for: item)
                 persistenceController.delete(item)
-                persistenceController.save()
             }
+            persistenceController.save()
         }
 
         func checkAndResetStreaks(goals: [Goal]) {

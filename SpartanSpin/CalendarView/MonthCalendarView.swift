@@ -83,24 +83,19 @@ struct MonthCalendarView: View {
     }
     
     func calculateProgress(records: [GoalRecord]) -> Double {
-        guard records.count > 0 else { return 0.0 }
-        var temporaryValue = 0.0
-        
+        guard !records.isEmpty else { return 0.0 }
+                
         var numerator = 0.0
         var denominator = 0.0
-                
+        
         for record in records {
-             if record.tasksCompleted > record.tasksNeeded {
-                temporaryValue = record.tasksNeeded
-                numerator += temporaryValue
-                denominator += record.tasksNeeded
-            } else {
-                numerator += record.tasksCompleted
-                denominator += record.tasksNeeded
-            }
+            let tasksCompleted = min(record.tasksCompleted, record.tasksNeeded)
+            numerator += tasksCompleted
+            denominator += record.tasksNeeded
         }
-        let answer = numerator / denominator
-        return answer
+        
+        guard denominator > 0 else { return 0.0 }
+        return numerator / denominator
     }
     
     func dailyRecords(date: Date, records: [GoalRecord]) -> [GoalRecord] {

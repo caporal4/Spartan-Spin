@@ -191,7 +191,6 @@ struct EditGoalView: View {
                     Text(viewModel.notificationErrorMessage)
                 }
                 .modifier(AlertsModifier(viewModel: viewModel, openURL: openURL))
-                
                 .onChange(of: goal.reminderEnabled) { _  in
                     viewModel.updateReminder(goal)
                 }

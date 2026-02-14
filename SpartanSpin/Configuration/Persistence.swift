@@ -83,7 +83,9 @@ class PersistenceController: ObservableObject {
     
     func deleteAll() {
         let request1: NSFetchRequest<NSFetchRequestResult> = Goal.fetchRequest()
+        let request2: NSFetchRequest<NSFetchRequestResult> = GoalRecord.fetchRequest()
         delete(request1)
+        delete(request2)
 
         save()
     }
