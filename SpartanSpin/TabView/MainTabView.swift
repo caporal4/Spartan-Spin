@@ -24,7 +24,7 @@ struct MainTabView: View {
             }
             .tag(0)
             .tabItem {
-                Label("List", systemImage: "list.bullet")
+                Label("Goals", systemImage: "list.bullet")
             }
             NavigationStack {
                 ZStack {
@@ -145,7 +145,7 @@ struct MainTabView: View {
             }
             .tag(1)
             .tabItem {
-                Label("Calendar", systemImage: "calendar")
+                Label("Progress", systemImage: "calendar")
             }
         }
         .onChange(of: viewModel.selectedTab) { newValue in
