@@ -59,13 +59,6 @@ struct MonthCalendarView: View {
         }
     }
     
-    // Add error handling
-    func convertToDate(date: DateComponents) -> Date {
-        guard let convertedDate = calendar.date(from: date) else { return Date.now }
-        return convertedDate
-            
-    }
-    
     func convertToDateComponents(date: Date) -> DateComponents {
         return calendar.dateComponents([.day, .month, .year], from: date)
     }

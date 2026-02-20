@@ -68,15 +68,13 @@ extension MainTabView {
             goalRecordsController.delegate = self
             
             do {
-                // Add error handling
                 try goalsController.performFetch()
                 goals = goalsController.fetchedObjects ?? []
                 
-                // Add error handling
                 try goalRecordsController.performFetch()
                 goalRecords = goalRecordsController.fetchedObjects ?? []
             } catch {
-                print("Failed to fetch goals")
+                assertionFailure("Core Data fetch failed: \(error)")
             }
         }
         
@@ -133,7 +131,6 @@ extension MainTabView {
                 for: goal.goalTimeline,
                 calendar: calendar
             ) else {
-                // error handling?
                 return
             }
             
@@ -169,11 +166,11 @@ extension MainTabView {
             case "Monthly":
                 return calendar.date(byAdding: .month, value: 1, to: date)
             default:
+                assertionFailure("Unexpected timeline value: \(timeline)")
                 return nil
             }
         }
         
-        // Add error handling
         func calculateNewDate(amount: Int) {
             guard let newMonth =  Calendar.current.date(
                 byAdding: .month,

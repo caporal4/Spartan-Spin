@@ -105,7 +105,7 @@ extension NewGoalView {
             
             callPersistenceToUpdateReminder(newGoal)
             
-            try? viewContext.save()
+            persistenceController.save()
             dismiss = true
         }
         

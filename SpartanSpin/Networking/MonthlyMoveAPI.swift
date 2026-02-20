@@ -9,7 +9,7 @@ import Foundation
 
 final class MonthlyMoveAPI: MonthlyMoveService {
     private let session: URLSession
-    private let url = URL(string: "https://caporal4.github.io/monthlyMove.json")
+    private let url = URL(string: "https://caporal4.github.io/monthlyMove.json")!
     
     init(session: URLSession? = nil) {
         if let session = session {
@@ -30,8 +30,11 @@ final class MonthlyMoveAPI: MonthlyMoveService {
     }
 
     func fetchMoves() async throws -> [MonthlyMove] {
-        guard let url = url else { return [] }
-        let (data, _) = try await session.data(from: url)
+        let (data, response) = try await session.data(from: url)
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
         return try JSONDecoder().decode([MonthlyMove].self, from: data)
     }
 }

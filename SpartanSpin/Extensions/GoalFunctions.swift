@@ -9,6 +9,14 @@ import CoreData
 import Foundation
 
 extension Goal {
+    func save() {
+        do {
+            try managedObjectContext?.save()
+        } catch {
+            assertionFailure("Core Data save failed: \(error)")
+        }
+    }
+    
     // Used in ContentView
     func shouldResetStreak(_ today: Date) -> Bool {
         var calendar = Calendar.current
@@ -122,13 +130,13 @@ extension Goal {
         streak = 0
         tasksCompleted = 0
         lastStreakReset = Date.now
-        try? self.managedObjectContext?.save()
+        save()
     }
     
     func resetTasks() {
         tasksCompleted = 0
         lastTaskReset = Date.now
-        try? self.managedObjectContext?.save()
+        save()
     }
     
     // Used in GoalCounterView
@@ -143,7 +151,7 @@ extension Goal {
                 lastStreakIncrease = Date.now
             }
         }
-        try? self.managedObjectContext?.save()
+        save()
     }
     
     func undoTask() {
@@ -157,7 +165,7 @@ extension Goal {
             lastStreakIncrease = nil
         }
         tasksCompleted -= 1
-        try? self.managedObjectContext?.save()
+        save()
     }
     
     private func allowStreakUpdate() -> Bool {
@@ -194,7 +202,6 @@ extension Goal {
     
     // Used in GoalView
     // oldValue is the value of tasksCompleted at the time the user opens the text field.
-    // test: ensure record updates properly
     func handleTextField(input: Double, oldValue: Double) {
         tasksCompleted = input
         
@@ -206,7 +213,7 @@ extension Goal {
             lastStreakIncrease = Date.now
         }
         
-        try? self.managedObjectContext?.save()
+        save()
     }
     
     func streakSentence() -> String {
@@ -233,7 +240,7 @@ extension Goal {
                 lastStreakIncrease = nil
             }
         }
-        try? self.managedObjectContext?.save()
+        save()
     }
     
     func createFraction() -> String {

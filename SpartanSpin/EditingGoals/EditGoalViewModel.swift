@@ -68,10 +68,8 @@ extension EditGoalView {
             return formatter.string(from: NSNumber(value: day)) ?? "\(day)"
         }
         
-        func validateChanges(title: String?) {
-            guard let validatedTitle = title else { return }
-            
-            guard validatedTitle.count > 0 else {
+        func validateChanges(title: String) {
+            guard title.count > 0 else {
                 showTitleError = true
                 return
             }
@@ -92,7 +90,7 @@ extension EditGoalView {
             
             goal.updateStreakFromTimeline(goalTimelineInput)
             
-            goal.goalTitle = validatedTitle
+            goal.goalTitle = title
             goal.tasksNeeded = validatedTasksInput
             goal.goalReminderFrequency = reminderFrequency
             goal.weeklyReminderTimes = selectedDays

@@ -92,7 +92,6 @@ struct WeekProgressView: View {
         return weeklyRecords
     }
     
-    // Add error handling
     func weekEnd(of date: Date) -> Date {
         guard let weekEnd =  Calendar.current.date(byAdding: .day, value: 6, to: date) else { return date }
         return weekEnd

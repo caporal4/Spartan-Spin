@@ -75,9 +75,9 @@ struct DailyAndWeeklyRecordList: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(timeline == "Daily" ? formatDate(date) : formatWeekRange(date, addSixDays(to: date)))
-                        .font(.headline)
-                        .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
+                        Text(timeline == "Daily" ? formatDate(date) : formatWeekRange(date, addSixDays(to: date)))
+                            .font(.headline)
+                            .foregroundStyle(colorScheme == .dark ? .white : Colors.spartanSpinGreen)
                 }
             }
             .modifier(HideTabBarIfAvailable())
@@ -102,7 +102,7 @@ struct DailyAndWeeklyRecordList: View {
     func formatWeekRange(_ startDate: DateComponents, _ endDate: DateComponents) -> String {
         guard let startDay = startDate.day, let startMonth = startDate.month, let startYear = startDate.year,
               let endDay = endDate.day, let endMonth = endDate.month, let endYear = endDate.year else {
-            return ""
+            return "Unknown Timeline"
         }
         
         let monsS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -128,7 +128,7 @@ struct DailyAndWeeklyRecordList: View {
     }
     func formatDate(_ date: DateComponents) -> String {
         guard let day = date.day, let month = date.month, let year = date.year else {
-            return ""
+            return "Unknown Date"
         }
         
         let monthNames = ["January", "February", "March", "April", "May", "June",

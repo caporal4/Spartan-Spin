@@ -58,11 +58,40 @@ extension Goal {
     
     func updateRecord(_ record: GoalRecord) {
         record.tasksCompleted = self.tasksCompleted
-        record.streak = self.streak
-        try? managedObjectContext?.save()
+
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+
+        if let lastIncrease = self.lastStreakIncrease {
+            let streakIncreasedThisPeriod: Bool
+            switch self.goalTimeline {
+            case "Daily":   streakIncreasedThisPeriod = calendar.isDate(lastIncrease, inSameDayAs: Date.now)
+            case "Weekly":  streakIncreasedThisPeriod = calendar.isDate(
+                lastIncrease,
+                equalTo: Date.now,
+                toGranularity: .weekOfYear
+            )
+            case "Monthly": streakIncreasedThisPeriod = calendar.isDate(
+                lastIncrease,
+                equalTo: Date.now,
+                toGranularity: .month
+            )
+            default:        streakIncreasedThisPeriod = false
+            }
+
+            if streakIncreasedThisPeriod {
+                record.streak = self.streak
+            } else if self.streak < record.streak {
+                record.streak = 0
+            }
+        } else if self.streak < record.streak {
+            // lastStreakIncrease is nil, meaning undoTask() cleared it
+            record.streak = 0
+        }
+
+        save()
     }
     
-    // Add in places where records are loaded for the day
     func fullyUpdateRecord(_ record: GoalRecord) {
         record.title = self.title
         record.timeline = self.timeline
@@ -70,6 +99,6 @@ extension Goal {
         record.tasksCompleted = self.tasksCompleted
         record.tasksNeeded = self.tasksNeeded
         record.streak = 0
-        try? managedObjectContext?.save()
+        save()
     }
 }

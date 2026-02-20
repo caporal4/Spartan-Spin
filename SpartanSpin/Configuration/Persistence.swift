@@ -57,13 +57,24 @@ class PersistenceController: ObservableObject {
             newGoal.tasksNeeded = 2
             newGoal.streak = 0
             newGoal.createRecord(on: date, context: viewContext)
+            if int == 0 {
+                newGoal.streak = 3
+            } else if int == 2 {
+                newGoal.streak = 3
+            } else if int == 4 {
+                newGoal.streak = 3
+            }
         }
         
         save()
     }
     
     func save() {
-        try? container.viewContext.save()
+        do {
+            try container.viewContext.save()
+        } catch {
+            assertionFailure("Core Data save failed: \(error)")
+        }
     }
     
     func delete(_ object: NSManagedObject) {

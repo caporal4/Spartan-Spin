@@ -29,8 +29,8 @@ final class SpartanSpinUITestsSecondFile: XCTestCase {
         XCTAssertTrue(app.buttons["Add Goal"].exists, "There should be an Add Goal button.")
         XCTAssertTrue(app.buttons["Add Sample Goals"].exists, "There should be an Add Sample Goals debug button.")
         
-        XCTAssertTrue(app.tabBars.buttons["List"].exists)
-        XCTAssertTrue(app.tabBars.buttons["Calendar"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Goals"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Progress"].exists)
         
         app.buttons["Add Sample Goals"].tap()
         
@@ -43,8 +43,8 @@ final class SpartanSpinUITestsSecondFile: XCTestCase {
             app.navigationBars.buttons["DELETE SAMPLES"].exists,
             "There should be an DELETE SAMPLES toolbar debug button."
         )
-        XCTAssertTrue(app.tabBars.buttons["List"].exists)
-        XCTAssertTrue(app.tabBars.buttons["Calendar"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Goals"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Progress"].exists)
         
         app.buttons["Add Goal"].tap()
         
@@ -77,8 +77,8 @@ final class SpartanSpinUITestsSecondFile: XCTestCase {
         XCTAssertTrue(app.buttons["Undo Task"].exists, "There should be a Undo Task button.")
         
         if #available(iOS 18.0, *) {
-            XCTAssertFalse(app.tabBars.buttons["List"].exists)
-            XCTAssertFalse(app.tabBars.buttons["Calendar"].exists)
+            XCTAssertFalse(app.tabBars.buttons["Goals"].exists)
+            XCTAssertFalse(app.tabBars.buttons["Progress"].exists)
         }
     }
     

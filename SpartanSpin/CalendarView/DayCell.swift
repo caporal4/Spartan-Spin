@@ -30,10 +30,10 @@ struct DayCell: View {
                     Circle()
                         .fill(.white)
                         .frame(width: 30, height: 30)
-                    Text("\(unwrapDay(day: date.day))")
+                    Text("\(date.day ?? 0)")
                         .foregroundStyle(.black)
                 } else {
-                    Text("\(unwrapDay(day: date.day))")
+                    Text("\(date.day ?? 0)")
                         .foregroundStyle(.white)
                 }
             }
@@ -43,12 +43,6 @@ struct DayCell: View {
                 .frame(width: 36, height: 36)
         }
     }
-    
-    func unwrapDay(day: Int?) -> Int {
-        guard let unwrappedDay = day else { return 0 }
-        return unwrappedDay
-    }
-    
     func checkMonth(date: DateComponents, displayedMonth: Date) -> Bool {
         if date.month != calendar.dateComponents([.month], from: displayedMonth).month {
             return false
